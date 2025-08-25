@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+            html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+            .slide-header {
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .slide-title {
+                font-size: 28px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 5px;
+                line-height: 1.2;
+            }
+
+            .slide-subtitle {
+                font-size: 14px;
+                color: #666666;
+                margin: 0;
+            }
+
+            .content-container {
+                display: flex;
+                gap: 20px;
+                flex: 1;
+                height: 620px;
+                min-height: 620px;
+            }
+
+            .resource-framework {
+                width: 60%;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .resource-overview {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                border-left: 4px solid #28a745;
+                flex-shrink: 0;
+                height: 140px;
+            }
+
+            .overview-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .overview-icon {
+                color: #28a745;
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+            .resource-metrics {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            .metric-box {
+                text-align: center;
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 6px;
+            }
+
+            .metric-value {
+                font-size: 14px;
+                font-weight: 700;
+                color: #28a745;
+                margin-bottom: 2px;
+            }
+
+            .metric-label {
+                font-size: 10px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .overview-description {
+                font-size: 12px;
+                color: #333333;
+                line-height: 1.3;
+            }
+
+            .resource-allocation {
+                flex: 1;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+                height: 320px;
+            }
+
+            .allocation-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                flex-shrink: 0;
+            }
+
+            .allocation-icon {
+                color: #0066cc;
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+            .allocation-content {
+                height: 280px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-right: 8px;
+                scrollbar-width: thin;
+                scrollbar-color: #0066cc #f0f0f0;
+            }
+
+            .allocation-content::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .allocation-content::-webkit-scrollbar-track {
+                background: #f0f0f0;
+                border-radius: 4px;
+            }
+
+            .allocation-content::-webkit-scrollbar-thumb {
+                background: #0066cc;
+                border-radius: 4px;
+            }
+
+            .allocation-content::-webkit-scrollbar-thumb:hover {
+                background: #0052a3;
+            }
+
+            .resource-item {
+                background-color: #f8f9fa;
+                border-radius: 6px;
+                padding: 10px;
+                margin-bottom: 8px;
+                border-left: 3px solid;
+            }
+
+            .technical-resource {
+                border-color: #dc3545;
+            }
+
+            .strategic-resource {
+                border-color: #ff6600;
+            }
+
+            .operational-resource {
+                border-color: #28a745;
+            }
+
+            .resource-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 6px;
+            }
+
+            .resource-category {
+                font-size: 11px;
+                font-weight: 600;
+                padding: 2px 6px;
+                border-radius: 10px;
+                margin-right: 8px;
+                color: white;
+            }
+
+            .cat-technical {
+                background-color: #dc3545;
+            }
+
+            .cat-strategic {
+                background-color: #ff6600;
+            }
+
+            .cat-operational {
+                background-color: #28a745;
+            }
+
+            .resource-role {
+                font-size: 13px;
+                font-weight: 700;
+                color: #333333;
+                flex: 1;
+            }
+
+            .resource-allocation-pct {
+                font-size: 11px;
+                color: #666666;
+                font-weight: 600;
+            }
+
+            .resource-description {
+                font-size: 11px;
+                color: #333333;
+                line-height: 1.3;
+                margin-bottom: 4px;
+            }
+
+            .resource-scope {
+                font-size: 10px;
+                color: #666666;
+                font-style: italic;
+            }
+
+            .planning-timeline {
+                background-color: #e6f0fa;
+                border-radius: 8px;
+                padding: 12px;
+                flex-shrink: 0;
+            }
+
+            .timeline-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .timeline-icon {
+                margin-right: 6px;
+                font-size: 14px;
+            }
+
+            .timeline-items {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .timeline-item {
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 6px;
+                text-align: center;
+            }
+
+            .timeline-phase {
+                font-size: 10px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 2px;
+            }
+
+            .timeline-duration {
+                font-size: 12px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 2px;
+            }
+
+            .timeline-focus {
+                font-size: 9px;
+                color: #666666;
+            }
+
+            .implementation-framework {
+                width: 40%;
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .framework-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .resource-breakdown {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 12px;
+                margin-bottom: 12px;
+                flex-shrink: 0;
+            }
+
+            .breakdown-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: #28a745;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .breakdown-icon {
+                color: #28a745;
+                margin-right: 6px;
+                font-size: 14px;
+            }
+
+            .breakdown-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .breakdown-box {
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 4px;
+                padding: 6px;
+            }
+
+            .breakdown-category {
+                font-size: 10px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 2px;
+            }
+
+            .breakdown-allocation {
+                font-size: 12px;
+                font-weight: 700;
+                color: #28a745;
+                margin-bottom: 2px;
+            }
+
+            .breakdown-scope {
+                font-size: 9px;
+                color: #666666;
+                line-height: 1.2;
+            }
+
+            .chart-wrapper {
+                flex: 1;
+                min-height: 0;
+                position: relative;
+            }
+
+            .data-source {
+                font-size: 10px;
+                color: #666666;
+                text-align: center;
+                margin-top: 8px;
+                font-style: italic;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+
+        <div class="slide-container">
+            <div class="slide-header">
+                <h1 class="slide-title">Budget and Resource Planning</h1>
+                <p class="slide-subtitle">
+                    Comprehensive resource allocation and planning framework for implementing optimization across 6,418 URLs with detailed team requirements and
+                    timeline coordination
+                </p>
+            </div>
+
+            <div class="content-container">
+                <div class="resource-framework">
+                    <div class="resource-overview">
+                        <div class="overview-title">
+                            <i class="fas fa-calculator overview-icon"></i>
+                            Resource Planning Scope
+                        </div>
+                        <div class="resource-metrics">
+                            <div class="metric-box">
+                                <div class="metric-value">8 roles</div>
+                                <div class="metric-label">Team Positions</div>
+                            </div>
+                            <div class="metric-box">
+                                <div class="metric-value">3 categories</div>
+                                <div class="metric-label">Resource Types</div>
+                            </div>
+                            <div class="metric-box">
+                                <div class="metric-value">6,418 URLs</div>
+                                <div class="metric-label">Technical Scope</div>
+                            </div>
+                            <div class="metric-box">
+                                <div class="metric-value">16 weeks</div>
+                                <div class="metric-label">Project Duration</div>
+                            </div>
+                        </div>
+                        <div class="overview-description">
+                            Strategic resource planning covering technical, strategic, and operational roles for implementing optimization across 6,418 URLs
+                            with comprehensive team coordination.
+                        </div>
+                    </div>
+
+                    <div class="resource-allocation">
+                        <div class="allocation-title">
+                            <i class="fas fa-users allocation-icon"></i>
+                            Resource Allocation and Team Requirements
+                        </div>
+                        <div class="allocation-content">
+                            <div class="resource-item technical-resource">
+                                <div class="resource-header">
+                                    <div class="resource-category cat-technical">Technical</div>
+                                    <div class="resource-role">Technical SEO Specialist</div>
+                                    <div class="resource-allocation-pct">100% allocation</div>
+                                </div>
+                                <div class="resource-description">
+                                    Lead technical implementation for 6,418 URL optimizations including hreflang, canonical, and JavaScript accessibility
+                                    improvements.
+                                </div>
+                                <div class="resource-scope">Scope: Technical implementation, issue resolution, quality assurance</div>
+                            </div>
+
+                            <div class="resource-item technical-resource">
+                                <div class="resource-header">
+                                    <div class="resource-category cat-technical">Technical</div>
+                                    <div class="resource-role">Web Developer</div>
+                                    <div class="resource-allocation-pct">75% allocation</div>
+                                </div>
+                                <div class="resource-description">
+                                    Support technical implementation including page speed optimization for 8,190 URLs with render-blocking resources.
+                                </div>
+                                <div class="resource-scope">Scope: Code implementation, performance optimization, technical support</div>
+                            </div>
+
+                            <div class="resource-item strategic-resource">
+                                <div class="resource-header">
+                                    <div class="resource-category cat-strategic">Strategic</div>
+                                    <div class="resource-role">SEO Strategy Manager</div>
+                                    <div class="resource-allocation-pct">50% allocation</div>
+                                </div>
+                                <div class="resource-description">
+                                    Strategic oversight for AI search optimization leveraging 63,590 conversational query clicks and competitive positioning.
+                                </div>
+                                <div class="resource-scope">Scope: Strategy development, competitive analysis, performance oversight</div>
+                            </div>
+
+                            <div class="resource-item strategic-resource">
+                                <div class="resource-header">
+                                    <div class="resource-category cat-strategic">Strategic</div>
+                                    <div class="resource-role">Content Strategist</div>
+                                    <div class="resource-allocation-pct">40% allocation</div>
+                                </div>
+                                <div class="resource-description">
+                                    Content optimization strategy for improving conversion rate from current 2.83% baseline and AI search performance.
+                                </div>
+                                <div class="resource-scope">Scope: Content strategy, optimization planning, performance analysis</div>
+                            </div>
+
+                            <div class="resource-item operational-resource">
+                                <div class="resource-header">
+                                    <div class="resource-category cat-operational">Operational</div>
+                                    <div class="resource-role">Analytics Specialist</div>
+                                    <div class="resource-allocation-pct">60% allocation</div>
+                                </div>
+                                <div class="resource-description">
+                                    Analytics setup and monitoring for tracking 895,957 organic visits and 25,318 conversions with enhanced reporting.
+                                </div>
+                                <div class="resource-scope">Scope: Analytics configuration, reporting setup, performance tracking</div>
+                            </div>
+
+                            <div class="resource-item operational-resource">
+                                <div class="resource-header">
+                                    <div class="resource-category cat-operational">Operational</div>
+                                    <div class="resource-role">Project Manager</div>
+                                    <div class="resource-allocation-pct">80% allocation</div>
+                                </div>
+                                <div class="resource-description">
+                                    Project coordination and timeline management for 16-week implementation with vendor and stakeholder coordination.
+                                </div>
+                                <div class="resource-scope">Scope: Project management, coordination, timeline oversight</div>
+                            </div>
+
+                            <div class="resource-item operational-resource">
+                                <div class="resource-header">
+                                    <div class="resource-category cat-operational">Operational</div>
+                                    <div class="resource-role">QA Specialist</div>
+                                    <div class="resource-allocation-pct">50% allocation</div>
+                                </div>
+                                <div class="resource-description">
+                                    Quality assurance and testing for technical implementations with comprehensive validation protocols.
+                                </div>
+                                <div class="resource-scope">Scope: Quality assurance, testing protocols, validation procedures</div>
+                            </div>
+
+                            <div class="resource-item operational-resource">
+                                <div class="resource-header">
+                                    <div class="resource-category cat-operational">Operational</div>
+                                    <div class="resource-role">International SEO Specialist</div>
+                                    <div class="resource-allocation-pct">30% allocation</div>
+                                </div>
+                                <div class="resource-description">
+                                    Specialized support for resolving 3,547 hreflang issues and international SEO optimization requirements.
+                                </div>
+                                <div class="resource-scope">Scope: International SEO, hreflang optimization, regional compliance</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="planning-timeline">
+                        <div class="timeline-title">
+                            <i class="fas fa-calendar-check timeline-icon"></i>
+                            Resource Planning Timeline
+                        </div>
+                        <div class="timeline-items">
+                            <div class="timeline-item">
+                                <div class="timeline-phase">Phase 1</div>
+                                <div class="timeline-duration">Weeks 1-4</div>
+                                <div class="timeline-focus">Team Onboarding</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-phase">Phase 2</div>
+                                <div class="timeline-duration">Weeks 5-8</div>
+                                <div class="timeline-focus">Technical Implementation</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-phase">Phase 3</div>
+                                <div class="timeline-duration">Weeks 9-12</div>
+                                <div class="timeline-focus">Strategic Optimization</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-phase">Phase 4</div>
+                                <div class="timeline-duration">Weeks 13-16</div>
+                                <div class="timeline-focus">Performance Validation</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="implementation-framework">
+                    <div class="framework-title">Resource Allocation Framework</div>
+
+                    <div class="resource-breakdown">
+                        <div class="breakdown-title">
+                            <i class="fas fa-chart-pie breakdown-icon"></i>
+                            Resource Category Breakdown
+                        </div>
+                        <div class="breakdown-grid">
+                            <div class="breakdown-box">
+                                <div class="breakdown-category">Technical Resources</div>
+                                <div class="breakdown-allocation">35%</div>
+                                <div class="breakdown-scope">2 team members</div>
+                            </div>
+                            <div class="breakdown-box">
+                                <div class="breakdown-category">Strategic Resources</div>
+                                <div class="breakdown-allocation">25%</div>
+                                <div class="breakdown-scope">2 team members</div>
+                            </div>
+                            <div class="breakdown-box">
+                                <div class="breakdown-category">Operational Resources</div>
+                                <div class="breakdown-allocation">40%</div>
+                                <div class="breakdown-scope">4 team members</div>
+                            </div>
+                            <div class="breakdown-box">
+                                <div class="breakdown-category">Total Allocation</div>
+                                <div class="breakdown-allocation">100%</div>
+                                <div class="breakdown-scope">8 team members</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-wrapper">
+                        <canvas id="resourceChart"></canvas>
+                    </div>
+
+                    <div class="data-source">Source: Resource planning and allocation framework based on project scope and requirements analysis</div>
+                </div>
+            </div>
+            <div class="navigation flex">
+                <a class="button-next ml-auto" href="45.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+        </div>
+
+        <script>
+            // Create the resource allocation chart
+            const ctx = document.getElementById("resourceChart").getContext("2d");
+            const resourceChart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: [
+                        "Technical SEO",
+                        "Web Developer",
+                        "SEO Strategy",
+                        "Content Strategy",
+                        "Analytics",
+                        "Project Manager",
+                        "QA Specialist",
+                        "International SEO",
+                    ],
+                    datasets: [
+                        {
+                            label: "Resource Allocation (%)",
+                            data: [100, 75, 50, 40, 60, 80, 50, 30],
+                            backgroundColor: ["#dc3545", "#dc3545", "#ff6600", "#ff6600", "#28a745", "#28a745", "#28a745", "#28a745"],
+                            borderColor: "#ffffff",
+                            borderWidth: 1,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                font: {
+                                    size: 9,
+                                },
+                            },
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20,
+                                font: {
+                                    size: 10,
+                                },
+                            },
+                            title: {
+                                display: true,
+                                text: "Allocation Percentage",
+                                font: {
+                                    size: 10,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

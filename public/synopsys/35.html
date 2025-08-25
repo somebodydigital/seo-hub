@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+            html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+            .slide-header {
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .slide-title {
+                font-size: 28px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 5px;
+                line-height: 1.2;
+            }
+
+            .slide-subtitle {
+                font-size: 14px;
+                color: #666666;
+                margin: 0;
+            }
+
+            .content-container {
+                display: flex;
+                gap: 20px;
+                flex: 1;
+                height: 620px;
+                min-height: 620px;
+            }
+
+            .strategy-container {
+                width: 55%;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .optimization-overview {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                border-left: 4px solid #34a853;
+                flex-shrink: 0;
+            }
+
+            .overview-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .overview-icon {
+                color: #34a853;
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+            .optimization-phases {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            .phase-box {
+                text-align: center;
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 6px;
+            }
+
+            .phase-title {
+                font-size: 11px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 2px;
+            }
+
+            .phase-timeline {
+                font-size: 14px;
+                font-weight: 700;
+                color: #34a853;
+                margin-bottom: 2px;
+            }
+
+            .phase-focus {
+                font-size: 9px;
+                color: #666666;
+                line-height: 1.2;
+            }
+
+            .overview-description {
+                font-size: 12px;
+                color: #333333;
+                line-height: 1.3;
+            }
+
+            .strategy-roadmap {
+                flex: 1;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+                height: 320px;
+            }
+
+            .roadmap-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                flex-shrink: 0;
+            }
+
+            .roadmap-icon {
+                color: #0066cc;
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+            .roadmap-content {
+                height: 280px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-right: 8px;
+                scrollbar-width: thin;
+                scrollbar-color: #0066cc #f0f0f0;
+            }
+
+            .roadmap-content::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .roadmap-content::-webkit-scrollbar-track {
+                background: #f0f0f0;
+                border-radius: 4px;
+            }
+
+            .roadmap-content::-webkit-scrollbar-thumb {
+                background: #0066cc;
+                border-radius: 4px;
+            }
+
+            .roadmap-content::-webkit-scrollbar-thumb:hover {
+                background: #0052a3;
+            }
+
+            .strategy-phase {
+                background-color: #f8f9fa;
+                border-radius: 6px;
+                padding: 10px;
+                margin-bottom: 8px;
+                border-left: 3px solid;
+            }
+
+            .phase-1 {
+                border-color: #0066cc;
+            }
+
+            .phase-2 {
+                border-color: #34a853;
+            }
+
+            .phase-3 {
+                border-color: #ff6600;
+            }
+
+            .phase-4 {
+                border-color: #fbbc05;
+            }
+
+            .strategy-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 6px;
+            }
+
+            .strategy-type {
+                font-size: 11px;
+                font-weight: 600;
+                padding: 2px 6px;
+                border-radius: 10px;
+                margin-right: 8px;
+                color: white;
+            }
+
+            .type-1 {
+                background-color: #0066cc;
+            }
+
+            .type-2 {
+                background-color: #34a853;
+            }
+
+            .type-3 {
+                background-color: #ff6600;
+            }
+
+            .type-4 {
+                background-color: #fbbc05;
+            }
+
+            .strategy-name {
+                font-size: 13px;
+                font-weight: 700;
+                color: #333333;
+                flex: 1;
+            }
+
+            .strategy-timeline {
+                font-size: 11px;
+                color: #666666;
+                font-weight: 600;
+            }
+
+            .strategy-description {
+                font-size: 11px;
+                color: #333333;
+                line-height: 1.3;
+                margin-bottom: 4px;
+            }
+
+            .strategy-metrics {
+                font-size: 10px;
+                color: #666666;
+                font-style: italic;
+            }
+
+            .continuous-improvement {
+                background-color: #e6f0fa;
+                border-radius: 8px;
+                padding: 12px;
+                flex-shrink: 0;
+            }
+
+            .improvement-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .improvement-icon {
+                margin-right: 6px;
+                font-size: 14px;
+            }
+
+            .improvement-cycles {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .cycle-item {
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 6px;
+                text-align: center;
+            }
+
+            .cycle-frequency {
+                font-size: 10px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 2px;
+            }
+
+            .cycle-activity {
+                font-size: 12px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 2px;
+            }
+
+            .cycle-focus {
+                font-size: 9px;
+                color: #666666;
+            }
+
+            .performance-projection {
+                width: 45%;
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .projection-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .baseline-comparison {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 12px;
+                margin-bottom: 12px;
+                flex-shrink: 0;
+            }
+
+            .comparison-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: #34a853;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .comparison-icon {
+                color: #34a853;
+                margin-right: 6px;
+                font-size: 14px;
+            }
+
+            .baseline-metrics {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .baseline-box {
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 4px;
+                padding: 6px;
+            }
+
+            .baseline-current {
+                font-size: 12px;
+                font-weight: 700;
+                color: #666666;
+                margin-bottom: 2px;
+            }
+
+            .baseline-projected {
+                font-size: 14px;
+                font-weight: 700;
+                color: #34a853;
+                margin-bottom: 2px;
+            }
+
+            .baseline-label {
+                font-size: 9px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .chart-wrapper {
+                flex: 1;
+                min-height: 0;
+                position: relative;
+            }
+
+            .data-source {
+                font-size: 10px;
+                color: #666666;
+                text-align: center;
+                margin-top: 8px;
+                font-style: italic;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+
+        <div class="slide-container">
+            <div class="slide-header">
+                <h1 class="slide-title">Long-Term Optimization Strategy</h1>
+                <p class="slide-subtitle">Post-implementation roadmap and continuous improvement framework for sustained competitive advantage</p>
+            </div>
+
+            <div class="content-container">
+                <div class="strategy-container">
+                    <div class="optimization-overview">
+                        <div class="overview-title">
+                            <i class="fas fa-rocket overview-icon"></i>
+                            Long-Term Optimization Framework
+                        </div>
+                        <div class="optimization-phases">
+                            <div class="phase-box">
+                                <div class="phase-title">Phase 1</div>
+                                <div class="phase-timeline">Months 1-6</div>
+                                <div class="phase-focus">Foundation & Stabilization</div>
+                            </div>
+                            <div class="phase-box">
+                                <div class="phase-title">Phase 2</div>
+                                <div class="phase-timeline">Months 7-12</div>
+                                <div class="phase-focus">AI Search Enhancement</div>
+                            </div>
+                            <div class="phase-box">
+                                <div class="phase-title">Phase 3</div>
+                                <div class="phase-timeline">Months 13-24</div>
+                                <div class="phase-focus">Competitive Leadership</div>
+                            </div>
+                        </div>
+                        <div class="overview-description">
+                            Strategic roadmap for sustained optimization beyond initial 16-week implementation, focusing on competitive gap closure and AI
+                            search leadership.
+                        </div>
+                    </div>
+
+                    <div class="strategy-roadmap">
+                        <div class="roadmap-title">
+                            <i class="fas fa-map-marked-alt roadmap-icon"></i>
+                            Strategic Optimization Roadmap
+                        </div>
+                        <div class="roadmap-content">
+                            <div class="strategy-phase phase-1">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-1">Q1-Q2</div>
+                                    <div class="strategy-name">Foundation Stabilization</div>
+                                    <div class="strategy-timeline">Months 1-6</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Monitor and optimize initial 6,418 URL implementations, ensuring stable performance above 895,957 organic visits baseline.
+                                </div>
+                                <div class="strategy-metrics">Target: +15% organic traffic improvement, 95% technical issue resolution</div>
+                            </div>
+
+                            <div class="strategy-phase phase-2">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-2">Q3-Q4</div>
+                                    <div class="strategy-name">AI Search Enhancement</div>
+                                    <div class="strategy-timeline">Months 7-12</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Advanced AI search optimization building on 63,590 conversational query foundation with enhanced structured data and content
+                                    strategy.
+                                </div>
+                                <div class="strategy-metrics">Target: +25% conversational query performance, enhanced E-E-A-T signals</div>
+                            </div>
+
+                            <div class="strategy-phase phase-3">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-3">Year 2</div>
+                                    <div class="strategy-name">Competitive Gap Closure</div>
+                                    <div class="strategy-timeline">Months 13-18</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Strategic initiatives to close competitive gap with Ansys (744.5K traffic) and establish market leadership position.
+                                </div>
+                                <div class="strategy-metrics">Target: 40% reduction in Ansys traffic gap, market leadership in key segments</div>
+                            </div>
+
+                            <div class="strategy-phase phase-4">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-4">Year 2+</div>
+                                    <div class="strategy-name">Innovation & Leadership</div>
+                                    <div class="strategy-timeline">Months 19-24</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Advanced AI search innovations, emerging technology adoption, and thought leadership establishment in technical domains.
+                                </div>
+                                <div class="strategy-metrics">Target: Industry leadership position, advanced AI search capabilities</div>
+                            </div>
+
+                            <div class="strategy-phase phase-1">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-1">Ongoing</div>
+                                    <div class="strategy-name">Content Authority Building</div>
+                                    <div class="strategy-timeline">Continuous</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Systematic content development leveraging technical expertise to build topical authority and E-E-A-T signals.
+                                </div>
+                                <div class="strategy-metrics">Target: Measurable authority improvement, increased expert recognition</div>
+                            </div>
+
+                            <div class="strategy-phase phase-2">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-2">Ongoing</div>
+                                    <div class="strategy-name">Technical Innovation</div>
+                                    <div class="strategy-timeline">Continuous</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Continuous technical optimization and innovation adoption to maintain competitive advantage in search performance.
+                                </div>
+                                <div class="strategy-metrics">Target: Leading-edge technical implementation, performance optimization</div>
+                            </div>
+
+                            <div class="strategy-phase phase-3">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-3">Ongoing</div>
+                                    <div class="strategy-name">Competitive Intelligence</div>
+                                    <div class="strategy-timeline">Continuous</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Advanced competitive monitoring and strategic response to maintain market position against Ansys, Rockwell, Keysight, Cadence, and emerging
+                                    competitors.
+                                </div>
+                                <div class="strategy-metrics">Target: Proactive competitive response, market share protection</div>
+                            </div>
+
+                            <div class="strategy-phase phase-4">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-4">Ongoing</div>
+                                    <div class="strategy-name">Performance Optimization</div>
+                                    <div class="strategy-timeline">Continuous</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Data-driven optimization cycles based on performance monitoring and emerging opportunities in AI search landscape.
+                                </div>
+                                <div class="strategy-metrics">Target: Continuous improvement, emerging opportunity capture</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="continuous-improvement">
+                        <div class="improvement-title">
+                            <i class="fas fa-sync-alt improvement-icon"></i>
+                            Continuous Improvement Cycles
+                        </div>
+                        <div class="improvement-cycles">
+                            <div class="cycle-item">
+                                <div class="cycle-frequency">Monthly</div>
+                                <div class="cycle-activity">Performance Review</div>
+                                <div class="cycle-focus">Metrics analysis & optimization</div>
+                            </div>
+                            <div class="cycle-item">
+                                <div class="cycle-frequency">Quarterly</div>
+                                <div class="cycle-activity">Strategic Assessment</div>
+                                <div class="cycle-focus">Roadmap adjustment & planning</div>
+                            </div>
+                            <div class="cycle-item">
+                                <div class="cycle-frequency">Semi-Annual</div>
+                                <div class="cycle-activity">Competitive Analysis</div>
+                                <div class="cycle-focus">Market position & gap analysis</div>
+                            </div>
+                            <div class="cycle-item">
+                                <div class="cycle-frequency">Annual</div>
+                                <div class="cycle-activity">Strategic Planning</div>
+                                <div class="cycle-focus">Long-term strategy refinement</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="performance-projection">
+                    <div class="projection-title">Long-Term Performance Projection</div>
+
+                    <div class="baseline-comparison">
+                        <div class="comparison-title">
+                            <i class="fas fa-chart-line comparison-icon"></i>
+                            Performance Targets vs. Baseline
+                        </div>
+                        <div class="baseline-metrics">
+                            <div class="baseline-box">
+                                <div class="baseline-current">895,957</div>
+                                <div class="baseline-projected">1,343,936</div>
+                                <div class="baseline-label">Organic Traffic (24-Month Target)</div>
+                            </div>
+                            <div class="baseline-box">
+                                <div class="baseline-current">63,590</div>
+                                <div class="baseline-projected">95,385</div>
+                                <div class="baseline-label">AI Search Queries (24-Month Target)</div>
+                            </div>
+                            <div class="baseline-box">
+                                <div class="baseline-current">2.83%</div>
+                                <div class="baseline-projected">3.40%</div>
+                                <div class="baseline-label">Conversion Rate (24-Month Target)</div>
+                            </div>
+                            <div class="baseline-box">
+                                <div class="baseline-current">52</div>
+                                <div class="baseline-projected">65</div>
+                                <div class="baseline-label">Authority Score (24-Month Target)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-wrapper">
+                        <canvas id="longTermChart"></canvas>
+                    </div>
+
+                    <div class="data-source">Source: Performance projections based on verified baseline metrics and industry benchmarks</div>
+                </div>
+            </div>
+            <div class="navigation flex">
+                <a class="button-next ml-auto" href="43.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+        </div>
+
+        <script>
+            // Create the long-term performance projection chart
+            const ctx = document.getElementById("longTermChart").getContext("2d");
+            const longTermChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: ["Baseline", "Month 3", "Month 6", "Month 9", "Month 12", "Month 18", "Month 24"],
+                    datasets: [
+                        {
+                            label: "Organic Traffic (Indexed)",
+                            data: [100, 110, 120, 130, 140, 145, 150],
+                            backgroundColor: "rgba(0, 102, 204, 0.1)",
+                            borderColor: "#0066cc",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#0066cc",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                            tension: 0.4,
+                        },
+                        {
+                            label: "AI Query Performance (Indexed)",
+                            data: [100, 115, 125, 135, 145, 148, 150],
+                            backgroundColor: "rgba(52, 168, 83, 0.1)",
+                            borderColor: "#34a853",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#34a853",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                            tension: 0.4,
+                        },
+                        {
+                            label: "Conversion Rate (Indexed)",
+                            data: [100, 105, 110, 112, 115, 118, 120],
+                            backgroundColor: "rgba(251, 188, 5, 0.1)",
+                            borderColor: "#fbbc05",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#fbbc05",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                            tension: 0.4,
+                        },
+                        {
+                            label: "Authority Score (Indexed)",
+                            data: [100, 105, 110, 115, 120, 122, 125],
+                            backgroundColor: "rgba(255, 102, 0, 0.1)",
+                            borderColor: "#ff6600",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#ff6600",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                            tension: 0.4,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: "index",
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                usePointStyle: true,
+                                padding: 8,
+                                font: {
+                                    size: 10,
+                                },
+                            },
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return context.dataset.label + ": " + context.parsed.y + " (Index)";
+                                },
+                            },
+                        },
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Long-Term Timeline",
+                                font: {
+                                    weight: "bold",
+                                    size: 12,
+                                },
+                            },
+                            grid: {
+                                color: "rgba(0, 0, 0, 0.05)",
+                            },
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Performance Index (Baseline = 100)",
+                                font: {
+                                    weight: "bold",
+                                    size: 12,
+                                },
+                            },
+                            min: 95,
+                            max: 160,
+                            grid: {
+                                color: "rgba(0, 0, 0, 0.05)",
+                            },
+                        },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

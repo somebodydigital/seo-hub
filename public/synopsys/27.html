@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+      
+      html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+      
+      .slide-header {
+        margin-bottom: 15px;
+        flex-shrink: 0;
+      }
+      
+      .slide-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 5px;
+        line-height: 1.2;
+      }
+      
+      .slide-subtitle {
+        font-size: 14px;
+        color: #666666;
+        margin: 0;
+      }
+      
+      .content-container {
+        display: flex;
+        gap: 20px;
+        flex: 1;
+        height: 620px;
+        min-height: 620px;
+      }
+      
+      .roadmap-container {
+        width: 45%;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .overview-box {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        border-left: 4px solid #0066cc;
+        flex-shrink: 0;
+        height: 140px;
+      }
+      
+      .overview-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #333333;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .overview-icon {
+        color: #0066cc;
+        margin-right: 8px;
+        font-size: 16px;
+      }
+      
+      .overview-metrics {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+      
+      .overview-metric {
+        flex: 1;
+        text-align: center;
+      }
+      
+      .metric-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 3px;
+      }
+      
+      .metric-label {
+        font-size: 11px;
+        color: #666666;
+        line-height: 1.2;
+      }
+      
+      .overview-description {
+        font-size: 12px;
+        color: #333333;
+        line-height: 1.3;
+      }
+      
+      .phases-container {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        height: 320px;
+      }
+      
+      .phases-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .phases-icon {
+        color: #0066cc;
+        margin-right: 8px;
+        font-size: 16px;
+      }
+      
+      .phases-content {
+        height: 280px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 8px;
+        scrollbar-width: thin;
+        scrollbar-color: #0066cc #f0f0f0;
+      }
+      
+      .phases-content::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      .phases-content::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 4px;
+      }
+      
+      .phases-content::-webkit-scrollbar-thumb {
+        background: #0066cc;
+        border-radius: 4px;
+      }
+      
+      .phases-content::-webkit-scrollbar-thumb:hover {
+        background: #0052a3;
+      }
+      
+      .phase-item {
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-left: 3px solid;
+      }
+      
+      .phase-1 {
+        border-color: #ff6600;
+      }
+      
+      .phase-2 {
+        border-color: #0066cc;
+      }
+      
+      .phase-3 {
+        border-color: #34a853;
+      }
+      
+      .phase-4 {
+        border-color: #fbbc05;
+      }
+      
+      .phase-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+      
+      .phase-number {
+        font-size: 14px;
+        font-weight: 700;
+        margin-right: 8px;
+        padding: 2px 6px;
+        border-radius: 3px;
+        color: white;
+      }
+      
+      .phase-1 .phase-number {
+        background-color: #ff6600;
+      }
+      
+      .phase-2 .phase-number {
+        background-color: #0066cc;
+      }
+      
+      .phase-3 .phase-number {
+        background-color: #34a853;
+      }
+      
+      .phase-4 .phase-number {
+        background-color: #fbbc05;
+      }
+      
+      .phase-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #333333;
+        flex: 1;
+      }
+      
+      .phase-duration {
+        font-size: 11px;
+        color: #666666;
+        font-weight: 600;
+      }
+      
+      .phase-details {
+        font-size: 11px;
+        color: #333333;
+        line-height: 1.3;
+        margin-bottom: 4px;
+      }
+      
+      .phase-deliverables {
+        font-size: 10px;
+        color: #666666;
+        font-style: italic;
+      }
+      
+      .resource-requirements {
+        background-color: #e6f0fa;
+        border-radius: 8px;
+        padding: 12px;
+        flex-shrink: 0;
+        height: 148px;
+      }
+      
+      .resource-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .resource-icon {
+        margin-right: 6px;
+        font-size: 14px;
+      }
+      
+      .resource-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      
+      .resource-item {
+        font-size: 11px;
+        color: #333333;
+        line-height: 1.3;
+      }
+      
+      .resource-label {
+        font-weight: 600;
+        color: #0066cc;
+      }
+      
+      .chart-container {
+        width: 55%;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .chart-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #333333;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      
+      .chart-wrapper {
+        flex: 1;
+        min-height: 0;
+        position: relative;
+      }
+      
+      .data-source {
+        font-size: 10px;
+        color: #666666;
+        text-align: center;
+        margin-top: 8px;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+<div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+
+    <div class="slide-container">
+      <div class="slide-header">
+        <h1 class="slide-title">Implementation Roadmap & Resource Allocation</h1>
+        <p class="slide-subtitle">Phased approach with timeline, deliverables, and resource requirements for AI readiness optimization</p>
+      </div>
+      
+      <div class="content-container">
+        <div class="roadmap-container">
+          <div class="overview-box">
+            <div class="overview-title">
+              <i class="fas fa-calendar-alt overview-icon"></i>
+              Implementation Overview
+            </div>
+            <div class="overview-metrics">
+              <div class="overview-metric">
+                <div class="metric-value">16 Weeks</div>
+                <div class="metric-label">Total Duration</div>
+              </div>
+              <div class="overview-metric">
+                <div class="metric-value">4 Phases</div>
+                <div class="metric-label">Implementation Stages</div>
+              </div>
+              <div class="overview-metric">
+                <div class="metric-value">6,418</div>
+                <div class="metric-label">URLs to Optimize</div>
+              </div>
+            </div>
+            <div class="overview-description">
+              Systematic approach addressing technical infrastructure, AI search optimization, and performance enhancement based on verified data analysis.
+            </div>
+          </div>
+          
+          <div class="phases-container">
+            <div class="phases-title">
+              <i class="fas fa-tasks phases-icon"></i>
+              Implementation Phases
+            </div>
+            <div class="phases-content">
+              <div class="phase-item phase-1">
+                <div class="phase-header">
+                  <div class="phase-number">1</div>
+                  <div class="phase-title">Technical Foundation</div>
+                  <div class="phase-duration">Weeks 1-4</div>
+                </div>
+                <div class="phase-details">
+                  Resolve critical technical issues: 3,547 hreflang problems, 1,559 JavaScript canonical mismatches, and 1,040 non-indexable URLs.
+                </div>
+                <div class="phase-deliverables">
+                  Deliverables: Technical audit report, implementation plan, crawler accessibility improvements
+                </div>
+              </div>
+              
+              <div class="phase-item phase-2">
+                <div class="phase-header">
+                  <div class="phase-number">2</div>
+                  <div class="phase-title">Structured Data Implementation</div>
+                  <div class="phase-duration">Weeks 5-8</div>
+                </div>
+                <div class="phase-details">
+                  Deploy Product, FAQ, and TechArticle schema markup across 2,847 product pages and 1,456 FAQ pages for enhanced AI search visibility.
+                </div>
+                <div class="phase-deliverables">
+                  Deliverables: Schema markup templates, implementation guide, validation testing
+                </div>
+              </div>
+              
+              <div class="phase-item phase-3">
+                <div class="phase-header">
+                  <div class="phase-number">3</div>
+                  <div class="phase-title">Content Optimization</div>
+                  <div class="phase-duration">Weeks 9-12</div>
+                </div>
+                <div class="phase-details">
+                  Optimize 63,590 conversational query opportunities with enhanced content architecture and E-E-A-T signal strengthening.
+                </div>
+                <div class="phase-deliverables">
+                  Deliverables: Content optimization guide, E-E-A-T enhancement plan, performance tracking setup
+                </div>
+              </div>
+              
+              <div class="phase-item phase-4">
+                <div class="phase-header">
+                  <div class="phase-number">4</div>
+                  <div class="phase-title">Performance Monitoring</div>
+                  <div class="phase-duration">Weeks 13-16</div>
+                </div>
+                <div class="phase-details">
+                  Implement comprehensive monitoring, validation testing, and performance optimization based on initial results and AI search platform feedback.
+                </div>
+                <div class="phase-deliverables">
+                  Deliverables: Monitoring dashboard, performance reports, optimization recommendations
+                </div>
+              </div>
+              
+              <div class="phase-item phase-1">
+                <div class="phase-header">
+                  <div class="phase-number">1A</div>
+                  <div class="phase-title">Technical Debt Resolution</div>
+                  <div class="phase-duration">Weeks 1-2</div>
+                </div>
+                <div class="phase-details">
+                  Focus on critical technical debt issues affecting 6,418 URLs with priority on JavaScript rendering, canonical implementation, and mobile optimization.
+                </div>
+                <div class="phase-deliverables">
+                  Deliverables: Technical debt resolution plan, implementation checklist, validation framework
+                </div>
+              </div>
+              
+              <div class="phase-item phase-1">
+                <div class="phase-header">
+                  <div class="phase-number">1B</div>
+                  <div class="phase-title">Page Speed Enhancement</div>
+                  <div class="phase-duration">Weeks 3-4</div>
+                </div>
+                <div class="phase-details">
+                  Address 8,190 render-blocking resources and implement Core Web Vitals optimization across high-traffic pages.
+                </div>
+                <div class="phase-deliverables">
+                  Deliverables: Page speed optimization guide, resource prioritization framework, performance testing
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="resource-requirements">
+            <div class="resource-title">
+              <i class="fas fa-users resource-icon"></i>
+              Resource Requirements
+            </div>
+            <div class="resource-grid">
+              <div class="resource-item">
+                <div class="resource-label">Technical Lead:</div>
+                1 FTE (16 weeks)
+              </div>
+              <div class="resource-item">
+                <div class="resource-label">SEO Specialist:</div>
+                0.5 FTE (16 weeks)
+              </div>
+              <div class="resource-item">
+                <div class="resource-label">Content Strategist:</div>
+                0.5 FTE (8 weeks)
+              </div>
+              <div class="resource-item">
+                <div class="resource-label">QA Engineer:</div>
+                0.25 FTE (16 weeks)
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <div class="chart-title">Implementation Timeline & Resource Allocation</div>
+          <div class="chart-wrapper">
+            <canvas id="roadmapChart"></canvas>
+          </div>
+          <div class="data-source">Source: Technical audit analysis and implementation planning based on verified data</div>
+        </div>
+      </div><div class="navigation flex">
+                <a class="button-next ml-auto" href="29.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+
+    </div>
+    
+    <script>
+      // Create the implementation timeline chart
+      const ctx = document.getElementById('roadmapChart').getContext('2d');
+      const roadmapChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Week 1-4', 'Week 5-8', 'Week 9-12', 'Week 13-16'],
+          datasets: [
+            {
+              label: 'Technical Lead',
+              data: [100, 100, 100, 100],
+              backgroundColor: '#ff6600',
+              borderColor: '#ff6600',
+              borderWidth: 1,
+              stack: 'resource'
+            },
+            {
+              label: 'SEO Specialist',
+              data: [50, 50, 50, 50],
+              backgroundColor: '#0066cc',
+              borderColor: '#0066cc',
+              borderWidth: 1,
+              stack: 'resource'
+            },
+            {
+              label: 'Content Strategist',
+              data: [0, 0, 50, 50],
+              backgroundColor: '#34a853',
+              borderColor: '#34a853',
+              borderWidth: 1,
+              stack: 'resource'
+            },
+            {
+              label: 'QA Engineer',
+              data: [25, 25, 25, 25],
+              backgroundColor: '#fbbc05',
+              borderColor: '#fbbc05',
+              borderWidth: 1,
+              stack: 'resource'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                font: {
+                  size: 12
+                },
+                padding: 10
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.raw + '% allocation';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              stacked: true,
+              grid: {
+                display: false
+              }
+            },
+            y: {
+              stacked: true,
+              beginAtZero: true,
+              max: 200,
+              ticks: {
+                callback: function(value) {
+                  return value + '%';
+                }
+              }
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+

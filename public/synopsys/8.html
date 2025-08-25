@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+      
+       html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+      
+      .slide-header {
+        margin-bottom: 20px;
+        flex-shrink: 0;
+      }
+      
+      .slide-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 5px;
+        line-height: 1.2;
+      }
+      
+      .slide-subtitle {
+        font-size: 16px;
+        color: #666666;
+        margin: 0;
+        line-height: 1.3;
+      }
+      
+      .content-container {
+        display: flex;
+        gap: 25px;
+        flex: 1;
+        min-height: 0;
+      }
+      
+      .analysis-container {
+        width: 45%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .gap-analysis {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        border-left: 5px solid #ff6600;
+        flex: 1;
+      }
+      
+      .analysis-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333333;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .analysis-icon {
+        color: #ff6600;
+        margin-right: 8px;
+        font-size: 18px;
+      }
+      
+      .key-metrics {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+      
+      .metric-box {
+        flex: 1;
+        background-color: #ffffff;
+        border-radius: 6px;
+        padding: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        text-align: center;
+      }
+      
+      .metric-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 5px;
+      }
+      
+      .metric-label {
+        font-size: 12px;
+        color: #666666;
+        line-height: 1.2;
+      }
+      
+      .gap-description {
+        font-size: 14px;
+        color: #333333;
+        line-height: 1.4;
+        margin-bottom: 15px;
+      }
+      
+      .authority-analysis {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        border-left: 5px solid #0066cc;
+        flex: 1;
+      }
+      
+      .authority-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+      
+      .authority-metric {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .authority-label {
+        font-size: 12px;
+        color: #666666;
+        margin-bottom: 3px;
+      }
+      
+      .authority-value {
+        font-size: 16px;
+        font-weight: 700;
+        color: #333333;
+      }
+      
+      .authority-description {
+        font-size: 14px;
+        color: #333333;
+        line-height: 1.4;
+      }
+      
+      .strategic-implications {
+        background-color: #e6f0fa;
+        border-radius: 8px;
+        padding: 15px;
+        flex-shrink: 0;
+      }
+      
+      .implications-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .implications-icon {
+        margin-right: 8px;
+      }
+      
+      .implications-list {
+        font-size: 14px;
+        color: #333333;
+        line-height: 1.4;
+      }
+      
+      .implication-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 8px;
+      }
+      
+      .bullet-icon {
+        color: #0066cc;
+        margin-right: 8px;
+        margin-top: 3px;
+        flex-shrink: 0;
+      }
+      
+      .chart-container {
+        width: 55%;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .chart-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333333;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      
+      .data-source {
+        font-size: 11px;
+        color: #666666;
+        text-align: center;
+        margin-top: 8px;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+        <div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+
+    <div class="slide-container">
+      <div class="slide-header">
+        <h1 class="slide-title">Keyword Coverage & Authority Analysis</h1>
+        <p class="slide-subtitle">Competitive positioning assessment with verified SEMRush data</p>
+      </div>
+      
+      <div class="content-container">
+        <div class="analysis-container">
+          <div class="gap-analysis">
+            <h3 class="analysis-title">
+              <i class="fas fa-search analysis-icon"></i>
+              Keyword Coverage Gap
+            </h3>
+            
+            <div class="key-metrics">
+              <div class="metric-box">
+                <div class="metric-value">103.5K</div>
+                <div class="metric-label">Synopsys Keywords</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-value">204K-282.9K</div>
+                <div class="metric-label">Competitor Range</div>
+              </div>
+            </div>
+            
+            <div class="gap-description">
+              Synopsys currently ranks for 103,500 keywords, significantly below the competitive range of 204,000-282,900 keywords. This represents a 97-173% gap in keyword coverage, limiting visibility across the technical buyer journey.
+            </div>
+          </div>
+          
+          <div class="authority-analysis">
+            <h3 class="analysis-title">
+              <i class="fas fa-award analysis-icon"></i>
+              Authority Positioning
+            </h3>
+            
+            <div class="authority-metrics">
+              <div class="authority-metric">
+                <div class="authority-label">Synopsys Authority Score</div>
+                <div class="authority-value">52</div>
+              </div>
+              <div class="authority-metric">
+                <div class="authority-label">Referring Domains</div>
+                <div class="authority-value">3,700</div>
+              </div>
+              <div class="authority-metric">
+                <div class="authority-label">Competitor Avg. Authority</div>
+                <div class="authority-value">53.8</div>
+              </div>
+              <div class="authority-metric">
+                <div class="authority-label">Authority Gap</div>
+                <div class="authority-value">-3.3%</div>
+              </div>
+            </div>
+            
+            <div class="authority-description">
+              Despite the keyword coverage gap, Synopsys maintains relatively strong domain authority at 52, just 3.3% below the competitive average of 53.8. This indicates untapped potential for keyword expansion.
+            </div>
+          </div>
+          
+          <div class="strategic-implications">
+            <h3 class="implications-title">
+              <i class="fas fa-lightbulb implications-icon"></i>
+              Strategic Implications
+            </h3>
+            
+            <div class="implications-list">
+              <div class="implication-item">
+                <i class="fas fa-circle bullet-icon" style="font-size: 6px;"></i>
+                <div>Significant opportunity to leverage existing authority for expanded keyword coverage</div>
+              </div>
+              <div class="implication-item">
+                <i class="fas fa-circle bullet-icon" style="font-size: 6px;"></i>
+                <div>Technical content gap in AI-related topics limiting visibility in emerging search</div>
+              </div>
+              <div class="implication-item">
+                <i class="fas fa-circle bullet-icon" style="font-size: 6px;"></i>
+                <div>Competitive vulnerability in mid-funnel technical keywords with high conversion potential</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <div class="chart-title">Competitive Keyword Coverage & Authority Analysis</div>
+          <div style="height: 100%; min-height: 500px;">
+            <canvas id="keywordChart"></canvas>
+          </div>
+          <div class="data-source">
+            Source: SEMRush competitive analysis (August 2025)
+          </div>
+        </div>
+      </div>
+<div class="navigation flex">
+                <a class="button-next ml-auto" href="9.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+
+    </div>
+    
+    <script>
+      // Create the keyword coverage chart
+      const ctx = document.getElementById('keywordChart').getContext('2d');
+      
+      // Create a custom chart that combines bar and scatter plots
+      const keywordChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Synopsys', 'Cadence', 'Keysight', 'Rockwell', 'Ansys'],
+          datasets: [
+            {
+              label: 'Keyword Coverage (Thousands)',
+              data: [103.5, 204, 217.8, 282.9, 257.3],
+              backgroundColor: [
+                '#ff6600',
+                '#0066cc',
+                '#0066cc',
+                '#0066cc',
+                '#0066cc'
+              ],
+              borderColor: [
+                '#ff6600',
+                '#0066cc',
+                '#0066cc',
+                '#0066cc',
+                '#0066cc'
+              ],
+              borderWidth: 2,
+              barPercentage: 0.6,
+              categoryPercentage: 0.8,
+              order: 2
+            },
+            {
+              label: 'Authority Score',
+              data: [
+                { x: 0, y: 52 },
+                { x: 1, y: 55 },
+                { x: 2, y: 53 },
+                { x: 3, y: 53 },
+                { x: 4, y: 54 }
+              ],
+              backgroundColor: '#34a853',
+              borderColor: '#34a853',
+              borderWidth: 3,
+              pointStyle: 'rectRot',
+              pointRadius: 12,
+              pointHoverRadius: 14,
+              type: 'scatter',
+              yAxisID: 'y1',
+              order: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: false
+            },
+            legend: {
+              position: 'bottom',
+              labels: {
+                usePointStyle: true,
+                padding: 15
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  if (context.datasetIndex === 0) {
+                    return 'Keywords: ' + context.parsed.y + 'K';
+                  } else {
+                    return 'Authority Score: ' + context.parsed.y;
+                  }
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Keyword Coverage (Thousands)',
+                font: {
+                  weight: 'bold',
+                  size: 12
+                }
+              },
+              ticks: {
+                callback: function(value) {
+                  return value + 'K';
+                }
+              },
+              grid: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              }
+            },
+            y1: {
+              position: 'right',
+              beginAtZero: true,
+              min: 0,
+              max: 100,
+              title: {
+                display: true,
+                text: 'Authority Score',
+                font: {
+                  weight: 'bold',
+                  size: 12
+                }
+              },
+              grid: {
+                drawOnChartArea: false
+              }
+            },
+            x: {
+              grid: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              }
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+

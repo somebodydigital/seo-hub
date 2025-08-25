@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+            /* copy from here */
+            html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+            /* to here */
+
+            .slide-header {
+                margin-bottom: 20px;
+                flex-shrink: 0;
+            }
+
+            .slide-title {
+                font-size: 32px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 5px;
+                line-height: 1.2;
+            }
+
+            .slide-subtitle {
+                font-size: 16px;
+                color: #666666;
+                margin: 0;
+                line-height: 1.3;
+            }
+
+            .content-container {
+                display: flex;
+                gap: 25px;
+                flex: 1;
+                min-height: 0;
+            }
+
+            .competitor-analysis {
+                width: 45%;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .competitor-table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .competitor-table th {
+                background-color: #0066cc;
+                color: white;
+                font-size: 14px;
+                font-weight: 600;
+                text-align: left;
+                padding: 10px;
+            }
+
+            .competitor-table td {
+                padding: 10px;
+                font-size: 14px;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .competitor-table tr:last-child td {
+                border-bottom: none;
+            }
+
+            .synopsys-row {
+                background-color: rgba(255, 102, 0, 0.1);
+            }
+
+            .synopsys-row td {
+                font-weight: 700;
+            }
+
+            .metric-value {
+                font-weight: 600;
+            }
+
+            .key-insights {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                flex-shrink: 0;
+            }
+
+            .insights-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+            }
+
+            .insights-icon {
+                margin-right: 8px;
+                color: #0066cc;
+            }
+
+            .insights-list {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .insights-item {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 8px;
+                font-size: 13px;
+                line-height: 1.3;
+                color: #333333;
+            }
+
+            .insights-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .item-icon {
+                color: #ff6600;
+                margin-right: 8px;
+                margin-top: 2px;
+                flex-shrink: 0;
+            }
+
+            .chart-container {
+                width: 55%;
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .chart-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .data-source {
+                font-size: 11px;
+                color: #666666;
+                text-align: center;
+                margin-top: 8px;
+                font-style: italic;
+            }
+
+            .legend-container {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+                margin-top: 10px;
+            }
+
+            .legend-item {
+                display: flex;
+                align-items: center;
+                font-size: 12px;
+                color: #333333;
+            }
+
+            .legend-color {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                margin-right: 5px;
+            }
+
+            .synopsys-color {
+                background-color: #ff6600;
+            }
+
+            .cadence-color {
+                background-color: #0066cc;
+            }
+
+            .keysight-color {
+                background-color: #34a853;
+            }
+
+            .rockwell-color {
+                background-color: #fbbc05;
+            }
+
+            .ansys-color {
+                background-color: #9c27b0;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- copy from here -->
+        <div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+        <!-- to here -->
+        <div class="slide-container">
+            <div class="slide-header">
+                <h1 class="slide-title">Competitive Landscape Analysis</h1>
+                <p class="slide-subtitle">Comprehensive analysis of Synopsys vs. key competitors with verified SEMRush data</p>
+            </div>
+
+            <div class="content-container">
+                <div class="competitor-analysis">
+                    <table class="competitor-table">
+                        <thead>
+                            <tr>
+                                <th>Competitor</th>
+                                <th>Authority Score</th>
+                                <th>Organic Traffic</th>
+                                <th>Keywords</th>
+                                <th>Referring Domains</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="synopsys-row">
+                                <td>Synopsys</td>
+                                <td class="metric-value">52</td>
+                                <td class="metric-value">414.1K</td>
+                                <td class="metric-value">103.5K</td>
+                                <td class="metric-value">3.7K</td>
+                            </tr>
+                            <tr>
+                                <td>Cadence</td>
+                                <td class="metric-value">55</td>
+                                <td class="metric-value">500.6K</td>
+                                <td class="metric-value">204K</td>
+                                <td class="metric-value">4.2K</td>
+                            </tr>
+                            <tr>
+                                <td>Keysight</td>
+                                <td class="metric-value">53</td>
+                                <td class="metric-value">542.9K</td>
+                                <td class="metric-value">217.8K</td>
+                                <td class="metric-value">5.8K</td>
+                            </tr>
+                            <tr>
+                                <td>Rockwell</td>
+                                <td class="metric-value">53</td>
+                                <td class="metric-value">695.1K</td>
+                                <td class="metric-value">282.9K</td>
+                                <td class="metric-value">5.1K</td>
+                            </tr>
+                            <tr>
+                                <td>Ansys</td>
+                                <td class="metric-value">54</td>
+                                <td class="metric-value">744.5K</td>
+                                <td class="metric-value">257.3K</td>
+                                <td class="metric-value">3.6K</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="key-insights">
+                        <div class="insights-title">
+                            <i class="fas fa-lightbulb insights-icon"></i>
+                            Key Competitive Insights
+                        </div>
+                        <ul class="insights-list">
+                            <li class="insights-item">
+                                <i class="fas fa-exclamation-triangle item-icon"></i>
+                                <span>Ansys leads with 80% more organic traffic (744.5K vs 414.1K) and 149% more keyword coverage (257.3K vs 103.5K)</span>
+                            </li>
+                            <li class="insights-item">
+                                <i class="fas fa-exclamation-triangle item-icon"></i>
+                                <span>Synopsys has the lowest authority score (52) among competitors despite strong technical content foundation</span>
+                            </li>
+                            <li class="insights-item">
+                                <i class="fas fa-exclamation-triangle item-icon"></i>
+                                <span>Referring domain gap of 12% vs. Cadence and 57% vs. Keysight indicates backlink acquisition opportunity</span>
+                            </li>
+                            <li class="insights-item">
+                                <i class="fas fa-lightbulb item-icon"></i>
+                                <span>Technical content strength provides foundation for AI search optimization despite current competitive disadvantage</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">Multi-Dimensional Competitive Positioning</div>
+                    <div style="height: 100%; min-height: 400px">
+                        <canvas id="competitiveRadarChart"></canvas>
+                    </div>
+                    <div class="data-source">Source: SEMRush competitive analysis (August 2025)</div>
+                    <div class="legend-container">
+                        <div class="legend-item">
+                            <div class="legend-color synopsys-color"></div>
+                            <span>Synopsys</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color cadence-color"></div>
+                            <span>Cadence</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color keysight-color"></div>
+                            <span>Keysight</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color rockwell-color"></div>
+                            <span>Rockwell</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color ansys-color"></div>
+                            <span>Ansys</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- copy from here -->
+            <div class="navigation flex">
+                <a class="button-next ml-auto" href="7.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+            <!-- to here -->
+        </div>
+
+        <script>
+            // Create the competitive positioning radar chart
+            const ctx = document.getElementById("competitiveRadarChart").getContext("2d");
+            const competitiveRadarChart = new Chart(ctx, {
+                type: "radar",
+                data: {
+                    labels: ["Authority\nScore", "Organic\nTraffic", "Keyword\nCoverage", "Referring\nDomains", "SERP\nFeatures", "AI Search\nReadiness"],
+                    datasets: [
+                        {
+                            label: "Synopsys",
+                            data: [52, 41, 35, 64, 70, 65],
+                            backgroundColor: "rgba(255, 102, 0, 0.2)",
+                            borderColor: "#ff6600",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#ff6600",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                        },
+                        {
+                            label: "Cadence",
+                            data: [55, 50, 69, 72, 65, 60],
+                            backgroundColor: "rgba(0, 102, 204, 0.2)",
+                            borderColor: "#0066cc",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#0066cc",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                        },
+                        {
+                            label: "Keysight",
+                            data: [53, 54, 74, 100, 85, 75],
+                            backgroundColor: "rgba(52, 168, 83, 0.2)",
+                            borderColor: "#34a853",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#34a853",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                        },
+                        {
+                            label: "Rockwell",
+                            data: [53, 69, 96, 88, 75, 70],
+                            backgroundColor: "rgba(251, 188, 5, 0.2)",
+                            borderColor: "#fbbc05",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#fbbc05",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                        },
+                        {
+                            label: "Ansys",
+                            data: [54, 74, 87, 62, 80, 72],
+                            backgroundColor: "rgba(156, 39, 176, 0.2)",
+                            borderColor: "#9c27b0",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#9c27b0",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.dataset.label || "";
+                                    const value = context.raw || 0;
+
+                                    // Custom labels for each dimension
+                                    const dimension = context.label.replace("\n", " ");
+
+                                    if (dimension === "Authority Score") {
+                                        if (context.dataset.label === "Synopsys") return "Synopsys: 52 (Authority Score)";
+                                        if (context.dataset.label === "Cadence") return "Cadence: 55 (Authority Score)";
+                                        if (context.dataset.label === "Keysight") return "Keysight: 53 (Authority Score)";
+                                        if (context.dataset.label === "Rockwell") return "Rockwell: 53 (Authority Score)";
+                                        if (context.dataset.label === "Ansys") return "Ansys: 54 (Authority Score)";
+                                    }
+
+                                    if (dimension === "Organic Traffic") {
+                                        if (context.dataset.label === "Synopsys") return "Synopsys: 414.1K visits";
+                                        if (context.dataset.label === "Cadence") return "Cadence: 500.6K visits";
+                                        if (context.dataset.label === "Keysight") return "Keysight: 542.9K visits";
+                                        if (context.dataset.label === "Rockwell") return "Rockwell: 695.1K visits";
+                                        if (context.dataset.label === "Ansys") return "Ansys: 744.5K visits";
+                                    }
+
+                                    if (dimension === "Keyword Coverage") {
+                                        if (context.dataset.label === "Synopsys") return "Synopsys: 103.5K keywords";
+                                        if (context.dataset.label === "Cadence") return "Cadence: 204K keywords";
+                                        if (context.dataset.label === "Keysight") return "Keysight: 217.8K keywords";
+                                        if (context.dataset.label === "Rockwell") return "Rockwell: 282.9K keywords";
+                                        if (context.dataset.label === "Ansys") return "Ansys: 257.3K keywords";
+                                    }
+
+                                    if (dimension === "Referring Domains") {
+                                        if (context.dataset.label === "Synopsys") return "Synopsys: 3.7K domains";
+                                        if (context.dataset.label === "Cadence") return "Cadence: 4.2K domains";
+                                        if (context.dataset.label === "Keysight") return "Keysight: 5.8K domains";
+                                        if (context.dataset.label === "Rockwell") return "Rockwell: 5.1K domains";
+                                        if (context.dataset.label === "Ansys") return "Ansys: 3.6K domains";
+                                    }
+
+                                    return `${label}: ${value}`;
+                                },
+                            },
+                        },
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20,
+                                showLabelBackdrop: false,
+                                font: {
+                                    size: 10,
+                                },
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 11,
+                                    weight: "bold",
+                                },
+                            },
+                            grid: {
+                                color: "rgba(0, 0, 0, 0.1)",
+                            },
+                            angleLines: {
+                                color: "rgba(0, 0, 0, 0.1)",
+                            },
+                        },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

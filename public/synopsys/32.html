@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+            html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+            .slide-header {
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .slide-title {
+                font-size: 28px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 5px;
+                line-height: 1.2;
+            }
+
+            .slide-subtitle {
+                font-size: 14px;
+                color: #666666;
+                margin: 0;
+            }
+
+            .content-container {
+                display: flex;
+                gap: 20px;
+                flex: 1;
+                height: 620px;
+                min-height: 620px;
+            }
+
+            .resource-container {
+                width: 45%;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .team-requirements {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                border-left: 4px solid #0066cc;
+                flex-shrink: 0;
+            }
+
+            .requirements-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .requirements-icon {
+                color: #0066cc;
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+            .team-roles {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            .role-box {
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 6px;
+                text-align: center;
+            }
+
+            .role-title {
+                font-size: 11px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 2px;
+            }
+
+            .role-allocation {
+                font-size: 14px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 2px;
+            }
+
+            .role-duration {
+                font-size: 9px;
+                color: #666666;
+            }
+
+            .requirements-description {
+                font-size: 12px;
+                color: #333333;
+                line-height: 1.3;
+            }
+
+            .phase-breakdown {
+                flex: 1;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+                height: 320px;
+            }
+
+            .breakdown-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #34a853;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                flex-shrink: 0;
+            }
+
+            .breakdown-icon {
+                color: #34a853;
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+            .phase-items {
+                height: 280px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-right: 8px;
+                scrollbar-width: thin;
+                scrollbar-color: #0066cc #f0f0f0;
+            }
+
+            .phase-items::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .phase-items::-webkit-scrollbar-track {
+                background: #f0f0f0;
+                border-radius: 4px;
+            }
+
+            .phase-items::-webkit-scrollbar-thumb {
+                background: #0066cc;
+                border-radius: 4px;
+            }
+
+            .phase-items::-webkit-scrollbar-thumb:hover {
+                background: #0052a3;
+            }
+
+            .phase-item {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 10px;
+                margin-bottom: 8px;
+                border-left: 3px solid;
+            }
+
+            .phase-1 {
+                border-color: #ff6600;
+            }
+
+            .phase-2 {
+                border-color: #0066cc;
+            }
+
+            .phase-3 {
+                border-color: #34a853;
+            }
+
+            .phase-4 {
+                border-color: #fbbc05;
+            }
+
+            .phase-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 6px;
+            }
+
+            .phase-number {
+                font-size: 11px;
+                font-weight: 600;
+                padding: 2px 6px;
+                border-radius: 10px;
+                margin-right: 8px;
+                color: white;
+            }
+
+            .number-1 {
+                background-color: #ff6600;
+            }
+
+            .number-2 {
+                background-color: #0066cc;
+            }
+
+            .number-3 {
+                background-color: #34a853;
+            }
+
+            .number-4 {
+                background-color: #fbbc05;
+            }
+
+            .phase-name {
+                font-size: 13px;
+                font-weight: 700;
+                color: #333333;
+                flex: 1;
+            }
+
+            .phase-duration {
+                font-size: 11px;
+                color: #666666;
+                font-weight: 600;
+            }
+
+            .phase-description {
+                font-size: 11px;
+                color: #333333;
+                line-height: 1.3;
+                margin-bottom: 4px;
+            }
+
+            .phase-deliverables {
+                font-size: 10px;
+                color: #666666;
+                font-style: italic;
+            }
+
+            .budget-overview {
+                background-color: #e6f0fa;
+                border-radius: 8px;
+                padding: 12px;
+                flex-shrink: 0;
+                height: 148px;
+            }
+
+            .budget-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .budget-icon {
+                margin-right: 6px;
+                font-size: 14px;
+            }
+
+            .budget-breakdown {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 8px;
+            }
+
+            .budget-item {
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 6px;
+                text-align: center;
+            }
+
+            .budget-category {
+                font-size: 10px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 2px;
+            }
+
+            .budget-percentage {
+                font-size: 14px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 2px;
+            }
+
+            .budget-description {
+                font-size: 9px;
+                color: #666666;
+            }
+
+            .chart-container {
+                width: 55%;
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .chart-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .chart-wrapper {
+                flex: 1;
+                min-height: 0;
+                position: relative;
+            }
+
+            .data-source {
+                font-size: 10px;
+                color: #666666;
+                text-align: center;
+                margin-top: 8px;
+                font-style: italic;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+        <div class="slide-container">
+            <div class="slide-header">
+                <h1 class="slide-title">Resource Allocation & Timeline</h1>
+                <p class="slide-subtitle">Detailed team requirements, project phases, and resource allocation for 16-week implementation</p>
+            </div>
+
+            <div class="content-container">
+                <div class="resource-container">
+                    <div class="team-requirements">
+                        <div class="requirements-title">
+                            <i class="fas fa-users requirements-icon"></i>
+                            Team Resource Requirements
+                        </div>
+                        <div class="team-roles">
+                            <div class="role-box">
+                                <div class="role-title">Technical SEO Lead</div>
+                                <div class="role-allocation">1.0 FTE</div>
+                                <div class="role-duration">16 weeks</div>
+                            </div>
+                            <div class="role-box">
+                                <div class="role-title">Content Strategist</div>
+                                <div class="role-allocation">0.75 FTE</div>
+                                <div class="role-duration">12 weeks</div>
+                            </div>
+                            <div class="role-box">
+                                <div class="role-title">Developer</div>
+                                <div class="role-allocation">0.5 FTE</div>
+                                <div class="role-duration">8 weeks</div>
+                            </div>
+                            <div class="role-box">
+                                <div class="role-title">Data Analyst</div>
+                                <div class="role-allocation">0.25 FTE</div>
+                                <div class="role-duration">16 weeks</div>
+                            </div>
+                        </div>
+                        <div class="requirements-description">
+                            Total resource allocation: 2.5 FTE across 16-week implementation addressing 6,418 technical issues and AI search optimization.
+                        </div>
+                    </div>
+
+                    <div class="phase-breakdown">
+                        <div class="breakdown-title">
+                            <i class="fas fa-calendar-alt breakdown-icon"></i>
+                            Implementation Phase Breakdown
+                        </div>
+                        <div class="phase-items">
+                            <div class="phase-item phase-1">
+                                <div class="phase-header">
+                                    <div class="phase-number number-1">Phase 1</div>
+                                    <div class="phase-name">Technical Foundation</div>
+                                    <div class="phase-duration">Weeks 1-4</div>
+                                </div>
+                                <div class="phase-description">
+                                    Address critical technical issues: 3,547 hreflang problems, 1,559 JavaScript canonical issues, and 922 duplicate content
+                                    problems.
+                                </div>
+                                <div class="phase-deliverables">Deliverables: Technical audit completion, hreflang implementation, canonical optimization</div>
+                            </div>
+
+                            <div class="phase-item phase-2">
+                                <div class="phase-header">
+                                    <div class="phase-number number-2">Phase 2</div>
+                                    <div class="phase-name">Content & Structure</div>
+                                    <div class="phase-duration">Weeks 5-8</div>
+                                </div>
+                                <div class="phase-description">
+                                    Implement structured data, optimize 63,590 conversational queries, and enhance E-E-A-T signals across technical content.
+                                </div>
+                                <div class="phase-deliverables">Deliverables: Schema implementation, content optimization, AI search preparation</div>
+                            </div>
+
+                            <div class="phase-item phase-3">
+                                <div class="phase-header">
+                                    <div class="phase-number number-3">Phase 3</div>
+                                    <div class="phase-name">AI Search Optimization</div>
+                                    <div class="phase-duration">Weeks 9-12</div>
+                                </div>
+                                <div class="phase-description">
+                                    Deploy AI search optimization strategies, implement SEOmonitor tracking, and optimize for conversational queries.
+                                </div>
+                                <div class="phase-deliverables">Deliverables: AI search implementation, monitoring setup, performance tracking</div>
+                            </div>
+
+                            <div class="phase-item phase-4">
+                                <div class="phase-header">
+                                    <div class="phase-number number-4">Phase 4</div>
+                                    <div class="phase-name">Monitoring & Optimization</div>
+                                    <div class="phase-duration">Weeks 13-16</div>
+                                </div>
+                                <div class="phase-description">
+                                    Establish competitive monitoring, implement quality assurance protocols, and optimize based on performance data.
+                                </div>
+                                <div class="phase-deliverables">Deliverables: Monitoring dashboard, QA protocols, optimization recommendations</div>
+                            </div>
+
+                            <div class="phase-item phase-1">
+                                <div class="phase-header">
+                                    <div class="phase-number number-1">Ongoing</div>
+                                    <div class="phase-name">Performance Monitoring</div>
+                                    <div class="phase-duration">Post-launch</div>
+                                </div>
+                                <div class="phase-description">
+                                    Continuous monitoring of 895,957 organic visits baseline, competitive intelligence, and AI search performance optimization.
+                                </div>
+                                <div class="phase-deliverables">Deliverables: Monthly reports, competitive analysis, optimization recommendations</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="budget-overview">
+                        <div class="budget-title">
+                            <i class="fas fa-chart-pie budget-icon"></i>
+                            Resource Allocation Breakdown
+                        </div>
+                        <div class="budget-breakdown">
+                            <div class="budget-item">
+                                <div class="budget-category">Technical Implementation</div>
+                                <div class="budget-percentage">45%</div>
+                                <div class="budget-description">Development & fixes</div>
+                            </div>
+                            <div class="budget-item">
+                                <div class="budget-category">Content Strategy</div>
+                                <div class="budget-percentage">30%</div>
+                                <div class="budget-description">AI optimization</div>
+                            </div>
+                            <div class="budget-item">
+                                <div class="budget-category">Monitoring & QA</div>
+                                <div class="budget-percentage">25%</div>
+                                <div class="budget-description">Quality assurance</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">Implementation Timeline & Resource Allocation</div>
+                    <div class="chart-wrapper">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                    <div class="data-source">Source: Implementation framework and resource planning based on verified technical requirements</div>
+                </div>
+            </div>
+            <div class="navigation flex">
+                <a class="button-next ml-auto" href="33.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+        </div>
+
+        <script>
+            // Create the timeline and resource allocation chart
+            const ctx = document.getElementById("timelineChart").getContext("2d");
+            const timelineChart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: ["Week 1-4", "Week 5-8", "Week 9-12", "Week 13-16"],
+                    datasets: [
+                        {
+                            label: "Technical SEO Lead",
+                            data: [100, 100, 100, 100],
+                            backgroundColor: "#0066cc",
+                            borderColor: "#0066cc",
+                            borderWidth: 1,
+                            stack: "Stack 0",
+                        },
+                        {
+                            label: "Content Strategist",
+                            data: [50, 100, 100, 75],
+                            backgroundColor: "#34a853",
+                            borderColor: "#34a853",
+                            borderWidth: 1,
+                            stack: "Stack 0",
+                        },
+                        {
+                            label: "Developer",
+                            data: [75, 75, 25, 0],
+                            backgroundColor: "#ff6600",
+                            borderColor: "#ff6600",
+                            borderWidth: 1,
+                            stack: "Stack 0",
+                        },
+                        {
+                            label: "Data Analyst",
+                            data: [25, 25, 25, 25],
+                            backgroundColor: "#fbbc05",
+                            borderColor: "#fbbc05",
+                            borderWidth: 1,
+                            stack: "Stack 0",
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                usePointStyle: true,
+                                padding: 10,
+                                font: {
+                                    size: 11,
+                                },
+                            },
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return context.dataset.label + ": " + context.parsed.y + "% allocation";
+                                },
+                            },
+                        },
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Implementation Phases",
+                                font: {
+                                    weight: "bold",
+                                    size: 12,
+                                },
+                            },
+                            grid: {
+                                color: "rgba(0, 0, 0, 0.05)",
+                            },
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Resource Allocation (%)",
+                                font: {
+                                    weight: "bold",
+                                    size: 12,
+                                },
+                            },
+                            min: 0,
+                            max: 300,
+                            grid: {
+                                color: "rgba(0, 0, 0, 0.05)",
+                            },
+                            ticks: {
+                                callback: function (value) {
+                                    return value + "%";
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+      
+      html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+      
+      .slide-header {
+        margin-bottom: 20px;
+        flex-shrink: 0;
+      }
+      
+      .slide-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 5px;
+        line-height: 1.2;
+      }
+      
+      .slide-subtitle {
+        font-size: 16px;
+        color: #666666;
+        margin: 0;
+        line-height: 1.3;
+      }
+      
+      .content-container {
+        display: flex;
+        gap: 25px;
+        flex: 1;
+        min-height: 0;
+      }
+      
+      .analysis-container {
+        width: 45%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .gap-highlight {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        border-left: 5px solid #ff6600;
+        display: flex;
+        align-items: center;
+      }
+      
+      .gap-icon {
+        font-size: 36px;
+        color: #ff6600;
+        margin-right: 15px;
+      }
+      
+      .gap-content {
+        flex: 1;
+      }
+      
+      .gap-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333333;
+        margin-bottom: 5px;
+      }
+      
+      .gap-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: #ff6600;
+        margin-bottom: 5px;
+      }
+      
+      .gap-description {
+        font-size: 14px;
+        color: #333333;
+        line-height: 1.3;
+      }
+      
+      .competitor-analysis {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+      }
+      
+      .analysis-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 12px;
+      }
+      
+      .competitor-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      
+      .competitor-table th {
+        text-align: left;
+        padding: 8px 5px;
+        border-bottom: 2px solid #dddddd;
+        font-weight: 600;
+        color: #333333;
+      }
+      
+      .competitor-table td {
+        padding: 8px 5px;
+        border-bottom: 1px solid #eeeeee;
+      }
+      
+      .competitor-name {
+        font-weight: 600;
+        color: #333333;
+      }
+      
+      .synopsys-row {
+        background-color: rgba(255, 102, 0, 0.1);
+      }
+      
+      .traffic-value {
+        font-weight: 700;
+      }
+      
+      .gap-percent {
+        font-weight: 600;
+      }
+      
+      .positive {
+        color: #34a853;
+      }
+      
+      .negative {
+        color: #ff6600;
+      }
+      
+      .opportunity-analysis {
+        background-color: #e8f5e8;
+        border-radius: 8px;
+        padding: 15px;
+      }
+      
+      .opportunity-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #34a853;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .opportunity-icon {
+        margin-right: 8px;
+      }
+      
+      .opportunity-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .opportunity-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #333333;
+        line-height: 1.3;
+      }
+      
+      .opportunity-bullet {
+        color: #34a853;
+        margin-right: 8px;
+        flex-shrink: 0;
+        margin-top: 3px;
+      }
+      
+      .chart-container {
+        width: 55%;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .chart-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #333333;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      
+      .data-source {
+        font-size: 11px;
+        color: #666666;
+        text-align: center;
+        margin-top: 8px;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+     <div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+
+	<div class="slide-container">
+      <div class="slide-header">
+        <h1 class="slide-title">Traffic Gap & Market Share Analysis</h1>
+        <p class="slide-subtitle">Detailed breakdown of competitive disadvantage and opportunity sizing</p>
+      </div>
+      
+      <div class="content-container">
+        <div class="analysis-container">
+          <div class="gap-highlight">
+            <div class="gap-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="gap-content">
+              <div class="gap-title">Competitive Traffic Gap</div>
+              <div class="gap-value">80% Higher</div>
+              <div class="gap-description">
+                Ansys captures 80% more monthly organic traffic than Synopsys (744.5K vs 414.1K visits)
+              </div>
+            </div>
+          </div>
+          
+          <div class="competitor-analysis">
+            <div class="analysis-title">Competitive Traffic Analysis</div>
+            <table class="competitor-table">
+              <thead>
+                <tr>
+                  <th>Competitor</th>
+                  <th>Monthly Traffic</th>
+                  <th>Gap vs Synopsys</th>
+                  <th>Authority Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="synopsys-row">
+                  <td class="competitor-name">Synopsys</td>
+                  <td class="traffic-value">414.1K</td>
+                  <td>-</td>
+                  <td>52</td>
+                </tr>
+                <tr>
+                  <td class="competitor-name">Ansys</td>
+                  <td class="traffic-value">744.5K</td>
+                  <td class="gap-percent negative">+80%</td>
+                  <td>54</td>
+                </tr>
+                <tr>
+                  <td class="competitor-name">Rockwell</td>
+                  <td class="traffic-value">695.1K</td>
+                  <td class="gap-percent negative">+68%</td>
+                  <td>53</td>
+                </tr>
+                <tr>
+                  <td class="competitor-name">Keysight</td>
+                  <td class="traffic-value">542.9K</td>
+                  <td class="gap-percent negative">+31%</td>
+                  <td>53</td>
+                </tr>
+                <tr>
+                  <td class="competitor-name">Cadence</td>
+                  <td class="traffic-value">500.6K</td>
+                  <td class="gap-percent negative">+21%</td>
+                  <td>55</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="opportunity-analysis">
+            <div class="opportunity-title">
+              <i class="fas fa-lightbulb opportunity-icon"></i>
+              Strategic Opportunity
+            </div>
+            <ul class="opportunity-list">
+              <li class="opportunity-item">
+                <i class="fas fa-check-circle opportunity-bullet"></i>
+                <span>Closing the traffic gap represents 330,400 additional monthly visits potential</span>
+              </li>
+              <li class="opportunity-item">
+                <i class="fas fa-check-circle opportunity-bullet"></i>
+                <span>Synopsys has comparable authority score (52 vs 53-55) but underutilized in AI search</span>
+              </li>
+              <li class="opportunity-item">
+                <i class="fas fa-check-circle opportunity-bullet"></i>
+                <span>Technical issues affecting 6,418 URLs create immediate opportunity for visibility gains</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <div class="chart-title">Competitive Traffic Gap Analysis</div>
+          <div style="height: 100%; min-height: 500px;">
+            <canvas id="trafficGapChart"></canvas>
+          </div>
+          <div class="data-source">
+            Source: SEMRush third-party traffic estimates (August 2025)
+          </div>
+        </div>
+      </div>
+<div class="navigation flex">
+                <a class="button-next ml-auto" href="8.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+    </div>
+    
+    <script>
+      // Create the traffic gap chart
+      const ctx = document.getElementById('trafficGapChart').getContext('2d');
+      const trafficGapChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Synopsys', 'Cadence', 'Keysight', 'Rockwell', 'Ansys'],
+          datasets: [
+            {
+              label: 'Monthly Organic Traffic (K)',
+              data: [414.1, 500.6, 542.9, 695.1, 744.5],
+              backgroundColor: [
+                '#ff6600',  // Synopsys in warning color
+                '#0066cc',
+                '#0066cc',
+                '#0066cc',
+                '#0066cc'
+              ],
+              borderColor: [
+                '#ff6600',
+                '#0066cc',
+                '#0066cc',
+                '#0066cc',
+                '#0066cc'
+              ],
+              borderWidth: 2
+            },
+            {
+              label: 'Authority Score',
+              data: [52, 55, 53, 53, 54],
+              backgroundColor: 'rgba(52, 168, 83, 0.7)',
+              borderColor: '#34a853',
+              borderWidth: 2,
+              type: 'line',
+              yAxisID: 'y1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: false
+            },
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 15,
+                usePointStyle: true
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  if (context.datasetIndex === 0) {
+                    let label = context.parsed.y + 'K monthly visits';
+                    if (context.dataIndex === 0) {
+                      return label + ' (Synopsys - Current Position)';
+                    } else if (context.dataIndex === 4) {
+                      const gap = ((context.parsed.y - 414.1) / 414.1 * 100).toFixed(0);
+                      return label + ` (+${gap}% vs Synopsys)`;
+                    } else {
+                      const gap = ((context.parsed.y - 414.1) / 414.1 * 100).toFixed(0);
+                      return label + ` (+${gap}% vs Synopsys)`;
+                    }
+                  } else {
+                    return 'Authority Score: ' + context.parsed.y;
+                  }
+                }
+              }
+            },
+            annotation: {
+              annotations: {
+                line1: {
+                  type: 'line',
+                  yMin: 414.1,
+                  yMax: 414.1,
+                  xMin: -0.5,
+                  xMax: 4.5,
+                  borderColor: '#ff6600',
+                  borderWidth: 2,
+                  borderDash: [5, 5],
+                  label: {
+                    content: 'Synopsys Baseline',
+                    enabled: true,
+                    position: 'start'
+                  }
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Monthly Organic Traffic (Thousands)',
+                font: {
+                  weight: 'bold',
+                  size: 12
+                }
+              },
+              ticks: {
+                callback: function(value) {
+                  return value + 'K';
+                }
+              }
+            },
+            y1: {
+              position: 'right',
+              beginAtZero: false,
+              min: 45,
+              max: 65,
+              title: {
+                display: true,
+                text: 'Authority Score',
+                font: {
+                  weight: 'bold',
+                  size: 12
+                }
+              },
+              grid: {
+                drawOnChartArea: false
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Competitors',
+                font: {
+                  weight: 'bold',
+                  size: 12
+                }
+              }
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+

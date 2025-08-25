@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+            html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+            .slide-header {
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .slide-title {
+                font-size: 26px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 4px;
+                line-height: 1.2;
+            }
+
+            .slide-subtitle {
+                font-size: 13px;
+                color: #666666;
+                margin: 0;
+                line-height: 1.3;
+            }
+
+            .content-container {
+                display: flex;
+                gap: 20px;
+                flex: 1;
+                height: 620px;
+                min-height: 620px;
+            }
+
+            .platform-analysis {
+                width: 55%;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                height: 100%;
+            }
+
+            .platform-overview {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                border-left: 4px solid #34a853;
+                flex-shrink: 0;
+            }
+
+            .overview-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .overview-icon {
+                color: #34a853;
+                margin-right: 6px;
+                font-size: 15px;
+            }
+
+            .platform-metrics {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            .platform-box {
+                text-align: center;
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .platform-name {
+                font-size: 10px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 2px;
+            }
+
+            .platform-status {
+                font-size: 12px;
+                font-weight: 700;
+                margin-bottom: 2px;
+            }
+
+            .chatgpt-status {
+                color: #34a853;
+            }
+            .perplexity-status {
+                color: #0066cc;
+            }
+            .claude-status {
+                color: #ff6600;
+            }
+            .gemini-status {
+                color: #fbbc05;
+            }
+
+            .platform-priority {
+                font-size: 9px;
+                color: #666666;
+                line-height: 1.2;
+            }
+
+            .overview-description {
+                font-size: 11px;
+                color: #333333;
+                line-height: 1.3;
+            }
+
+            .optimization-strategies {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 12px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                height: 360px;
+                min-height: 360px;
+                margin-top: 20px;
+            }
+
+            .strategies-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                flex-shrink: 0;
+            }
+
+            .strategies-icon {
+                color: #0066cc;
+                margin-right: 6px;
+                font-size: 15px;
+            }
+
+            .strategies-content {
+                flex: 1;
+                max-height: 320px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-right: 8px;
+                scrollbar-width: thin;
+                scrollbar-color: #0066cc #f0f0f0;
+            }
+
+            .strategies-content::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .strategies-content::-webkit-scrollbar-track {
+                background: #f0f0f0;
+                border-radius: 4px;
+            }
+
+            .strategies-content::-webkit-scrollbar-thumb {
+                background: #0066cc;
+                border-radius: 4px;
+            }
+
+            .strategies-content::-webkit-scrollbar-thumb:hover {
+                background: #0052a3;
+            }
+
+            .platform-strategy {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 10px;
+                margin-bottom: 8px;
+                border-left: 3px solid;
+            }
+
+            .chatgpt-strategy {
+                border-color: #34a853;
+            }
+            .perplexity-strategy {
+                border-color: #0066cc;
+            }
+            .claude-strategy {
+                border-color: #ff6600;
+            }
+            .gemini-strategy {
+                border-color: #fbbc05;
+            }
+
+            .strategy-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 4px;
+            }
+
+            .strategy-type {
+                font-size: 11px;
+                font-weight: 600;
+                padding: 2px 6px;
+                border-radius: 10px;
+                margin-right: 6px;
+                color: white;
+            }
+
+            .type-chatgpt {
+                background-color: #34a853;
+            }
+            .type-perplexity {
+                background-color: #0066cc;
+            }
+            .type-claude {
+                background-color: #ff6600;
+            }
+            .type-gemini {
+                background-color: #fbbc05;
+            }
+
+            .strategy-name {
+                font-size: 12px;
+                font-weight: 700;
+                color: #333333;
+                flex: 1;
+            }
+
+            .strategy-impact {
+                font-size: 10px;
+                color: #666666;
+                font-weight: 600;
+            }
+
+            .strategy-description {
+                font-size: 10px;
+                color: #333333;
+                line-height: 1.3;
+                margin-bottom: 3px;
+            }
+
+            .strategy-implementation {
+                font-size: 9px;
+                color: #666666;
+                font-style: italic;
+            }
+
+            .technical-requirements {
+                background-color: #e6f0fa;
+                border-radius: 8px;
+                padding: 12px;
+                flex-shrink: 0;
+            }
+
+            .requirements-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .requirements-icon {
+                margin-right: 6px;
+                font-size: 13px;
+            }
+
+            .requirement-items {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .requirement-item {
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 8px;
+                text-align: center;
+            }
+
+            .requirement-category {
+                font-size: 10px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 2px;
+            }
+
+            .requirement-detail {
+                font-size: 12px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 2px;
+            }
+
+            .requirement-status {
+                font-size: 9px;
+                color: #666666;
+            }
+
+            .implementation-matrix {
+                width: 45%;
+                background-color: #f8f9fa;
+                padding: 12px;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .matrix-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 10px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+
+            .baseline-foundation {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 12px;
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .foundation-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: #34a853;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .foundation-icon {
+                color: #34a853;
+                margin-right: 6px;
+                font-size: 13px;
+            }
+
+            .foundation-metrics {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+
+            .foundation-box {
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .foundation-value {
+                font-size: 14px;
+                font-weight: 700;
+                color: #34a853;
+                margin-bottom: 2px;
+            }
+
+            .foundation-label {
+                font-size: 9px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .platform-summary {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .summary-box {
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .summary-value {
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 2px;
+            }
+
+            .platforms-value {
+                color: #0066cc;
+            }
+            .strategies-value {
+                color: #34a853;
+            }
+
+            .summary-label {
+                font-size: 9px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .chart-wrapper {
+                flex: 1;
+                min-height: 300px;
+                position: relative;
+            }
+
+            .data-source {
+                font-size: 9px;
+                color: #666666;
+                text-align: center;
+                margin-top: 8px;
+                font-style: italic;
+                flex-shrink: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+
+        <div class="slide-container">
+            <div class="slide-header">
+                <h1 class="slide-title">AI Search Platform Optimization</h1>
+                <p class="slide-subtitle">
+                    Platform-specific optimization strategies for ChatGPT, Perplexity, Claude, and Gemini based on conversational query foundation
+                </p>
+            </div>
+
+            <div class="content-container">
+                <div class="platform-analysis">
+                    <div class="platform-overview">
+                        <div class="overview-title">
+                            <i class="fas fa-robot overview-icon"></i>
+                            AI Search Platform Landscape
+                        </div>
+                        <div class="platform-metrics">
+                            <div class="platform-box">
+                                <div class="platform-name">ChatGPT</div>
+                                <div class="platform-status chatgpt-status">Conversational</div>
+                                <div class="platform-priority">Query-Based</div>
+                            </div>
+                            <div class="platform-box">
+                                <div class="platform-name">Perplexity</div>
+                                <div class="platform-status perplexity-status">Citation</div>
+                                <div class="platform-priority">Source-Based</div>
+                            </div>
+                            <div class="platform-box">
+                                <div class="platform-name">Claude</div>
+                                <div class="platform-status claude-status">Technical</div>
+                                <div class="platform-priority">Detail-Focused</div>
+                            </div>
+                            <div class="platform-box">
+                                <div class="platform-name">Gemini</div>
+                                <div class="platform-status gemini-status">Multimodal</div>
+                                <div class="platform-priority">Visual-Enhanced</div>
+                            </div>
+                        </div>
+                        <div class="overview-description">
+                            Strategic optimization approach leveraging 63,590 conversational query clicks foundation to enhance visibility across AI search
+                            platforms.
+                        </div>
+                    </div>
+
+                    <div class="optimization-strategies">
+                        <div class="strategies-title">
+                            <i class="fas fa-cogs strategies-icon"></i>
+                            Platform-Specific Optimization Strategies
+                        </div>
+                        <div class="strategies-content">
+                            <div class="platform-strategy chatgpt-strategy">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-chatgpt">ChatGPT</div>
+                                    <div class="strategy-name">Conversational Content Optimization</div>
+                                    <div class="strategy-impact">General Strategy</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Optimize content structure for conversational query processing, building on existing 63,590 conversational query clicks
+                                    foundation.
+                                </div>
+                                <div class="strategy-implementation">Implementation: FAQ schema, conversational content format, technical Q&A optimization</div>
+                            </div>
+
+                            <div class="platform-strategy perplexity-strategy">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-perplexity">Perplexity</div>
+                                    <div class="strategy-name">Citation-Based Content Strategy</div>
+                                    <div class="strategy-impact">Source Authority</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Enhance content with authoritative citations and source references to improve visibility in Perplexity's citation-focused
+                                    results.
+                                </div>
+                                <div class="strategy-implementation">Focus: Technical documentation, research citations, authoritative source linking</div>
+                            </div>
+
+                            <div class="platform-strategy claude-strategy">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-claude">Claude</div>
+                                    <div class="strategy-name">Technical Detail Enhancement</div>
+                                    <div class="strategy-impact">Deep Technical</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Develop comprehensive technical content with detailed explanations and implementation guidance for Claude's technical focus.
+                                </div>
+                                <div class="strategy-implementation">Approach: Technical depth, implementation details, comprehensive documentation</div>
+                            </div>
+
+                            <div class="platform-strategy gemini-strategy">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-gemini">Gemini</div>
+                                    <div class="strategy-name">Multimodal Content Integration</div>
+                                    <div class="strategy-impact">Visual Enhancement</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Integrate visual elements and multimedia content to leverage Gemini's multimodal capabilities and visual processing
+                                    strengths.
+                                </div>
+                                <div class="strategy-implementation">Elements: Visual content, multimedia integration, enhanced user experience</div>
+                            </div>
+
+                            <div class="platform-strategy chatgpt-strategy">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-chatgpt">ChatGPT</div>
+                                    <div class="strategy-name">Natural Language Processing</div>
+                                    <div class="strategy-impact">Query Understanding</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Optimize content for natural language understanding and conversational query patterns based on verified GSC data.
+                                </div>
+                                <div class="strategy-implementation">Method: Natural language optimization, conversational patterns, query intent matching</div>
+                            </div>
+
+                            <div class="platform-strategy perplexity-strategy">
+                                <div class="strategy-header">
+                                    <div class="strategy-type type-perplexity">Perplexity</div>
+                                    <div class="strategy-name">Real-Time Information Architecture</div>
+                                    <div class="strategy-impact">Current Data</div>
+                                </div>
+                                <div class="strategy-description">
+                                    Structure content for real-time information retrieval and current data presentation to align with Perplexity's live search
+                                    capabilities.
+                                </div>
+                                <div class="strategy-implementation">Structure: Real-time data, current information, live content updates</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="technical-requirements">
+                        <div class="requirements-title">
+                            <i class="fas fa-tools requirements-icon"></i>
+                            Technical Implementation Requirements
+                        </div>
+                        <div class="requirement-items">
+                            <div class="requirement-item">
+                                <div class="requirement-category">Schema Markup</div>
+                                <div class="requirement-detail">FAQ/QA</div>
+                                <div class="requirement-status">Implementation Required</div>
+                            </div>
+                            <div class="requirement-item">
+                                <div class="requirement-category">Content Structure</div>
+                                <div class="requirement-detail">Conversational</div>
+                                <div class="requirement-status">Optimization Needed</div>
+                            </div>
+                            <div class="requirement-item">
+                                <div class="requirement-category">Citation Framework</div>
+                                <div class="requirement-detail">Authority</div>
+                                <div class="requirement-status">Enhancement Required</div>
+                            </div>
+                            <div class="requirement-item">
+                                <div class="requirement-category">Visual Integration</div>
+                                <div class="requirement-detail">Multimodal</div>
+                                <div class="requirement-status">Development Needed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="implementation-matrix">
+                    <div class="matrix-title">AI Platform Implementation Matrix</div>
+
+                    <div class="baseline-foundation">
+                        <div class="foundation-title">
+                            <i class="fas fa-chart-bar foundation-icon"></i>
+                            Conversational Query Foundation
+                        </div>
+                        <div class="foundation-metrics">
+                            <div class="foundation-box">
+                                <div class="foundation-value">63,590</div>
+                                <div class="foundation-label">Conversational Query Clicks</div>
+                            </div>
+                            <div class="foundation-box">
+                                <div class="foundation-value">4.7%</div>
+                                <div class="foundation-label">Total Click Share</div>
+                            </div>
+                        </div>
+                        <div class="platform-summary">
+                            <div class="summary-box">
+                                <div class="summary-value platforms-value">4</div>
+                                <div class="summary-label">AI Platforms Targeted</div>
+                            </div>
+                            <div class="summary-box">
+                                <div class="summary-value strategies-value">6</div>
+                                <div class="summary-label">Optimization Strategies</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-wrapper">
+                        <canvas id="platformChart" style="width: 100%; height: 100%"></canvas>
+                    </div>
+
+                    <div class="data-source">Source: Google Search Console conversational query analysis (August 8, 2025)</div>
+                </div>
+            </div>
+            <div class="navigation flex">
+                <a class="button-next ml-auto" href="24.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+        </div>
+
+        <script>
+            // AI Platform Optimization Chart
+            const ctx = document.getElementById("platformChart").getContext("2d");
+            const platformChart = new Chart(ctx, {
+                type: "radar",
+                data: {
+                    labels: ["Conversational", "Citation", "Technical", "Multimodal", "Real-time", "Authority"],
+                    datasets: [
+                        {
+                            label: "Current Optimization",
+                            data: [65, 45, 70, 35, 50, 60],
+                            backgroundColor: "rgba(0, 102, 204, 0.2)",
+                            borderColor: "#0066cc",
+                            borderWidth: 2,
+                            pointBackgroundColor: "#0066cc",
+                        },
+                        {
+                            label: "Target Optimization",
+                            data: [85, 80, 90, 75, 85, 85],
+                            backgroundColor: "rgba(52, 168, 83, 0.2)",
+                            borderColor: "#34a853",
+                            borderWidth: 2,
+                            pointBackgroundColor: "#34a853",
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                font: {
+                                    size: 10,
+                                },
+                                padding: 10,
+                            },
+                        },
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                font: {
+                                    size: 8,
+                                },
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 9,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

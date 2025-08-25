@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+            html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+            .slide-header {
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .slide-title {
+                font-size: 26px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 4px;
+                line-height: 1.2;
+            }
+
+            .slide-subtitle {
+                font-size: 13px;
+                color: #666666;
+                margin: 0;
+                line-height: 1.3;
+            }
+
+            .content-container {
+                display: flex;
+                gap: 20px;
+                flex: 1;
+                height: 620px;
+                min-height: 620px;
+            }
+
+            .content-analysis {
+                width: 60%;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                height: 100%;
+            }
+
+            .current-performance {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                border-left: 4px solid #34a853;
+                flex-shrink: 0;
+            }
+
+            .performance-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .performance-icon {
+                color: #34a853;
+                margin-right: 6px;
+                font-size: 15px;
+            }
+
+            .performance-metrics {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            .metric-box {
+                text-align: center;
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .metric-value {
+                font-size: 14px;
+                font-weight: 700;
+                color: #34a853;
+                margin-bottom: 2px;
+            }
+
+            .metric-label {
+                font-size: 9px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .performance-description {
+                font-size: 11px;
+                color: #333333;
+                line-height: 1.3;
+            }
+
+            .optimization-priorities {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 12px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                height: 360px;
+                min-height: 360px;
+                margin-top: 20px;
+            }
+
+            .priorities-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                flex-shrink: 0;
+            }
+
+            .priorities-icon {
+                color: #0066cc;
+                margin-right: 6px;
+                font-size: 15px;
+            }
+
+            .priorities-content {
+                flex: 1;
+                max-height: 320px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-right: 8px;
+                scrollbar-width: thin;
+                scrollbar-color: #0066cc #f0f0f0;
+            }
+
+            .priorities-content::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .priorities-content::-webkit-scrollbar-track {
+                background: #f0f0f0;
+                border-radius: 4px;
+            }
+
+            .priorities-content::-webkit-scrollbar-thumb {
+                background: #0066cc;
+                border-radius: 4px;
+            }
+
+            .priorities-content::-webkit-scrollbar-thumb:hover {
+                background: #0052a3;
+            }
+
+            .priority-item {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 10px;
+                margin-bottom: 8px;
+                border-left: 3px solid;
+            }
+
+            .high-priority {
+                border-color: #dc3545;
+            }
+            .medium-priority {
+                border-color: #ff6600;
+            }
+            .low-priority {
+                border-color: #28a745;
+            }
+
+            .priority-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 4px;
+            }
+
+            .priority-level {
+                font-size: 10px;
+                font-weight: 600;
+                padding: 2px 6px;
+                border-radius: 10px;
+                margin-right: 6px;
+                color: white;
+            }
+
+            .level-high {
+                background-color: #dc3545;
+            }
+            .level-medium {
+                background-color: #ff6600;
+            }
+            .level-low {
+                background-color: #28a745;
+            }
+
+            .priority-name {
+                font-size: 12px;
+                font-weight: 700;
+                color: #333333;
+                flex: 1;
+            }
+
+            .priority-urls {
+                font-size: 10px;
+                color: #666666;
+                font-weight: 600;
+            }
+
+            .priority-description {
+                font-size: 10px;
+                color: #333333;
+                line-height: 1.3;
+                margin-bottom: 3px;
+            }
+
+            .priority-impact {
+                font-size: 9px;
+                color: #666666;
+                font-style: italic;
+            }
+
+            .technical-foundation {
+                background-color: #e6f0fa;
+                border-radius: 8px;
+                padding: 12px;
+                flex-shrink: 0;
+            }
+
+            .foundation-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .foundation-icon {
+                margin-right: 6px;
+                font-size: 13px;
+            }
+
+            .foundation-items {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .foundation-item {
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 8px;
+                text-align: center;
+            }
+
+            .foundation-category {
+                font-size: 10px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 2px;
+            }
+
+            .foundation-detail {
+                font-size: 12px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 2px;
+            }
+
+            .foundation-status {
+                font-size: 9px;
+                color: #666666;
+            }
+
+            .optimization-framework {
+                width: 40%;
+                background-color: #f8f9fa;
+                padding: 12px;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .framework-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 10px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+
+            .baseline-metrics {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 12px;
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .baseline-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: #34a853;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .baseline-icon {
+                color: #34a853;
+                margin-right: 6px;
+                font-size: 13px;
+            }
+
+            .baseline-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+
+            .baseline-box {
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .baseline-value {
+                font-size: 14px;
+                font-weight: 700;
+                color: #34a853;
+                margin-bottom: 2px;
+            }
+
+            .baseline-label {
+                font-size: 9px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .priority-summary {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .summary-box {
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .summary-value {
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 2px;
+            }
+
+            .high-value {
+                color: #dc3545;
+            }
+            .medium-value {
+                color: #ff6600;
+            }
+
+            .summary-label {
+                font-size: 9px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .chart-wrapper {
+                flex: 1;
+                min-height: 300px;
+                position: relative;
+            }
+
+            .data-source {
+                font-size: 9px;
+                color: #666666;
+                text-align: center;
+                margin-top: 8px;
+                font-style: italic;
+                flex-shrink: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- copy from here -->
+        <div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+
+        <div class="slide-container">
+            <div class="slide-header">
+                <h1 class="slide-title">Content Optimization Strategy</h1>
+                <p class="slide-subtitle">
+                    Data-driven content optimization priorities based on verified performance metrics and technical infrastructure analysis
+                </p>
+            </div>
+
+            <div class="content-container">
+                <div class="content-analysis">
+                    <div class="current-performance">
+                        <div class="performance-title">
+                            <i class="fas fa-chart-line performance-icon"></i>
+                            Current Content Performance Foundation
+                        </div>
+                        <div class="performance-metrics">
+                            <div class="metric-box">
+                                <div class="metric-value">895,957</div>
+                                <div class="metric-label">Organic Visits</div>
+                            </div>
+                            <div class="metric-box">
+                                <div class="metric-value">63,590</div>
+                                <div class="metric-label">Conversational Queries</div>
+                            </div>
+                            <div class="metric-box">
+                                <div class="metric-value">25,318</div>
+                                <div class="metric-label">Form Conversions</div>
+                            </div>
+                            <div class="metric-box">
+                                <div class="metric-value">2.83%</div>
+                                <div class="metric-label">Conversion Rate</div>
+                            </div>
+                        </div>
+                        <div class="performance-description">
+                            Strong content performance foundation with 63,590 conversational query clicks indicating existing AI search readiness and 2.83%
+                            conversion rate demonstrating content quality.
+                        </div>
+                    </div>
+
+                    <div class="optimization-priorities">
+                        <div class="priorities-title">
+                            <i class="fas fa-tasks priorities-icon"></i>
+                            Content Optimization Priorities
+                        </div>
+                        <div class="priorities-content">
+                            <div class="priority-item high-priority">
+                                <div class="priority-header">
+                                    <div class="priority-level level-high">High</div>
+                                    <div class="priority-name">Missing H1 Headings</div>
+                                    <div class="priority-urls">1,249 URLs</div>
+                                </div>
+                                <div class="priority-description">
+                                    Critical content structure optimization affecting 11.55% of pages. Missing H1 headings impact both traditional and AI search
+                                    understanding.
+                                </div>
+                                <div class="priority-impact">Impact: Content hierarchy, AI search comprehension, user experience</div>
+                            </div>
+
+                            <div class="priority-item high-priority">
+                                <div class="priority-header">
+                                    <div class="priority-level level-high">High</div>
+                                    <div class="priority-name">Image Alt Text Optimization</div>
+                                    <div class="priority-urls">4,234 Images</div>
+                                </div>
+                                <div class="priority-description">
+                                    Missing alt text on 18.71% of images affects accessibility and AI search understanding of visual content.
+                                </div>
+                                <div class="priority-impact">Impact: Accessibility, AI multimodal search, content comprehension</div>
+                            </div>
+
+                            <div class="priority-item medium-priority">
+                                <div class="priority-header">
+                                    <div class="priority-level level-medium">Medium</div>
+                                    <div class="priority-name">Conversational Content Enhancement</div>
+                                    <div class="priority-urls">Based on 63,590 queries</div>
+                                </div>
+                                <div class="priority-description">
+                                    Optimize existing content for conversational query patterns identified in GSC data to improve AI search visibility.
+                                </div>
+                                <div class="priority-impact">Focus: FAQ format, natural language, question-answer structure</div>
+                            </div>
+
+                            <div class="priority-item medium-priority">
+                                <div class="priority-header">
+                                    <div class="priority-level level-medium">Medium</div>
+                                    <div class="priority-name">Schema Markup Implementation</div>
+                                    <div class="priority-urls">Technical Pages</div>
+                                </div>
+                                <div class="priority-description">
+                                    Implement structured data markup to enhance content understanding for both traditional and AI search engines.
+                                </div>
+                                <div class="priority-impact">Types: FAQ schema, Product schema, Organization schema</div>
+                            </div>
+
+                            <div class="priority-item low-priority">
+                                <div class="priority-header">
+                                    <div class="priority-level level-low">Low</div>
+                                    <div class="priority-name">Content Freshness Updates</div>
+                                    <div class="priority-urls">Legacy Content</div>
+                                </div>
+                                <div class="priority-description">
+                                    Update older content with current information and optimize for modern search patterns while maintaining historical value.
+                                </div>
+                                <div class="priority-impact">Approach: Incremental updates, date optimization, relevance enhancement</div>
+                            </div>
+
+                            <div class="priority-item low-priority">
+                                <div class="priority-header">
+                                    <div class="priority-level level-low">Low</div>
+                                    <div class="priority-name">Internal Linking Enhancement</div>
+                                    <div class="priority-urls">Site-wide</div>
+                                </div>
+                                <div class="priority-description">
+                                    Improve internal linking structure to enhance content discoverability and topic authority for AI search understanding.
+                                </div>
+                                <div class="priority-impact">Strategy: Topic clustering, contextual linking, authority flow</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="technical-foundation">
+                        <div class="foundation-title">
+                            <i class="fas fa-tools foundation-icon"></i>
+                            Technical Content Foundation
+                        </div>
+                        <div class="foundation-items">
+                            <div class="foundation-item">
+                                <div class="foundation-category">Content Structure</div>
+                                <div class="foundation-detail">H1 Optimization</div>
+                                <div class="foundation-status">1,249 URLs Priority</div>
+                            </div>
+                            <div class="foundation-item">
+                                <div class="foundation-category">Visual Content</div>
+                                <div class="foundation-detail">Alt Text</div>
+                                <div class="foundation-status">4,234 Images</div>
+                            </div>
+                            <div class="foundation-item">
+                                <div class="foundation-category">Schema Markup</div>
+                                <div class="foundation-detail">Structured Data</div>
+                                <div class="foundation-status">Implementation Required</div>
+                            </div>
+                            <div class="foundation-item">
+                                <div class="foundation-category">AI Readiness</div>
+                                <div class="foundation-detail">Conversational</div>
+                                <div class="foundation-status">63,590 Query Base</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="optimization-framework">
+                    <div class="framework-title">Content Optimization Framework</div>
+
+                    <div class="baseline-metrics">
+                        <div class="baseline-title">
+                            <i class="fas fa-chart-bar baseline-icon"></i>
+                            Content Performance Baseline
+                        </div>
+                        <div class="baseline-grid">
+                            <div class="baseline-box">
+                                <div class="baseline-value">2.83%</div>
+                                <div class="baseline-label">Conversion Rate</div>
+                            </div>
+                            <div class="baseline-box">
+                                <div class="baseline-value">4.7%</div>
+                                <div class="baseline-label">Conversational Share</div>
+                            </div>
+                        </div>
+                        <div class="priority-summary">
+                            <div class="summary-box">
+                                <div class="summary-value high-value">2</div>
+                                <div class="summary-label">High Priority Items</div>
+                            </div>
+                            <div class="summary-box">
+                                <div class="summary-value medium-value">4</div>
+                                <div class="summary-label">Total Optimization Areas</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-wrapper">
+                        <canvas id="contentChart" style="width: 100%; height: 100%"></canvas>
+                    </div>
+
+                    <div class="data-source">Source: Screaming Frog content analysis and Adobe Analytics performance data (August 2025)</div>
+                </div>
+            </div>
+            <div class="navigation flex">
+                <a class="button-next ml-auto" href="25.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+        </div>
+
+        <script>
+            // Content Optimization Priority Chart
+            const ctx = document.getElementById("contentChart").getContext("2d");
+            const contentChart = new Chart(ctx, {
+                type: "doughnut",
+                data: {
+                    labels: [
+                        "H1 Missing (High)",
+                        "Alt Text Missing (High)",
+                        "Schema Needed (Medium)",
+                        "Content Fresh (Low)",
+                        "Linking (Low)",
+                        "Conversational (Medium)",
+                    ],
+                    datasets: [
+                        {
+                            data: [1249, 4234, 800, 600, 400, 1200],
+                            backgroundColor: ["#dc3545", "#dc3545", "#ff6600", "#28a745", "#28a745", "#ff6600"],
+                            borderWidth: 2,
+                            borderColor: "#ffffff",
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                font: {
+                                    size: 9,
+                                },
+                                padding: 8,
+                                usePointStyle: true,
+                            },
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.label || "";
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

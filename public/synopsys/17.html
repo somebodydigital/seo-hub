@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+            html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+            .slide-header {
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .slide-title {
+                font-size: 26px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 4px;
+                line-height: 1.2;
+            }
+
+            .slide-subtitle {
+                font-size: 13px;
+                color: #666666;
+                margin: 0;
+                line-height: 1.3;
+            }
+
+            .content-container {
+                display: flex;
+                gap: 20px;
+                flex: 1;
+                height: 620px;
+                min-height: 620px;
+            }
+
+            .speed-analysis {
+                width: 60%;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                height: 100%;
+            }
+
+            .speed-overview {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                border-left: 4px solid #ffc107;
+                flex-shrink: 0;
+            }
+
+            .overview-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .overview-icon {
+                color: #ffc107;
+                margin-right: 6px;
+                font-size: 15px;
+            }
+
+            .speed-metrics {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            .speed-box {
+                text-align: center;
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .speed-value {
+                font-size: 14px;
+                font-weight: 700;
+                color: #ffc107;
+                margin-bottom: 2px;
+            }
+
+            .speed-label {
+                font-size: 9px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .speed-description {
+                font-size: 11px;
+                color: #333333;
+                line-height: 1.3;
+            }
+
+            .optimization-opportunities {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 12px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                height: 320px;
+                min-height: 320px;
+            }
+
+            .opportunities-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                flex-shrink: 0;
+            }
+
+            .opportunities-icon {
+                color: #0066cc;
+                margin-right: 6px;
+                font-size: 15px;
+            }
+
+            .opportunities-content {
+                flex: 1;
+                overflow-x: hidden;
+                padding-right: 8px;
+                scrollbar-width: thin;
+                scrollbar-color: #0066cc #f0f0f0;
+                max-height: 320px;
+                overflow-y: scroll;
+            }
+
+            .opportunities-content::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .opportunities-content::-webkit-scrollbar-track {
+                background: #f0f0f0;
+                border-radius: 4px;
+            }
+
+            .opportunities-content::-webkit-scrollbar-thumb {
+                background: #0066cc;
+                border-radius: 4px;
+            }
+
+            .opportunities-content::-webkit-scrollbar-thumb:hover {
+                background: #0052a3;
+            }
+
+            .opportunity-item {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 8px;
+                margin-bottom: 8px;
+                border-left: 3px solid;
+            }
+
+            .high-impact {
+                border-color: #dc3545;
+            }
+            .medium-impact {
+                border-color: #ff6600;
+            }
+            .low-impact {
+                border-color: #28a745;
+            }
+
+            .opportunity-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 4px;
+            }
+
+            .impact-level {
+                font-size: 11px;
+                font-weight: 600;
+                padding: 2px 6px;
+                border-radius: 10px;
+                margin-right: 6px;
+                color: white;
+            }
+
+            .impact-high {
+                background-color: #dc3545;
+            }
+            .impact-medium {
+                background-color: #ff6600;
+            }
+            .impact-low {
+                background-color: #28a745;
+            }
+
+            .opportunity-name {
+                font-size: 12px;
+                font-weight: 700;
+                color: #333333;
+                flex: 1;
+            }
+
+            .opportunity-count {
+                font-size: 10px;
+                color: #666666;
+                font-weight: 600;
+            }
+
+            .opportunity-description {
+                font-size: 10px;
+                color: #333333;
+                line-height: 1.3;
+                margin-bottom: 3px;
+            }
+
+            .opportunity-benefit {
+                font-size: 9px;
+                color: #666666;
+                font-style: italic;
+            }
+
+            .implementation-priority {
+                background-color: #e6f0fa;
+                border-radius: 8px;
+                padding: 12px;
+                flex-shrink: 0;
+            }
+
+            .priority-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .priority-icon {
+                margin-right: 6px;
+                font-size: 13px;
+            }
+
+            .priority-items {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .priority-item {
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 8px;
+                text-align: center;
+            }
+
+            .priority-phase {
+                font-size: 10px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 2px;
+            }
+
+            .priority-focus {
+                font-size: 12px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 2px;
+            }
+
+            .priority-timeline {
+                font-size: 9px;
+                color: #666666;
+            }
+
+            .performance-framework {
+                width: 40%;
+                background-color: #f8f9fa;
+                padding: 12px;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .framework-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 10px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+
+            .current-performance {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 12px;
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .performance-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: #ffc107;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .performance-icon {
+                color: #ffc107;
+                margin-right: 6px;
+                font-size: 13px;
+            }
+
+            .performance-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+
+            .performance-box {
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .performance-value {
+                font-size: 14px;
+                font-weight: 700;
+                color: #ffc107;
+                margin-bottom: 2px;
+            }
+
+            .performance-label {
+                font-size: 9px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .timeline-summary {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .summary-box {
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .summary-value {
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 2px;
+            }
+
+            .opportunities-value {
+                color: #0066cc;
+            }
+            .impact-value {
+                color: #ffc107;
+            }
+
+            .summary-label {
+                font-size: 9px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .chart-wrapper {
+                flex: 1;
+                min-height: 300px;
+                position: relative;
+            }
+
+            .data-source {
+                font-size: 9px;
+                color: #666666;
+                text-align: center;
+                margin-top: 8px;
+                font-style: italic;
+                flex-shrink: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+
+        <div class="slide-container">
+            <div class="slide-header">
+                <h1 class="slide-title">Page Speed Optimization Strategy</h1>
+                <p class="slide-subtitle">
+                    Performance optimization roadmap based on verified Screaming Frog PageSpeed analysis and Core Web Vitals assessment
+                </p>
+            </div>
+
+            <div class="content-container">
+                <div class="speed-analysis">
+                    <div class="speed-overview">
+                        <div class="overview-title">
+                            <i class="fas fa-tachometer-alt overview-icon"></i>
+                            Page Speed Analysis Overview
+                        </div>
+                        <div class="speed-metrics">
+                            <div class="speed-box">
+                                <div class="speed-value">8,190</div>
+                                <div class="speed-label">Render-Blocking URLs</div>
+                            </div>
+                            <div class="speed-box">
+                                <div class="speed-value">8,040</div>
+                                <div class="speed-label">Unused JavaScript</div>
+                            </div>
+                            <div class="speed-box">
+                                <div class="speed-value">8,083</div>
+                                <div class="speed-label">Unused CSS</div>
+                            </div>
+                            <div class="speed-box">
+                                <div class="speed-value">4,783</div>
+                                <div class="speed-label">Legacy JavaScript</div>
+                            </div>
+                        </div>
+                        <div class="speed-description">
+                            Verified Screaming Frog PageSpeed analysis (August 8-9, 2025) identified multiple performance optimization opportunities across site
+                            URLs.
+                        </div>
+                    </div>
+
+                    <div class="optimization-opportunities">
+                        <div class="opportunities-title">
+                            <i class="fas fa-rocket opportunities-icon"></i>
+                            Performance Optimization Opportunities
+                        </div>
+                        <div class="opportunities-content">
+                            <div class="opportunity-item high-impact">
+                                <div class="opportunity-header">
+                                    <div class="impact-level impact-high">High Impact</div>
+                                    <div class="opportunity-name">Render-Blocking Resources</div>
+                                    <div class="opportunity-count">8,190 URLs</div>
+                                </div>
+                                <div class="opportunity-description">
+                                    Eliminate render-blocking JavaScript and CSS resources to improve First Contentful Paint and Largest Contentful Paint
+                                    metrics.
+                                </div>
+                                <div class="opportunity-benefit">Benefit: Faster page load times, improved Core Web Vitals, better user experience</div>
+                            </div>
+
+                            <div class="opportunity-item high-impact">
+                                <div class="opportunity-header">
+                                    <div class="impact-level impact-high">High Impact</div>
+                                    <div class="opportunity-name">Unused JavaScript Removal</div>
+                                    <div class="opportunity-count">8,040 URLs</div>
+                                </div>
+                                <div class="opportunity-description">
+                                    Remove or defer unused JavaScript to reduce bundle sizes and improve page load performance.
+                                </div>
+                                <div class="opportunity-benefit">Benefit: Reduced bandwidth usage, faster script execution, improved performance scores</div>
+                            </div>
+
+                            <div class="opportunity-item high-impact">
+                                <div class="opportunity-header">
+                                    <div class="impact-level impact-high">High Impact</div>
+                                    <div class="opportunity-name">Unused CSS Optimization</div>
+                                    <div class="opportunity-count">8,083 URLs</div>
+                                </div>
+                                <div class="opportunity-description">
+                                    Remove unused CSS rules and optimize stylesheets to reduce file sizes and improve rendering performance.
+                                </div>
+                                <div class="opportunity-benefit">Benefit: Faster stylesheet parsing, reduced file sizes, improved rendering speed</div>
+                            </div>
+
+                            <div class="opportunity-item medium-impact">
+                                <div class="opportunity-header">
+                                    <div class="impact-level impact-medium">Medium Impact</div>
+                                    <div class="opportunity-name">Legacy JavaScript Modernization</div>
+                                    <div class="opportunity-count">4,783 URLs</div>
+                                </div>
+                                <div class="opportunity-description">
+                                    Update legacy JavaScript to modern standards for better performance and browser compatibility.
+                                </div>
+                                <div class="opportunity-benefit">Benefit: Improved browser compatibility, better performance, enhanced security</div>
+                            </div>
+
+                            <div class="opportunity-item medium-impact">
+                                <div class="opportunity-header">
+                                    <div class="impact-level impact-medium">Medium Impact</div>
+                                    <div class="opportunity-name">JavaScript Minification</div>
+                                    <div class="opportunity-count">2,875 URLs</div>
+                                </div>
+                                <div class="opportunity-description">
+                                    Minify JavaScript files to reduce file sizes and improve download speeds across affected pages.
+                                </div>
+                                <div class="opportunity-benefit">Benefit: Reduced file sizes, faster downloads, improved page load performance</div>
+                            </div>
+
+                            <div class="opportunity-item low-impact">
+                                <div class="opportunity-header">
+                                    <div class="impact-level impact-low">Low Impact</div>
+                                    <div class="opportunity-name">Image Optimization</div>
+                                    <div class="opportunity-count">1,245 Images</div>
+                                </div>
+                                <div class="opportunity-description">
+                                    Optimize image formats and compression to reduce file sizes while maintaining visual quality.
+                                </div>
+                                <div class="opportunity-benefit">Benefit: Faster image loading, reduced bandwidth usage, improved visual performance</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="implementation-priority">
+                        <div class="priority-title">
+                            <i class="fas fa-list-ol priority-icon"></i>
+                            Implementation Priority Framework
+                        </div>
+                        <div class="priority-items">
+                            <div class="priority-item">
+                                <div class="priority-phase">Phase 1</div>
+                                <div class="priority-focus">Render-Blocking</div>
+                                <div class="priority-timeline">Weeks 1-4</div>
+                            </div>
+                            <div class="priority-item">
+                                <div class="priority-phase">Phase 2</div>
+                                <div class="priority-focus">JavaScript Cleanup</div>
+                                <div class="priority-timeline">Weeks 5-8</div>
+                            </div>
+                            <div class="priority-item">
+                                <div class="priority-phase">Phase 3</div>
+                                <div class="priority-focus">CSS Optimization</div>
+                                <div class="priority-timeline">Weeks 9-12</div>
+                            </div>
+                            <div class="priority-item">
+                                <div class="priority-phase">Phase 4</div>
+                                <div class="priority-focus">Legacy Updates</div>
+                                <div class="priority-timeline">Weeks 13-16</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="performance-framework">
+                    <div class="framework-title">Performance Impact Analysis</div>
+
+                    <div class="current-performance">
+                        <div class="performance-title">
+                            <i class="fas fa-chart-bar performance-icon"></i>
+                            Current Performance Impact
+                        </div>
+                        <div class="performance-grid">
+                            <div class="performance-box">
+                                <div class="performance-value">8,190</div>
+                                <div class="performance-label">Render-Blocking URLs</div>
+                            </div>
+                            <div class="performance-box">
+                                <div class="performance-value">65%</div>
+                                <div class="performance-label">Site Coverage Affected</div>
+                            </div>
+                        </div>
+                        <div class="timeline-summary">
+                            <div class="summary-box">
+                                <div class="summary-value opportunities-value">6</div>
+                                <div class="summary-label">Optimization Areas</div>
+                            </div>
+                            <div class="summary-box">
+                                <div class="summary-value impact-value">High</div>
+                                <div class="summary-label">Performance Impact</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-wrapper">
+                        <canvas id="speedChart" style="width: 100%; height: 100%"></canvas>
+                    </div>
+
+                    <div class="data-source">Source: Screaming Frog PageSpeed analysis (August 8-9, 2025)</div>
+                </div>
+            </div>
+            <div class="navigation flex">
+                <a class="button-next ml-auto" href="18.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+        </div>
+
+        <script>
+            // Performance Optimization Chart
+            const ctx = document.getElementById("speedChart").getContext("2d");
+            const speedChart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: ["Render-Blocking", "Unused JS", "Unused CSS", "Legacy JS", "JS Minification", "Image Optimization"],
+                    datasets: [
+                        {
+                            data: [8190, 8040, 8083, 4783, 2875, 1245],
+                            backgroundColor: ["#dc3545", "#dc3545", "#dc3545", "#ff6600", "#ff6600", "#28a745"],
+                            borderColor: ["#dc3545", "#dc3545", "#dc3545", "#ff6600", "#ff6600", "#28a745"],
+                            borderWidth: 1,
+                        },
+                    ],
+                },
+                options: {
+                    indexAxis: "y",
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 9000,
+                            ticks: {
+                                font: {
+                                    size: 9,
+                                },
+                            },
+                        },
+                        y: {
+                            ticks: {
+                                font: {
+                                    size: 9,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

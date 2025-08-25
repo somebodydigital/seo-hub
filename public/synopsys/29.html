@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+            html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+            .slide-header {
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .slide-title {
+                font-size: 28px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 5px;
+                line-height: 1.2;
+            }
+
+            .slide-subtitle {
+                font-size: 14px;
+                color: #666666;
+                margin: 0;
+            }
+
+            .content-container {
+                display: flex;
+                gap: 20px;
+                flex: 1;
+                height: 620px;
+                min-height: 620px;
+            }
+
+            .metrics-container {
+                width: 45%;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .baseline-metrics {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                border-left: 4px solid #0066cc;
+                flex-shrink: 0;
+            }
+
+            .baseline-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .baseline-icon {
+                color: #0066cc;
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+            .baseline-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            .baseline-metric {
+                text-align: center;
+            }
+
+            .metric-value {
+                font-size: 16px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 3px;
+            }
+
+            .metric-label {
+                font-size: 10px;
+                color: #666666;
+                line-height: 1.2;
+            }
+
+            .baseline-description {
+                font-size: 12px;
+                color: #333333;
+                line-height: 1.3;
+            }
+
+            .kpi-categories {
+                flex: 1;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+                height: 320px;
+            }
+
+            .kpi-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                flex-shrink: 0;
+            }
+
+            .kpi-icon {
+                color: #0066cc;
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+            .kpi-content {
+                height: 280px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-right: 8px;
+                scrollbar-width: thin;
+                scrollbar-color: #0066cc #f0f0f0;
+            }
+
+            .kpi-content::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .kpi-content::-webkit-scrollbar-track {
+                background: #f0f0f0;
+                border-radius: 4px;
+            }
+
+            .kpi-content::-webkit-scrollbar-thumb {
+                background: #0066cc;
+                border-radius: 4px;
+            }
+
+            .kpi-content::-webkit-scrollbar-thumb:hover {
+                background: #0052a3;
+            }
+
+            .kpi-category {
+                background-color: #f8f9fa;
+                border-radius: 6px;
+                padding: 10px;
+                margin-bottom: 8px;
+                border-left: 3px solid;
+            }
+
+            .technical-kpi {
+                border-color: #ff6600;
+            }
+
+            .ai-search-kpi {
+                border-color: #34a853;
+            }
+
+            .performance-kpi {
+                border-color: #fbbc05;
+            }
+
+            .category-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 6px;
+            }
+
+            .category-icon {
+                font-size: 12px;
+                margin-right: 6px;
+            }
+
+            .technical-kpi .category-icon {
+                color: #ff6600;
+            }
+
+            .ai-search-kpi .category-icon {
+                color: #34a853;
+            }
+
+            .performance-kpi .category-icon {
+                color: #fbbc05;
+            }
+
+            .category-name {
+                font-size: 13px;
+                font-weight: 700;
+                color: #333333;
+                flex: 1;
+            }
+
+            .category-target {
+                font-size: 11px;
+                color: #666666;
+                font-weight: 600;
+            }
+
+            .kpi-metrics {
+                font-size: 11px;
+                color: #333333;
+                line-height: 1.3;
+                margin-bottom: 4px;
+            }
+
+            .kpi-measurement {
+                font-size: 10px;
+                color: #666666;
+                font-style: italic;
+            }
+
+            .measurement-framework {
+                background-color: #e6f0fa;
+                border-radius: 8px;
+                padding: 12px;
+                flex-shrink: 0;
+                height: 148px;
+            }
+
+            .framework-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .framework-icon {
+                margin-right: 6px;
+                font-size: 14px;
+            }
+
+            .framework-phases {
+                display: flex;
+                gap: 6px;
+            }
+
+            .phase-box {
+                flex: 1;
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 6px;
+                text-align: center;
+            }
+
+            .phase-number {
+                font-size: 14px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 3px;
+            }
+
+            .phase-title {
+                font-size: 10px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 3px;
+            }
+
+            .phase-frequency {
+                font-size: 9px;
+                color: #666666;
+            }
+
+            .chart-container {
+                width: 55%;
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .chart-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .chart-wrapper {
+                flex: 1;
+                min-height: 0;
+                position: relative;
+            }
+
+            .data-source {
+                font-size: 10px;
+                color: #666666;
+                text-align: center;
+                margin-top: 8px;
+                font-style: italic;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+
+        <div class="slide-container">
+            <div class="slide-header">
+                <h1 class="slide-title">Success Metrics & KPIs</h1>
+                <p class="slide-subtitle">Measurement framework with baseline metrics and performance targets for AI readiness optimization</p>
+            </div>
+
+            <div class="content-container">
+                <div class="metrics-container">
+                    <div class="baseline-metrics">
+                        <div class="baseline-title">
+                            <i class="fas fa-chart-line baseline-icon"></i>
+                            Current Performance Baseline
+                        </div>
+                        <div class="baseline-grid">
+                            <div class="baseline-metric">
+                                <div class="metric-value">895,957</div>
+                                <div class="metric-label">Organic Visits</div>
+                            </div>
+                            <div class="baseline-metric">
+                                <div class="metric-value">1,351,966</div>
+                                <div class="metric-label">GSC Clicks</div>
+                            </div>
+                            <div class="baseline-metric">
+                                <div class="metric-value">25,318</div>
+                                <div class="metric-label">Conversions</div>
+                            </div>
+                            <div class="baseline-metric">
+                                <div class="metric-value">63,590</div>
+                                <div class="metric-label">AI Query Clicks</div>
+                            </div>
+                            <div class="baseline-metric">
+                                <div class="metric-value">105,800</div>
+                                <div class="metric-label">Keywords</div>
+                            </div>
+                            <div class="baseline-metric">
+                                <div class="metric-value">52</div>
+                                <div class="metric-label">Authority Score</div>
+                            </div>
+                        </div>
+                        <div class="baseline-description">
+                            Verified baseline metrics from Adobe Analytics (April 15 - August 12, 2025) and Google Search Console (August 8, 2025) providing
+                            foundation for performance measurement.
+                        </div>
+                    </div>
+
+                    <div class="kpi-categories">
+                        <div class="kpi-title">
+                            <i class="fas fa-bullseye kpi-icon"></i>
+                            Key Performance Indicators
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-category technical-kpi">
+                                <div class="category-header">
+                                    <i class="fas fa-cogs category-icon"></i>
+                                    <div class="category-name">Technical Infrastructure</div>
+                                    <div class="category-target">Target: 90% Resolution</div>
+                                </div>
+                                <div class="kpi-metrics">
+                                    • Hreflang Issues: 3,547 → <500 URLs<br />
+                                    • JavaScript Canonical: 1,559 → <200 URLs<br />
+                                    • Non-indexable URLs: 1,040 → <100 URLs<br />
+                                    • Page Speed Score: Current → +25% improvement
+                                </div>
+                                <div class="kpi-measurement">Measured via: Screaming Frog audits, PageSpeed Insights, Search Console</div>
+                            </div>
+
+                            <div class="kpi-category ai-search-kpi">
+                                <div class="category-header">
+                                    <i class="fas fa-robot category-icon"></i>
+                                    <div class="category-name">AI Search Performance</div>
+                                    <div class="category-target">Target: +40% Growth</div>
+                                </div>
+                                <div class="kpi-metrics">
+                                    • Conversational Query Clicks: 63,590 → 89,000+<br />
+                                    • AI Platform Citations: Baseline → +200%<br />
+                                    • Featured Snippet Captures: Current → +150%<br />
+                                    • Schema Markup Coverage: 23% → 85%
+                                </div>
+                                <div class="kpi-measurement">Measured via: GSC, SEOmonitor, AI platform monitoring, Rich Results Test</div>
+                            </div>
+
+                            <div class="kpi-category performance-kpi">
+                                <div class="category-header">
+                                    <i class="fas fa-chart-bar category-icon"></i>
+                                    <div class="category-name">Overall Performance</div>
+                                    <div class="category-target">Target: +25% Growth</div>
+                                </div>
+                                <div class="kpi-metrics">
+                                    • Organic Traffic: 895,957 → 1,120,000+<br />
+                                    • Conversion Rate: 2.83% → 3.5%+<br />
+                                    • Authority Score: 52 → 58+<br />
+                                    • Competitive Gap: -125% → -50%
+                                </div>
+                                <div class="kpi-measurement">Measured via: Adobe Analytics, SEMRush, GSC, competitive analysis</div>
+                            </div>
+
+                            <div class="kpi-category technical-kpi">
+                                <div class="category-header">
+                                    <i class="fas fa-mobile-alt category-icon"></i>
+                                    <div class="category-name">Mobile Experience</div>
+                                    <div class="category-target">Target: +35% Improvement</div>
+                                </div>
+                                <div class="kpi-metrics">
+                                    • Mobile Page Speed: Current → +35% improvement<br />
+                                    • Mobile Conversion Rate: 2.1% → 3.0%+<br />
+                                    • Mobile-First Index Issues: 845 → <100 URLs<br />
+                                    • Core Web Vitals: 62% passing → 90%+ passing
+                                </div>
+                                <div class="kpi-measurement">Measured via: PageSpeed Insights, GSC, Adobe Analytics, CrUX report</div>
+                            </div>
+
+                            <div class="kpi-category ai-search-kpi">
+                                <div class="category-header">
+                                    <i class="fas fa-sitemap category-icon"></i>
+                                    <div class="category-name">Content Architecture</div>
+                                    <div class="category-target">Target: 85% Optimization</div>
+                                </div>
+                                <div class="kpi-metrics">
+                                    • E-E-A-T Signals: Current → +75% improvement<br />
+                                    • Content Structure Issues: 1,249 → <200 URLs<br />
+                                    • FAQ Implementation: 356 → 1,200+ pages<br />
+                                    • Content Freshness: 45% → 80%+ updated
+                                </div>
+                                <div class="kpi-measurement">Measured via: Content audit, GSC, schema validation, freshness analysis</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="measurement-framework">
+                        <div class="framework-title">
+                            <i class="fas fa-calendar-check framework-icon"></i>
+                            Measurement Schedule
+                        </div>
+                        <div class="framework-phases">
+                            <div class="phase-box">
+                                <div class="phase-number">W</div>
+                                <div class="phase-title">Weekly</div>
+                                <div class="phase-frequency">Technical KPIs</div>
+                            </div>
+                            <div class="phase-box">
+                                <div class="phase-number">M</div>
+                                <div class="phase-title">Monthly</div>
+                                <div class="phase-frequency">Performance Review</div>
+                            </div>
+                            <div class="phase-box">
+                                <div class="phase-number">Q</div>
+                                <div class="phase-title">Quarterly</div>
+                                <div class="phase-frequency">Strategic Assessment</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">Performance Target Progression (16-Week Timeline)</div>
+                    <div class="chart-wrapper">
+                        <canvas id="kpiChart"></canvas>
+                    </div>
+                    <div class="data-source">Source: Baseline performance data and conservative growth projections based on technical optimization impact</div>
+                </div>
+            </div>
+            <div class="navigation flex">
+                <a class="button-next ml-auto" href="31.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+        </div>
+
+        <script>
+            // Create the KPI progression chart
+            const ctx = document.getElementById("kpiChart").getContext("2d");
+            const kpiChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: ["Week 0", "Week 4", "Week 8", "Week 12", "Week 16"],
+                    datasets: [
+                        {
+                            label: "Organic Traffic (000s)",
+                            data: [896, 920, 965, 1025, 1120],
+                            backgroundColor: "rgba(0, 102, 204, 0.1)",
+                            borderColor: "#0066cc",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#0066cc",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            tension: 0.4,
+                        },
+                        {
+                            label: "AI Query Clicks (000s)",
+                            data: [64, 68, 75, 82, 89],
+                            backgroundColor: "rgba(52, 168, 83, 0.1)",
+                            borderColor: "#34a853",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#34a853",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            tension: 0.4,
+                        },
+                        {
+                            label: "Conversion Rate (%)",
+                            data: [2.83, 2.95, 3.15, 3.35, 3.5],
+                            backgroundColor: "rgba(255, 102, 0, 0.1)",
+                            borderColor: "#ff6600",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#ff6600",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            tension: 0.4,
+                            yAxisID: "y1",
+                        },
+                        {
+                            label: "Authority Score",
+                            data: [52, 53, 55, 56, 58],
+                            backgroundColor: "rgba(251, 188, 5, 0.1)",
+                            borderColor: "#fbbc05",
+                            borderWidth: 3,
+                            pointBackgroundColor: "#fbbc05",
+                            pointBorderColor: "#ffffff",
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            tension: 0.4,
+                            yAxisID: "y1",
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: "index",
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                usePointStyle: true,
+                                padding: 10,
+                                font: {
+                                    size: 11,
+                                },
+                            },
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || "";
+                                    if (label) {
+                                        label += ": ";
+                                    }
+                                    if (context.dataset.label === "Conversion Rate (%)" || context.dataset.label === "Authority Score") {
+                                        label += context.parsed.y;
+                                    } else {
+                                        label += context.parsed.y + "K";
+                                    }
+                                    return label;
+                                },
+                            },
+                        },
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Implementation Timeline",
+                                font: {
+                                    weight: "bold",
+                                    size: 12,
+                                },
+                            },
+                            grid: {
+                                color: "rgba(0, 0, 0, 0.05)",
+                            },
+                        },
+                        y: {
+                            type: "linear",
+                            display: true,
+                            position: "left",
+                            title: {
+                                display: true,
+                                text: "Traffic & Clicks (Thousands)",
+                                font: {
+                                    weight: "bold",
+                                    size: 12,
+                                },
+                            },
+                            grid: {
+                                color: "rgba(0, 0, 0, 0.05)",
+                            },
+                        },
+                        y1: {
+                            type: "linear",
+                            display: true,
+                            position: "right",
+                            title: {
+                                display: true,
+                                text: "Rate & Score",
+                                font: {
+                                    weight: "bold",
+                                    size: 12,
+                                },
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

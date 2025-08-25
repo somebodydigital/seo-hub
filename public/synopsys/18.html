@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+            html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+            .slide-header {
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .slide-title {
+                font-size: 26px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 4px;
+                line-height: 1.2;
+            }
+
+            .slide-subtitle {
+                font-size: 13px;
+                color: #666666;
+                margin: 0;
+                line-height: 1.3;
+            }
+
+            .content-container {
+                display: flex;
+                gap: 20px;
+                flex: 1;
+                height: 620px;
+                min-height: 620px;
+            }
+
+            .seo-analysis {
+                width: 60%;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                height: 100%;
+            }
+
+            .issues-summary {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                border-left: 4px solid #dc3545;
+                flex-shrink: 0;
+            }
+
+            .issues-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .issues-icon {
+                color: #dc3545;
+                margin-right: 6px;
+                font-size: 15px;
+            }
+
+            .issues-metrics {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            .issue-box {
+                text-align: center;
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .metric-value {
+                font-size: 14px;
+                font-weight: 700;
+                color: #dc3545;
+                margin-bottom: 2px;
+            }
+
+            .metric-label {
+                font-size: 9px;
+                color: #666666;
+                line-height: 1.2;
+            }
+
+            .issues-description {
+                font-size: 11px;
+                color: #333333;
+                line-height: 1.3;
+            }
+
+            .strategy-optimization {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 12px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                height: 480px;
+                min-height: 480px;
+            }
+
+            .strategy-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                flex-shrink: 0;
+            }
+
+            .strategy-icon {
+                color: #0066cc;
+                margin-right: 6px;
+                font-size: 15px;
+            }
+
+            .strategy-content {
+                flex: 1;
+                height: 440px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-right: 8px;
+                scrollbar-width: thin;
+                scrollbar-color: #0066cc #f0f0f0;
+            }
+
+            .strategy-content::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .strategy-content::-webkit-scrollbar-track {
+                background: #f0f0f0;
+                border-radius: 4px;
+            }
+
+            .strategy-content::-webkit-scrollbar-thumb {
+                background: #0066cc;
+                border-radius: 4px;
+            }
+
+            .strategy-content::-webkit-scrollbar-thumb:hover {
+                background: #0052a3;
+            }
+
+            .strategy-section {
+                margin-bottom: 20px;
+            }
+
+            .section-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+            }
+
+            .section-icon {
+                color: #0066cc;
+                margin-right: 6px;
+                font-size: 14px;
+            }
+
+            .strategy-item {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 10px;
+                margin-bottom: 8px;
+                border-left: 3px solid #ff6600;
+            }
+
+            .item-title {
+                font-size: 12px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 4px;
+            }
+
+            .item-description {
+                font-size: 11px;
+                color: #666666;
+                line-height: 1.4;
+                margin-bottom: 4px;
+            }
+
+            .item-implementation {
+                font-size: 10px;
+                color: #0066cc;
+                font-style: italic;
+            }
+
+            .technical-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+
+            .tech-box {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 8px;
+                text-align: center;
+            }
+
+            .tech-title {
+                font-size: 11px;
+                font-weight: 700;
+                color: #0066cc;
+                margin-bottom: 3px;
+            }
+
+            .tech-type {
+                font-size: 10px;
+                color: #333333;
+                margin-bottom: 2px;
+            }
+
+            .tech-detail {
+                font-size: 9px;
+                color: #666666;
+            }
+
+            .impact-framework {
+                width: 40%;
+                background-color: #f8f9fa;
+                padding: 12px;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .framework-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #333333;
+                margin-bottom: 10px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+
+            .current-impact {
+                background-color: #ffffff;
+                border-radius: 6px;
+                padding: 12px;
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+
+            .impact-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: #dc3545;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+            .impact-icon {
+                color: #dc3545;
+                margin-right: 6px;
+                font-size: 13px;
+            }
+
+            .impact-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+
+            .impact-box {
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .impact-value {
+                font-size: 14px;
+                font-weight: 700;
+                color: #dc3545;
+                margin-bottom: 2px;
+            }
+
+            .impact-label {
+                font-size: 9px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .priority-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .priority-box {
+                text-align: center;
+                background-color: #f8f9fa;
+                border-radius: 4px;
+                padding: 8px;
+            }
+
+            .priority-value {
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 2px;
+            }
+
+            .risk-value {
+                color: #ff6600;
+            }
+            .critical-value {
+                color: #ff6600;
+            }
+
+            .priority-label {
+                font-size: 9px;
+                color: #333333;
+                line-height: 1.2;
+            }
+
+            .chart-wrapper {
+                flex: 1;
+                min-height: 300px;
+                position: relative;
+            }
+
+            .data-source {
+                font-size: 9px;
+                color: #666666;
+                text-align: center;
+                margin-top: 8px;
+                font-style: italic;
+                flex-shrink: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+
+        <div class="slide-container">
+            <div class="slide-header">
+                <h1 class="slide-title">International SEO Strategy</h1>
+                <p class="slide-subtitle">Hreflang optimization strategy based on verified Screaming Frog analysis of 3,547 international SEO issues</p>
+            </div>
+
+            <div class="content-container">
+                <div class="seo-analysis">
+                    <div class="issues-summary">
+                        <div class="issues-title">
+                            <i class="fas fa-exclamation-triangle issues-icon"></i>
+                            Current International SEO Issues
+                        </div>
+                        <div class="issues-metrics">
+                            <div class="issue-box">
+                                <div class="metric-value">3,547</div>
+                                <div class="metric-label">Hreflang Issues</div>
+                            </div>
+                            <div class="issue-box">
+                                <div class="metric-value">28.15%</div>
+                                <div class="metric-label">URLs Affected</div>
+                            </div>
+                            <div class="issue-box">
+                                <div class="metric-value">12,607</div>
+                                <div class="metric-label">Total URLs Analyzed</div>
+                            </div>
+                            <div class="issue-box">
+                                <div class="metric-value">High</div>
+                                <div class="metric-label">Priority Level</div>
+                            </div>
+                        </div>
+                        <div class="issues-description">
+                            Verified Screaming Frog analysis (August 8-9, 2025) identified 3,547 hreflang implementation issues affecting 28.15% of analyzed
+                            URLs.
+                        </div>
+                    </div>
+
+                    <div class="strategy-optimization">
+                        <div class="strategy-title">
+                            <i class="fas fa-globe strategy-icon"></i>
+                            International SEO Optimization Strategy
+                        </div>
+                        <div class="strategy-content">
+                            <div class="strategy-section">
+                                <div class="section-title">
+                                    <i class="fas fa-exclamation-circle section-icon"></i>
+                                    Critical Implementation Requirements
+                                </div>
+
+                                <div class="strategy-item">
+                                    <div class="item-title">Critical: Hreflang Implementation Audit</div>
+                                    <div class="item-description">
+                                        Comprehensive audit and correction of all identified hreflang issues affecting 28.15% of site URLs based on Screaming
+                                        Frog analysis.
+                                    </div>
+                                    <div class="item-implementation">Implementation: Technical audit, hreflang mapping, implementation guidelines</div>
+                                </div>
+
+                                <div class="strategy-item">
+                                    <div class="item-title">Critical: Language-Region Mapping</div>
+                                    <div class="item-description">
+                                        Establish proper language and region targeting based on content analysis and international market presence.
+                                    </div>
+                                    <div class="item-implementation">Implementation: Content analysis, market research, hreflang strategy development</div>
+                                </div>
+                            </div>
+
+                            <div class="strategy-section">
+                                <div class="section-title">
+                                    <i class="fas fa-cogs section-icon"></i>
+                                    Technical Implementation Framework
+                                </div>
+
+                                <div class="technical-grid">
+                                    <div class="tech-box">
+                                        <div class="tech-title">Hreflang Tags</div>
+                                        <div class="tech-type">HTML/XML</div>
+                                        <div class="tech-detail">3,547 URLs to Fix</div>
+                                    </div>
+                                    <div class="tech-box">
+                                        <div class="tech-title">Language Mapping</div>
+                                        <div class="tech-type">ISO Codes</div>
+                                        <div class="tech-detail">Standards Required</div>
+                                    </div>
+                                    <div class="tech-box">
+                                        <div class="tech-title">Content Strategy</div>
+                                        <div class="tech-type">Localization</div>
+                                        <div class="tech-detail">Market Analysis</div>
+                                    </div>
+                                    <div class="tech-box">
+                                        <div class="tech-title">Monitoring</div>
+                                        <div class="tech-type">Automated</div>
+                                        <div class="tech-detail">Ongoing QA</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="strategy-section">
+                                <div class="section-title">
+                                    <i class="fas fa-chart-line section-icon"></i>
+                                    Implementation Timeline & Priorities
+                                </div>
+
+                                <div class="strategy-item">
+                                    <div class="item-title">Phase 1: Critical Issues (Weeks 1-2)</div>
+                                    <div class="item-description">
+                                        Address high-priority hreflang implementation issues affecting core international pages and primary market targeting.
+                                    </div>
+                                    <div class="item-implementation">Priority: Critical hreflang fixes, primary market optimization</div>
+                                </div>
+
+                                <div class="strategy-item">
+                                    <div class="item-title">Phase 2: Comprehensive Audit (Weeks 3-4)</div>
+                                    <div class="item-description">
+                                        Complete technical audit of all 3,547 identified issues with systematic correction and validation protocols.
+                                    </div>
+                                    <div class="item-implementation">Scope: Full site audit, correction implementation, validation testing</div>
+                                </div>
+
+                                <div class="strategy-item">
+                                    <div class="item-title">Phase 3: Optimization & Monitoring (Weeks 5-8)</div>
+                                    <div class="item-description">
+                                        Implement ongoing monitoring systems and optimization protocols for international SEO performance tracking.
+                                    </div>
+                                    <div class="item-implementation">Focus: Performance monitoring, continuous optimization, reporting systems</div>
+                                </div>
+
+                                <div class="strategy-item">
+                                    <div class="item-title">Phase 4: Advanced Localization (Weeks 9-12)</div>
+                                    <div class="item-description">
+                                        Implement advanced localization strategies including regional content optimization and market-specific targeting.
+                                    </div>
+                                    <div class="item-implementation">Advanced: Regional content, market targeting, performance optimization</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="impact-framework">
+                    <div class="framework-title">International SEO Impact Analysis</div>
+
+                    <div class="current-impact">
+                        <div class="impact-title">
+                            <i class="fas fa-chart-bar impact-icon"></i>
+                            Current Impact Assessment
+                        </div>
+                        <div class="impact-grid">
+                            <div class="impact-box">
+                                <div class="impact-value">3,547</div>
+                                <div class="impact-label">URLs with Hreflang Issues</div>
+                            </div>
+                            <div class="impact-box">
+                                <div class="impact-value">28.15%</div>
+                                <div class="impact-label">Site Coverage Affected</div>
+                            </div>
+                        </div>
+                        <div class="priority-grid">
+                            <div class="priority-box">
+                                <div class="priority-value risk-value">High</div>
+                                <div class="priority-label">International Visibility Risk</div>
+                            </div>
+                            <div class="priority-box">
+                                <div class="priority-value critical-value">Critical</div>
+                                <div class="priority-label">Implementation Priority</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-wrapper">
+                        <canvas id="impactChart" style="width: 100%; height: 100%"></canvas>
+                    </div>
+
+                    <div class="data-source">Source: Screaming Frog hreflang analysis (August 8-9, 2025)</div>
+                </div>
+            </div>
+            <div class="navigation flex">
+                <a class="button-next ml-auto" href="19.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+            <!-- to here -->
+        </div>
+
+        <script>
+            // International SEO Impact Chart
+            const ctx = document.getElementById("impactChart").getContext("2d");
+            const impactChart = new Chart(ctx, {
+                type: "doughnut",
+                data: {
+                    labels: ["URLs with Hreflang Issues", "URLs without Issues"],
+                    datasets: [
+                        {
+                            data: [28.15, 71.85],
+                            backgroundColor: ["#dc3545", "#28a745"],
+                            borderWidth: 2,
+                            borderColor: "#ffffff",
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                font: {
+                                    size: 10,
+                                },
+                                padding: 10,
+                            },
+                        },
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

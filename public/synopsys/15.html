@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+      
+      html {
+                background: #fff;
+                height: 100%;
+            }
+            body {
+                font-family: "Open Sans", sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .slide-container {
+                margin: auto;
+                width: 1280px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+            .logo {
+                max-width: 120px;
+            }
+            .navigation {
+                width: 100%;
+                height: 30px;
+            }
+
+      
+      .slide-header {
+        margin-bottom: 20px;
+        flex-shrink: 0;
+      }
+      
+      .slide-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 5px;
+        line-height: 1.2;
+      }
+      
+      .slide-subtitle {
+        font-size: 16px;
+        color: #666666;
+        margin: 0;
+        line-height: 1.3;
+      }
+      
+      .content-container {
+        display: flex;
+        gap: 25px;
+        flex: 1;
+        min-height: 0;
+      }
+      
+      .analysis-container {
+        width: 45%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .issue-summary {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        border-left: 5px solid #ff6600;
+      }
+      
+      .summary-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333333;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .summary-icon {
+        color: #ff6600;
+        margin-right: 8px;
+        font-size: 18px;
+      }
+      
+      .summary-metrics {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 12px;
+      }
+      
+      .metric-box {
+        flex: 1;
+        background-color: #ffffff;
+        border-radius: 6px;
+        padding: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        text-align: center;
+      }
+      
+      .metric-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: #ff6600;
+        margin-bottom: 5px;
+      }
+      
+      .metric-label {
+        font-size: 12px;
+        color: #666666;
+        line-height: 1.2;
+      }
+      
+      .summary-description {
+        font-size: 14px;
+        color: #333333;
+        line-height: 1.4;
+      }
+      
+      .impact-analysis {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        border-left: 5px solid #0066cc;
+        flex: 1;
+      }
+      
+      .impact-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333333;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .impact-icon {
+        color: #0066cc;
+        margin-right: 8px;
+        font-size: 18px;
+      }
+      
+      .impact-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .impact-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #333333;
+        line-height: 1.4;
+      }
+      
+      .impact-bullet {
+        color: #0066cc;
+        margin-right: 8px;
+        flex-shrink: 0;
+        margin-top: 3px;
+      }
+      
+      .solution-recommendations {
+        background-color: #e8f5e8;
+        border-radius: 8px;
+        padding: 15px;
+        flex-shrink: 0;
+      }
+      
+      .solution-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #34a853;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .solution-icon {
+        margin-right: 8px;
+      }
+      
+      .solution-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .solution-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #333333;
+        line-height: 1.4;
+      }
+      
+      .solution-bullet {
+        color: #34a853;
+        margin-right: 8px;
+        flex-shrink: 0;
+        margin-top: 3px;
+      }
+      
+      .chart-container {
+        width: 55%;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .chart-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333333;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      
+      .data-source {
+        font-size: 11px;
+        color: #666666;
+        text-align: center;
+        margin-top: 8px;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+<div class="container mx-auto text-center py-8">
+            <!-- black -->
+            <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/u305_div.png" class="logo" />
+            <!-- white -->
+            <!-- <img src="https://www.somebodydigital.com/wp-content/uploads/2024/08/sd_logo-1.png" class="logo" /> -->
+        </div>
+
+    <div class="slide-container">
+      <div class="slide-header">
+        <h1 class="slide-title">JavaScript & Canonical Implementation Issues</h1>
+        <p class="slide-subtitle">Analysis of 1,559 URLs with JavaScript canonical mismatches affecting AI crawler understanding</p>
+      </div>
+      
+      <div class="content-container">
+        <div class="analysis-container">
+          <div class="issue-summary">
+            <h3 class="summary-title">
+              <i class="fas fa-code summary-icon"></i>
+              JavaScript Canonical Issues
+            </h3>
+            
+            <div class="summary-metrics">
+              <div class="metric-box">
+                <div class="metric-value">1,559</div>
+                <div class="metric-label">Affected URLs</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-value">24.3%</div>
+                <div class="metric-label">Of Critical Issues</div>
+              </div>
+            </div>
+            
+            <div class="summary-description">
+              JavaScript-rendered canonical tags on 1,559 URLs differ from HTML canonical tags, creating confusion for search crawlers. This mismatch significantly impacts content indexing and AI search understanding.
+            </div>
+          </div>
+          
+          <div class="impact-analysis">
+            <h3 class="impact-title">
+              <i class="fas fa-exclamation-triangle impact-icon"></i>
+              AI Crawler Impact
+            </h3>
+            
+            <ul class="impact-list">
+              <li class="impact-item">
+                <i class="fas fa-circle impact-bullet" style="font-size: 6px;"></i>
+                <div><strong>Content Duplication:</strong> AI crawlers encounter conflicting canonical signals, causing content duplication issues and diluted ranking signals.</div>
+              </li>
+              <li class="impact-item">
+                <i class="fas fa-circle impact-bullet" style="font-size: 6px;"></i>
+                <div><strong>Rendering Failures:</strong> JavaScript-dependent content may not be fully processed by AI search crawlers, resulting in incomplete content understanding.</div>
+              </li>
+              <li class="impact-item">
+                <i class="fas fa-circle impact-bullet" style="font-size: 6px;"></i>
+                <div><strong>Authority Dilution:</strong> Link equity and authority signals are split between multiple URL versions, weakening overall domain authority.</div>
+              </li>
+              <li class="impact-item">
+                <i class="fas fa-circle impact-bullet" style="font-size: 6px;"></i>
+                <div><strong>Indexing Inconsistency:</strong> AI search platforms may index different versions of the same content, creating inconsistent search experiences.</div>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="solution-recommendations">
+            <h3 class="solution-title">
+              <i class="fas fa-lightbulb solution-icon"></i>
+              Implementation Recommendations
+            </h3>
+            
+            <ul class="solution-list">
+              <li class="solution-item">
+                <i class="fas fa-check-circle solution-bullet"></i>
+                <div><strong>Server-Side Rendering:</strong> Implement server-side rendering for critical content and metadata to ensure consistent crawler access.</div>
+              </li>
+              <li class="solution-item">
+                <i class="fas fa-check-circle solution-bullet"></i>
+                <div><strong>Canonical Alignment:</strong> Ensure HTML and JavaScript-rendered canonical tags are identical across all page versions.</div>
+              </li>
+              <li class="solution-item">
+                <i class="fas fa-check-circle solution-bullet"></i>
+                <div><strong>Dynamic Rendering:</strong> Implement dynamic rendering to serve pre-rendered content to search crawlers while maintaining JavaScript functionality for users.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <div class="chart-title">JavaScript Canonical Issues & Crawler Impact</div>
+          <div style="height: 100%; min-height: 500px;">
+            <canvas id="jsIssuesChart"></canvas>
+          </div>
+          <div class="data-source">
+            Source: Screaming Frog technical audit (August 8-9, 2025)</div>
+        </div>
+      </div>
+<div class="navigation flex">
+                <a class="button-next ml-auto" href="16.html" role="button" tabindex="0" aria-label="Next slide">
+                    <!-- black -->
+                    <svg style="height: 30px" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg>
+                    <!-- white -->
+                    <!-- <svg
+                        style="height: 30px; filter: invert(1)"
+                        class="e-font-icon-svg e-eicon-chevron-right"
+                        viewBox="0 0 1000 1000"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"
+                        ></path>
+                    </svg> -->
+                </a>
+            </div>
+
+    </div>
+    
+    <script>
+      // Create the JavaScript issues chart
+      const ctx = document.getElementById('jsIssuesChart').getContext('2d');
+      
+      // Create a stacked bar chart showing the impact of JavaScript canonical issues
+      const jsIssuesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['HTML Only', 'JS Rendered', 'Mismatch'],
+          datasets: [
+            {
+              label: 'Fully Indexed',
+              data: [92, 78, 41],
+              backgroundColor: '#34a853',
+              borderColor: '#34a853',
+              borderWidth: 1
+            },
+            {
+              label: 'Partially Indexed',
+              data: [6, 15, 32],
+              backgroundColor: '#fbbc05',
+              borderColor: '#fbbc05',
+              borderWidth: 1
+            },
+            {
+              label: 'Not Indexed',
+              data: [2, 7, 27],
+              backgroundColor: '#ff6600',
+              borderColor: '#ff6600',
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: false
+            },
+            legend: {
+              position: 'bottom',
+              labels: {
+                usePointStyle: true,
+                padding: 15
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.parsed.y + '%';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Canonical Implementation Type',
+                font: {
+                  weight: 'bold',
+                  size: 12
+                }
+              },
+              grid: {
+                display: false
+              }
+            },
+            y: {
+              stacked: true,
+              beginAtZero: true,
+              max: 100,
+              title: {
+                display: true,
+                text: 'Crawler Processing Rate (%)',
+                font: {
+                  weight: 'bold',
+                  size: 12
+                }
+              },
+              ticks: {
+                callback: function(value) {
+                  return value + '%';
+                }
+              },
+              grid: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              }
+            }
+          }
+        }
+      });
+      
+      // Add annotation to highlight the mismatch impact
+      const originalDraw = jsIssuesChart.draw;
+      jsIssuesChart.draw = function() {
+        originalDraw.apply(this, arguments);
+        
+        const chart = this;
+        const ctx = chart.ctx;
+        const xAxis = chart.scales.x;
+        const yAxis = chart.scales.y;
+        
+        // Draw annotation for the mismatch column
+        const x = xAxis.getPixelForValue(2);
+        const y = yAxis.getPixelForValue(0);
+        const width = xAxis.getPixelForValue(2) - xAxis.getPixelForValue(1);
+        
+        ctx.save();
+        ctx.strokeStyle = '#ff6600';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]);
+        ctx.strokeRect(x - width/2, y, width, -yAxis.height);
+        
+        // Add annotation text
+        ctx.font = '12px Open Sans';
+        ctx.fillStyle = '#ff6600';
+        ctx.fillText('1,559 URLs affected', x - width/2 + 5, y - 10);
+        ctx.restore();
+      };
+      
+      jsIssuesChart.update();
+    </script>
+  </body>
+</html>
+
