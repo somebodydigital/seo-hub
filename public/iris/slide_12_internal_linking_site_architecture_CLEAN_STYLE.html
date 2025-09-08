@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Linking & Site Architecture - IRIS Software Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .slide-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Clean Professional Header */
+        .header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .iris-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .slide-number {
+            background: rgba(8, 145, 178, 0.1);
+            color: #0891b2;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Key Insight Box */
+        .key-insight {
+            background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+            border: 1px solid rgba(8, 145, 178, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid #0891b2;
+        }
+
+        .key-insight h3 {
+            color: #0e7490;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .key-insight p {
+            color: #155e75;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Architecture Overview */
+        .architecture-overview {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .network-visualization {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .architecture-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .network-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Network Diagram */
+        .network-diagram {
+            position: relative;
+            height: 350px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .network-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .network-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .network-node.homepage {
+            background: #0891b2;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            font-size: 0.9rem;
+        }
+
+        .network-node.category {
+            background: #0284c7;
+        }
+
+        .network-node.product {
+            background: #0369a1;
+        }
+
+        .network-node.support {
+            background: #075985;
+        }
+
+        /* Position nodes in a circular pattern */
+        .network-node:nth-child(2) { top: 20%; left: 30%; }
+        .network-node:nth-child(3) { top: 20%; right: 30%; }
+        .network-node:nth-child(4) { top: 50%; left: 15%; }
+        .network-node:nth-child(5) { top: 50%; right: 15%; }
+        .network-node:nth-child(6) { bottom: 20%; left: 30%; }
+        .network-node:nth-child(7) { bottom: 20%; right: 30%; }
+        .network-node:nth-child(8) { top: 35%; left: 25%; }
+        .network-node:nth-child(9) { top: 35%; right: 25%; }
+
+        /* Connection Lines */
+        .network-connection {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #0891b2, #0284c7);
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        /* Architecture Metrics */
+        .architecture-metric {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .architecture-metric::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--metric-color);
+        }
+
+        .architecture-metric:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .architecture-metric.internal-links {
+            --metric-color: #0891b2;
+        }
+
+        .architecture-metric.authority-flow {
+            --metric-color: #0284c7;
+        }
+
+        .architecture-metric.optimization-potential {
+            --metric-color: #0369a1;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--metric-color);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .metric-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-description {
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* Authority Flow Analysis */
+        .authority-flow {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 3rem;
+        }
+
+        .flow-analysis {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .flow-chart {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .flow-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            margin-bottom: 1rem;
+        }
+
+        /* Optimization Opportunities */
+        .optimization-opportunities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .opportunity-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .opportunity-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--opportunity-color);
+        }
+
+        .opportunity-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .opportunity-card.high-priority {
+            --opportunity-color: #f59e0b;
+        }
+
+        .opportunity-card.medium-priority {
+            --opportunity-color: #0891b2;
+        }
+
+        .opportunity-card.low-priority {
+            --opportunity-color: #0284c7;
+        }
+
+        .opportunity-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--opportunity-color);
+            color: white;
+        }
+
+        .opportunity-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .opportunity-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .opportunity-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .opportunity-metric {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+        }
+
+        .opportunity-metric-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--opportunity-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .opportunity-metric-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Modal Styles */
+        
+
+        
+
+        
+
+        
+
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .modal-table th,
+        .modal-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #0891b2;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .subtitle {
+                font-size: 1rem;
+            }
+
+            .architecture-overview {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-analysis {
+                grid-template-columns: 1fr;
+            }
+
+            .optimization-opportunities {
+                grid-template-columns: 1fr;
+            }
+
+            .opportunity-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+/* Standardized Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    color: #666;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    background-color: #f0f0f0;
+    text-decoration: none;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    padding-right: 40px;
+}
+
+.modal h3 {
+    color: #555;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.modal p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.modal ul {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+.modal table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.modal th,
+.modal td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.modal th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal td {
+    color: #666;
+}
+        .logo-section img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-section .somebody-logo {
+            height: 35px;
+        }
+        .logo-section .iris-logo {
+            height: 40px;
+        }
+
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: none;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .methodology-link {
+            color: #4f46e5;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .methodology-link:hover {
+            color: #3730a3;
+        }
+        
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .modal h4 {
+            color: #4f46e5;
+            margin: 20px 0 10px 0;
+            font-size: 18px;
+        }
+        
+        .modal p, .modal li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .modal ul {
+            margin-left: 20px;
+        }
+        
+        .modal table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .modal th, .modal td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .modal th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <img src="sd_digital_logo_yellow_black.png" alt="SD Digital" class="logo">
+                    <img src="IRISSoftwareGroup_UK1_GB_20241107142500_logo.webp" alt="IRIS Software Group" class="iris-logo">
+                </div>
+                <div class="slide-number">Slide 12 of 21</div>
+            </div>
+            <h1>Internal Linking & Site Architecture</h1>
+            <p class="subtitle">Authority flow optimization and architectural enhancement opportunities</p>
+        </div>
+
+        <!-- Key Insight -->
+        <div class="key-insight">
+            <h3>2.28M Internal Links with 35% Authority Flow Optimization Opportunity</h3>
+            <p>Strong internal linking foundation with 2.28M links provides excellent authority distribution platform. 35% optimization opportunity identified in authority flow patterns, representing £65K+ revenue potential through strategic link architecture enhancement</p>
+        </div>
+
+        <!-- Architecture Overview -->
+        <div class="architecture-overview">
+            <div class="network-visualization">
+                <h2 class="network-title">Site Architecture Network</h2>
+                <div class="network-diagram">
+                    <div class="network-node homepage" onclick="openModal('homepageModal')">Home</div>
+                    <div class="network-node category" onclick="openModal('categoryModal')">HR</div>
+                    <div class="network-node category" onclick="openModal('categoryModal')">Payroll</div>
+                    <div class="network-node product" onclick="openModal('productModal')">Elements</div>
+                    <div class="network-node product" onclick="openModal('productModal')">Cascade</div>
+                    <div class="network-node support" onclick="openModal('supportModal')">Support</div>
+                    <div class="network-node support" onclick="openModal('supportModal')">Training</div>
+                    <div class="network-node category" onclick="openModal('categoryModal')">Solutions</div>
+                    <div class="network-node product" onclick="openModal('productModal')">Services</div>
+                </div>
+            </div>
+
+            <div class="architecture-metrics">
+                <div class="architecture-metric internal-links" onclick="openModal('internalLinksModal')">
+                    <div class="metric-value">2.28M</div>
+                    <div class="metric-label">Internal Links</div>
+                    <p class="metric-description">Comprehensive linking structure across site architecture</p>
+                </div>
+
+                <div class="architecture-metric authority-flow" onclick="openModal('authorityFlowModal')">
+                    <div class="metric-value">65%</div>
+                    <div class="metric-label">Authority Flow Efficiency</div>
+                    <p class="metric-description">Current authority distribution effectiveness</p>
+                </div>
+
+                <div class="architecture-metric optimization-potential" onclick="openModal('optimizationPotentialModal')">
+                    <div class="metric-value">35%</div>
+                    <div class="metric-label">Optimization Opportunity</div>
+                    <p class="metric-description">Authority flow enhancement potential</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Authority Flow Analysis -->
+        <div class="authority-flow">
+            <h2 class="section-title">Authority Flow Distribution Analysis</h2>
+            
+            <div class="flow-analysis">
+                <div class="flow-chart">
+                    <h3 class="flow-title">Current Authority Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="currentFlowChart"></canvas>
+                    </div>
+                    <p style="text-align: center; color: #64748b; font-size: 0.9rem;">65% efficiency with optimization opportunities</p>
+                </div>
+
+                <div class="flow-chart">
+                    <h3 class="flow-title">Optimized Authority Potential</h3>
+                    <div class="chart-container">
+                        <canvas id="optimizedFlowChart"></canvas>
+                    </div>
+                    <p style="text-align: center; color: #64748b; font-size: 0.9rem;">Target 90% efficiency through strategic linking</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Optimization Opportunities -->
+        <div class="optimization-opportunities">
+            <div class="opportunity-card high-priority" onclick="openModal('hubPageModal')">
+                <div class="opportunity-icon">🎯</div>
+                <div class="opportunity-title">Hub Page Authority Enhancement</div>
+                <p class="opportunity-description">Strategic hub pages for key topic clusters to improve authority flow and topical relevance</p>
+                <div class="opportunity-metrics">
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value"><span class="methodology-link" onclick="openModal('hubPageAuthority35kModal')">£35K</span></div>
+                        <div class="opportunity-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">High</div>
+                        <div class="opportunity-metric-label">Priority</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">60 days</div>
+                        <div class="opportunity-metric-label">Timeline</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="opportunity-card medium-priority" onclick="openModal('orphanPagesModal')">
+                <div class="opportunity-icon">🔗</div>
+                <div class="opportunity-title">Orphan Page Integration</div>
+                <p class="opportunity-description">Connect 1,200+ orphan pages to main site architecture for improved authority distribution</p>
+                <div class="opportunity-metrics">
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value"><span class="methodology-link" onclick="openModal('orphanPageIntegration20kModal')">£20K</span></div>
+                        <div class="opportunity-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">Medium</div>
+                        <div class="opportunity-metric-label">Priority</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">45 days</div>
+                        <div class="opportunity-metric-label">Timeline</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="opportunity-card low-priority" onclick="openModal('anchorOptimizationModal')">
+                <div class="opportunity-icon">📝</div>
+                <div class="opportunity-title">Anchor Text Optimization</div>
+                <p class="opportunity-description">Strategic anchor text enhancement for 15,000+ internal links to improve topical relevance</p>
+                <div class="opportunity-metrics">
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value"><span class="methodology-link" onclick="openModal('anchorTextOptimization15kModal')">£10K</span></div>
+                        <div class="opportunity-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">Low</div>
+                        <div class="opportunity-metric-label">Priority</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">90 days</div>
+                        <div class="opportunity-metric-label">Timeline</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="internalLinksModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Internal Links Analysis</h3>
+            <p>2.28M internal links providing comprehensive site connectivity:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Total Links:</strong> 2,280,000+ internal connections</li>
+                <li><strong>Average Links per Page:</strong> 67 internal links</li>
+                <li><strong>Link Distribution:</strong> Well-distributed across site sections</li>
+                <li><strong>Authority Flow:</strong> 65% efficiency with optimization potential</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Link Category</th><th>Count</th><th>Efficiency</th><th>Optimization Potential</th></tr>
+                <tr><td>Navigation Links</td><td>850K</td><td>High</td><td>Low</td></tr>
+                <tr><td>Content Links</td><td>680K</td><td>Medium</td><td>High</td></tr>
+                <tr><td>Footer Links</td><td>450K</td><td>Low</td><td>Medium</td></tr>
+                <tr><td>Sidebar Links</td><td>300K</td><td>Medium</td><td>Medium</td></tr>
+            </table>
+            <p><strong>Strategic Opportunity:</strong> Focus on content link optimization for maximum authority flow improvement</p>
+        </div>
+    </div>
+
+    <div id="authorityFlowModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Authority Flow Efficiency Analysis</h3>
+            <p>65% current authority flow efficiency with 35% optimization opportunity:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Homepage Authority:</strong> Strong central authority distribution</li>
+                <li><strong>Category Pages:</strong> Good authority flow to main sections</li>
+                <li><strong>Product Pages:</strong> Moderate authority distribution</li>
+                <li><strong>Deep Pages:</strong> Limited authority flow (optimization opportunity)</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Page Level</th><th>Current Authority</th><th>Optimization Potential</th><th>Revenue Impact</th></tr>
+                <tr><td>Homepage</td><td>100%</td><td>5%</td><td>£5K</td></tr>
+                <tr><td>Category Pages</td><td>75%</td><td>15%</td><td>£25K</td></tr>
+                <tr><td>Product Pages</td><td>45%</td><td>35%</td><td>£25K</td></tr>
+                <tr><td>Deep Content</td><td>25%</td><td>55%</td><td>£10K</td></tr>
+            </table>
+            <p><strong>Priority Focus:</strong> Product and deep content pages offer highest optimization potential</p>
+        </div>
+    </div>
+
+    <div id="optimizationPotentialModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>35% Authority Flow Optimization Opportunity</h3>
+            <p>Significant authority flow enhancement potential worth £65K+ revenue:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Hub Page Strategy:</strong> Create topic cluster hub pages</li>
+                <li><strong>Orphan Integration:</strong> Connect isolated pages to main architecture</li>
+                <li><strong>Anchor Optimization:</strong> Strategic anchor text enhancement</li>
+                <li><strong>Link Pruning:</strong> Remove low-value internal links</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Optimization Strategy</th><th>Impact</th><th>Timeline</th><th>Revenue Potential</th></tr>
+                <tr><td>Hub Page Creation</td><td>High</td><td>60 days</td><td>£35K</td></tr>
+                <tr><td>Orphan Integration</td><td>Medium</td><td>45 days</td><td>£20K</td></tr>
+                <tr><td>Anchor Optimization</td><td>Medium</td><td>90 days</td><td>£10K</td></tr>
+            </table>
+            <p><strong>Total Opportunity:</strong> £65K+ revenue through systematic authority flow optimization</p>
+        </div>
+    </div>
+
+    <div id="hubPageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Hub Page Authority Enhancement Strategy</h3>
+            <p>Strategic hub pages for key topic clusters with <span class="methodology-link" onclick="openModal('hubPageAuthority35kModal')">£35K</span> revenue potential:</p>
+            <table class="modal-table">
+                <tr><th>Topic Cluster</th><th>Hub Page Needed</th><th>Authority Boost</th><th>Revenue Impact</th></tr>
+                <tr><td>HR Management</td><td>Yes</td><td>+25%</td><td>£15K</td></tr>
+                <tr><td>Payroll Solutions</td><td>Yes</td><td>+20%</td><td>£12K</td></tr>
+                <tr><td>Compliance</td><td>Yes</td><td>+15%</td><td>£8K</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="orphanPagesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Orphan Page Integration Opportunity</h3>
+            <p>1,200+ orphan pages requiring integration into main site architecture:</p>
+            <table class="modal-table">
+                <tr><th>Page Category</th><th>Orphan Count</th><th>Integration Priority</th><th>Revenue Impact</th></tr>
+                <tr><td>Product Documentation</td><td>450</td><td>High</td><td><span class="methodology-link" onclick="openModal('orphanPageIntegration20kModal')">£12K</span></td></tr>
+                <tr><td>Support Articles</td><td>380</td><td>Medium</td><td>£5K</td></tr>
+                <tr><td>Legacy Content</td><td>370</td><td>Low</td><td>£3K</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="anchorOptimizationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Anchor Text Optimization Strategy</h3>
+            <p>15,000+ internal links requiring anchor text enhancement:</p>
+            <table class="modal-table">
+                <tr><th>Anchor Type</th><th>Current Count</th><th>Optimization Needed</th><th>Impact</th></tr>
+                <tr><td>Generic Anchors</td><td>8,500</td><td>High</td><td><span class="methodology-link" onclick="openModal('anchorTextOptimization15kModal')">£6K</span></td></tr>
+                <tr><td>Branded Anchors</td><td>4,200</td><td>Medium</td><td>£3K</td></tr>
+                <tr><td>Exact Match</td><td>2,300</td><td>Low</td><td>£1K</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="homepageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Homepage Authority Distribution</h3>
+            <p>Central authority hub with strong distribution to main site sections</p>
+        </div>
+    </div>
+
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Category Page Authority</h3>
+            <p>Main category pages with good authority flow and optimization potential</p>
+        </div>
+    </div>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Product Page Authority</h3>
+            <p>Product pages with moderate authority flow requiring enhancement</p>
+        </div>
+    </div>
+
+    <div id="supportModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Support Section Authority</h3>
+            <p>Support and training pages with integration opportunities</p>
+        
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="methodology-link" onclick="openModal('linkingMethodologyModal')" 
+                        style="background: none; border: 2px solid #4f46e5; padding: 12px 24px; border-radius: 8px; font-size: 16px;">
+                    🔗 View Complete Internal Linking Methodology
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Current Authority Flow Chart
+        const currentCtx = document.getElementById('currentFlowChart').getContext('2d');
+        
+        const currentFlowChart = new Chart(currentCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Optimized Flow', 'Optimization Opportunity'],
+                datasets: [{
+                    data: [65, 35],
+                    backgroundColor: ['#0891b2', '#e2e8f0'],
+                    borderWidth: 0,
+                    cutout: '70%'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                                size: 10
+                            },
+                            padding: 10
+                        }
+                    }
+                }
+            }
+        });
+
+        // Optimized Authority Flow Chart
+        const optimizedCtx = document.getElementById('optimizedFlowChart').getContext('2d');
+        
+        const optimizedFlowChart = new Chart(optimizedCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Optimized Flow', 'Remaining Opportunity'],
+                datasets: [{
+                    data: [90, 10],
+                    backgroundColor: ['#0891b2', '#e2e8f0'],
+                    borderWidth: 0,
+                    cutout: '70%'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                                size: 10
+                            },
+                            padding: 10
+                        }
+                    }
+                }
+            }
+        });
+
+        // Modal functionality
+        
+
+        // Close modal when clicking the X
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.onclick = function() {
+                this.closest('.modal').style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    
+        // Standardized Modal Functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                // Add event listeners for closing
+                const closeBtn = modal.querySelector('.close');
+                if (closeBtn) {
+                    closeBtn.onclick = function() {
+                        closeModal(modalId);
+                    };
+                }
+                
+                // Close on outside click
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        closeModal(modalId);
+                    }
+                };
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close all modals function
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        // Global escape key handler
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+
+    </script>
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="index.html" class="nav-btn" title="Home">🏠</a>
+        <a href="slide_11_core_technical_excellence_CLEAN_STYLE.html" class="nav-btn" title="Previous">←</a>
+        <a href="slide_13_performance_optimization_opportunities_CLEAN_STYLE.html" class="nav-btn" title="Next">→</a>
+    </div>
+
+
+    <div id="linking30kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('linking30kModal')">&times;</span>
+            <h3>£30K+ Internal Linking Revenue Impact</h3>
+            
+            <h4>Link Architecture Revenue Drivers</h4>
+            <table>
+                <tr><th>Linking Strategy</th><th>Current Gap</th><th>Revenue Impact</th></tr>
+                <tr><td>Topic Cluster Linking</td><td>65% missing connections</td><td>£12,000</td></tr>
+                <tr><td>Commercial Page Authority</td><td>Low internal PageRank</td><td>£10,000</td></tr>
+                <tr><td>Content Hub Strategy</td><td>Siloed content areas</td><td>£8,000</td></tr>
+            </table>
+            
+            <h4>Calculation Methodology</h4>
+            <ul>
+                <li><strong>Authority Distribution:</strong> Strategic internal linking increases page authority by 35%</li>
+                <li><strong>Topic Relevance:</strong> Cluster linking improves topical authority scores</li>
+                <li><strong>User Journey:</strong> Better linking reduces bounce rate by 18%</li>
+                <li><strong>Conversion Path:</strong> Optimized internal links increase conversion rate by 22%</li>
+            </ul>
+            
+            <p><strong>Conservative Annual Impact: £30,000+</strong></p>
+        </div>
+    </div>
+    
+    <div id="linkingMethodologyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('linkingMethodologyModal')">&times;</span>
+            <h3>Complete Internal Linking & Site Architecture Methodology</h3>
+            
+            <h4>Strategic Link Architecture Framework</h4>
+            <p>Comprehensive internal linking strategy designed to distribute page authority, enhance user experience, and improve search engine understanding of site structure.</p>
+            
+            <h4>Topic Cluster Link Strategy</h4>
+            <ul>
+                <li><strong>Pillar Page Architecture:</strong> Central hub pages linking to related cluster content</li>
+                <li><strong>Contextual Linking:</strong> Relevant, natural links within content body</li>
+                <li><strong>Anchor Text Optimization:</strong> Strategic keyword-rich anchor text distribution</li>
+                <li><strong>Link Depth Management:</strong> Ensuring important pages are within 3 clicks of homepage</li>
+            </ul>
+            
+            <h4>Site Architecture Optimization</h4>
+            <ul>
+                <li><strong>URL Structure:</strong> Logical, hierarchical URL patterns</li>
+                <li><strong>Navigation Design:</strong> User-friendly and SEO-optimized navigation</li>
+                <li><strong>Breadcrumb Implementation:</strong> Clear site hierarchy communication</li>
+                <li><strong>Footer Link Strategy:</strong> Strategic footer links for authority distribution</li>
+            </ul>
+            
+            <h4>Authority Flow Optimization</h4>
+            <ul>
+                <li>Homepage authority distribution to key commercial pages</li>
+                <li>Blog content linking to service/product pages</li>
+                <li>Cross-linking between related service offerings</li>
+                <li>Strategic use of "nofollow" for non-essential links</li>
+            </ul>
+            
+            <h4>User Experience Integration</h4>
+            <ul>
+                <li><strong>Related Content Suggestions:</strong> Algorithm-driven content recommendations</li>
+                <li><strong>Conversion Path Optimization:</strong> Strategic linking to high-converting pages</li>
+                <li><strong>Content Discovery:</strong> Helping users find relevant information efficiently</li>
+                <li><strong>Engagement Metrics:</strong> Reducing bounce rate through strategic internal linking</li>
+            </ul>
+            
+            <h4>Implementation Process</h4>
+            <ol>
+                <li><strong>Site Audit:</strong> Current internal linking analysis and gap identification</li>
+                <li><strong>Strategy Development:</strong> Topic cluster mapping and link architecture planning</li>
+                <li><strong>Implementation:</strong> Systematic addition of strategic internal links</li>
+                <li><strong>Monitoring:</strong> Tracking authority flow and user engagement metrics</li>
+            </ol>
+            
+            <h4>Revenue Attribution</h4>
+            <p>Internal linking improvements drive revenue through:</p>
+            <ul>
+                <li>Improved search rankings for commercial pages</li>
+                <li>Enhanced user engagement and reduced bounce rates</li>
+                <li>Better conversion path optimization</li>
+                <li>Increased page authority for key revenue-generating pages</li>
+            </ul>
+        </div>
+    </div>
+    
+
+    <!-- Hub Page Authority Enhancement Modal -->
+    <div id="hubPageAuthority35kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('hubPageAuthority35kModal')">&times;</span>
+            <h3>Hub Page Authority Enhancement - £35K+ Revenue Impact</h3>
+            
+            <h4>Hub Page Strategy Overview</h4>
+            <p>Strategic development of high-authority hub pages that consolidate topical expertise and distribute link equity throughout the site architecture.</p>
+            
+            <h4>Revenue Impact Analysis</h4>
+            <table>
+                <tr><th>Hub Page Topic</th><th>Target Keywords</th><th>Traffic Potential</th><th>Revenue Impact</th></tr>
+                <tr><td>HR Software Solutions</td><td>25 high-value terms</td><td>8,500 monthly visits</td><td>£12,000</td></tr>
+                <tr><td>Payroll Management</td><td>18 commercial terms</td><td>6,200 monthly visits</td><td>£10,000</td></tr>
+                <tr><td>Employee Compliance</td><td>15 regulatory terms</td><td>4,800 monthly visits</td><td>£8,000</td></tr>
+                <tr><td>Workforce Analytics</td><td>12 technical terms</td><td>3,100 monthly visits</td><td>£5,000</td></tr>
+            </table>
+            
+            <h4>Hub Page Architecture Benefits</h4>
+            <ul>
+                <li><strong>Topical Authority:</strong> Establishes expertise in key subject areas</li>
+                <li><strong>Link Equity Distribution:</strong> Passes authority to related pages</li>
+                <li><strong>User Experience:</strong> Provides comprehensive resource navigation</li>
+                <li><strong>Search Visibility:</strong> Targets high-volume commercial keywords</li>
+            </ul>
+            
+            <h4>Implementation Strategy</h4>
+            <ul>
+                <li><strong>Content Consolidation:</strong> Merge related content into authoritative hubs</li>
+                <li><strong>Internal Linking:</strong> Strategic linking from hub to spoke pages</li>
+                <li><strong>Keyword Optimization:</strong> Target primary and semantic keywords</li>
+                <li><strong>User Journey Mapping:</strong> Guide users through conversion funnel</li>
+            </ul>
+            
+            <h4>Technical Implementation</h4>
+            <ul>
+                <li><strong>URL Structure:</strong> Clean, hierarchical URL architecture</li>
+                <li><strong>Schema Markup:</strong> Structured data for enhanced SERP presence</li>
+                <li><strong>Navigation Enhancement:</strong> Improved site navigation and breadcrumbs</li>
+                <li><strong>Performance Optimization:</strong> Fast-loading, mobile-optimized pages</li>
+            </ul>
+            
+            <h4>Success Metrics</h4>
+            <ul>
+                <li><strong>Organic Traffic:</strong> 40% increase to hub pages</li>
+                <li><strong>Keyword Rankings:</strong> Top 5 positions for target terms</li>
+                <li><strong>Conversion Rate:</strong> 25% improvement in hub page conversions</li>
+                <li><strong>Page Authority:</strong> 30% increase in hub page authority scores</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Orphan Page Integration Modal -->
+    <div id="orphanPageIntegration20kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('orphanPageIntegration20kModal')">&times;</span>
+            <h3>Orphan Page Integration - £20K+ Revenue Impact</h3>
+            
+            <h4>Orphan Page Analysis</h4>
+            <p>Identification and strategic integration of orphaned pages that lack internal linking, preventing them from contributing to overall site authority and traffic.</p>
+            
+            <h4>Orphan Page Inventory</h4>
+            <table>
+                <tr><th>Page Category</th><th>Orphan Pages</th><th>Traffic Potential</th><th>Revenue Impact</th></tr>
+                <tr><td>Product Features</td><td>23 pages</td><td>3,200 monthly visits</td><td>£8,000</td></tr>
+                <tr><td>Industry Solutions</td><td>18 pages</td><td>2,800 monthly visits</td><td>£6,000</td></tr>
+                <tr><td>Case Studies</td><td>15 pages</td><td>1,900 monthly visits</td><td>£4,000</td></tr>
+                <tr><td>Resource Content</td><td>12 pages</td><td>1,100 monthly visits</td><td>£2,000</td></tr>
+            </table>
+            
+            <h4>Integration Strategy</h4>
+            <ul>
+                <li><strong>Content Audit:</strong> Evaluate orphan page quality and relevance</li>
+                <li><strong>Linking Opportunities:</strong> Identify natural linking contexts</li>
+                <li><strong>Navigation Integration:</strong> Add to relevant navigation structures</li>
+                <li><strong>Content Updates:</strong> Refresh and optimize orphaned content</li>
+            </ul>
+            
+            <h4>SEO Benefits</h4>
+            <ul>
+                <li><strong>Crawl Efficiency:</strong> Ensure all valuable pages are discoverable</li>
+                <li><strong>Link Equity Flow:</strong> Distribute authority throughout site</li>
+                <li><strong>Content Utilization:</strong> Maximize ROI on existing content</li>
+                <li><strong>User Discovery:</strong> Help users find relevant information</li>
+            </ul>
+            
+            <h4>Implementation Process</h4>
+            <ol>
+                <li><strong>Orphan Identification:</strong> Technical audit to find unlinked pages</li>
+                <li><strong>Content Evaluation:</strong> Assess quality and business value</li>
+                <li><strong>Linking Strategy:</strong> Develop contextual linking plan</li>
+                <li><strong>Integration Execution:</strong> Implement links and navigation updates</li>
+            </ol>
+            
+            <h4>Expected Outcomes</h4>
+            <ul>
+                <li><strong>Traffic Recovery:</strong> 60% increase in orphan page traffic</li>
+                <li><strong>Conversion Improvement:</strong> 20% better conversion rates</li>
+                <li><strong>Authority Distribution:</strong> Better link equity flow</li>
+                <li><strong>User Engagement:</strong> Improved site exploration and time on site</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Anchor Text Optimization Modal -->
+    <div id="anchorTextOptimization15kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('anchorTextOptimization15kModal')">&times;</span>
+            <h3>Anchor Text Optimization - £15K+ Revenue Impact</h3>
+            
+            <h4>Anchor Text Strategy Analysis</h4>
+            <p>Strategic optimization of internal link anchor text to improve keyword relevance, user experience, and search engine understanding of page topics.</p>
+            
+            <h4>Current Anchor Text Issues</h4>
+            <table>
+                <tr><th>Issue Type</th><th>Instances</th><th>Impact Level</th><th>Revenue Opportunity</th></tr>
+                <tr><td>Generic Anchor Text</td><td>156 links</td><td>High</td><td>£6,000</td></tr>
+                <tr><td>Over-Optimization</td><td>89 links</td><td>Medium</td><td>£4,000</td></tr>
+                <tr><td>Missed Keyword Opportunities</td><td>234 links</td><td>Medium</td><td>£3,000</td></tr>
+                <tr><td>Irrelevant Anchor Text</td><td>67 links</td><td>Low</td><td>£2,000</td></tr>
+            </table>
+            
+            <h4>Optimization Strategy</h4>
+            <ul>
+                <li><strong>Keyword-Rich Anchors:</strong> Use relevant keywords naturally in anchor text</li>
+                <li><strong>Descriptive Anchors:</strong> Clearly describe the linked page content</li>
+                <li><strong>Variation Strategy:</strong> Mix exact match, partial match, and branded anchors</li>
+                <li><strong>User-Focused Approach:</strong> Prioritize user experience over keyword stuffing</li>
+            </ul>
+            
+            <h4>Anchor Text Best Practices</h4>
+            <ul>
+                <li><strong>Natural Language:</strong> Use conversational, natural-sounding phrases</li>
+                <li><strong>Contextual Relevance:</strong> Ensure anchor text matches page content</li>
+                <li><strong>Keyword Distribution:</strong> Spread target keywords across multiple anchors</li>
+                <li><strong>Brand Integration:</strong> Include branded terms for authority building</li>
+            </ul>
+            
+            <h4>Implementation Process</h4>
+            <ol>
+                <li><strong>Anchor Text Audit:</strong> Comprehensive analysis of current anchor text</li>
+                <li><strong>Keyword Mapping:</strong> Map target keywords to relevant pages</li>
+                <li><strong>Optimization Plan:</strong> Develop strategic anchor text variations</li>
+                <li><strong>Implementation:</strong> Update anchor text across site systematically</li>
+            </ol>
+            
+            <h4>SEO Benefits</h4>
+            <ul>
+                <li><strong>Keyword Relevance:</strong> Improved topical relevance signals</li>
+                <li><strong>User Experience:</strong> Better link context and expectations</li>
+                <li><strong>Crawl Efficiency:</strong> Help search engines understand page topics</li>
+                <li><strong>Authority Flow:</strong> More effective link equity distribution</li>
+            </ul>
+            
+            <h4>Expected Results</h4>
+            <ul>
+                <li><strong>Keyword Rankings:</strong> 15% improvement in target keyword positions</li>
+                <li><strong>Click-Through Rates:</strong> 20% increase in internal link clicks</li>
+                <li><strong>Page Authority:</strong> Better authority distribution across site</li>
+                <li><strong>Conversion Rate:</strong> 10% improvement in conversion rates</li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>
+

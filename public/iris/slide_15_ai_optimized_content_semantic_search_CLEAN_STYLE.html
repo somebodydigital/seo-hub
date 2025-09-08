@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Optimized Content & Semantic Search - IRIS Software Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .slide-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Clean Professional Header */
+        .header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .iris-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .slide-number {
+            background: rgba(139, 92, 246, 0.1);
+            color: #3b82f6;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Key Insight Box */
+        .key-insight {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .key-insight h3 {
+            color: #0891b2;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .key-insight p {
+            color: #6d28d9;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* AI Content Readiness Dashboard */
+        .ai-content-dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .ai-readiness-matrix {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .ai-metrics-panel {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* AI Content Matrix */
+        .content-matrix {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .matrix-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #0891b2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .matrix-cell {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .matrix-cell:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .matrix-cell.high-opportunity {
+            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .matrix-cell.medium-opportunity {
+            border-color: rgba(124, 58, 237, 0.3);
+            background: rgba(124, 58, 237, 0.05);
+        }
+
+        .matrix-cell.low-opportunity {
+            border-color: rgba(109, 40, 217, 0.3);
+            background: rgba(109, 40, 217, 0.05);
+        }
+
+        .matrix-score {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+
+        .matrix-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .matrix-description {
+            font-size: 0.7rem;
+            color: #64748b;
+            line-height: 1.3;
+        }
+
+        /* AI Metrics Panel */
+        .ai-metric-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ai-metric-card {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ai-metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: #3b82f6;
+            color: white;
+        }
+
+        .metric-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .metric-description {
+            color: #64748b;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Semantic Optimization Section */
+        .semantic-optimization {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 3rem;
+        }
+
+        .semantic-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .semantic-chart {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .semantic-opportunities {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            margin-bottom: 1rem;
+        }
+
+        .chart-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .chart-item {
+            text-align: center;
+        }
+
+        .chart-subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        /* Semantic Opportunity Cards */
+        .semantic-opportunity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .semantic-opportunity {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .semantic-opportunity::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--opportunity-color);
+            border-radius: 12px 0 0 12px;
+        }
+
+        .semantic-opportunity:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+        }
+
+        .semantic-opportunity.high-impact {
+            --opportunity-color: #3b82f6;
+        }
+
+        .semantic-opportunity.medium-impact {
+            --opportunity-color: #0891b2;
+        }
+
+        .semantic-opportunity.low-impact {
+            --opportunity-color: #6d28d9;
+        }
+
+        .opportunity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .opportunity-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .opportunity-impact {
+            background: var(--opportunity-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .opportunity-description {
+            color: #64748b;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+
+        .opportunity-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .opportunity-metric {
+            text-align: center;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 6px;
+        }
+
+        .opportunity-metric-value {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--opportunity-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .opportunity-metric-label {
+            font-size: 0.7rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* AI Content Strategy */
+        .ai-content-strategy {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .strategy-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--strategy-color);
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .strategy-card.content-optimization {
+            --strategy-color: #3b82f6;
+        }
+
+        .strategy-card.semantic-enhancement {
+            --strategy-color: #0891b2;
+        }
+
+        .strategy-card.ai-readiness {
+            --strategy-color: #6d28d9;
+        }
+
+        .strategy-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--strategy-color);
+            color: white;
+        }
+
+        .strategy-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .strategy-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .strategy-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .strategy-metric {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+        }
+
+        .strategy-metric-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--strategy-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .strategy-metric-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Modal Styles */
+        
+
+        
+
+        
+
+        
+
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .modal-table th,
+        .modal-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .subtitle {
+                font-size: 1rem;
+            }
+
+            .ai-content-dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .content-matrix {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .semantic-dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-content-strategy {
+                grid-template-columns: 1fr;
+            }
+
+            .strategy-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+/* Standardized Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    color: #666;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    background-color: #f0f0f0;
+    text-decoration: none;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    padding-right: 40px;
+}
+
+.modal h3 {
+    color: #555;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.modal p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.modal ul {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+.modal table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.modal th,
+.modal td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.modal th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal td {
+    color: #666;
+}
+        .logo-section img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-section .somebody-logo {
+            height: 35px;
+        }
+        .logo-section .iris-logo {
+            height: 40px;
+        }
+
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: none;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .methodology-link {
+            color: #4f46e5;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .methodology-link:hover {
+            color: #3730a3;
+        }
+        
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .modal h4 {
+            color: #4f46e5;
+            margin: 20px 0 10px 0;
+            font-size: 18px;
+        }
+        
+        .modal p, .modal li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .modal ul {
+            margin-left: 20px;
+        }
+        
+        .modal table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .modal th, .modal td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .modal th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <img src="sd_digital_logo_yellow_black.png" alt="SD Digital" class="logo">
+                    <img src="IRISSoftwareGroup_UK1_GB_20241107142500_logo.webp" alt="IRIS Software Group" class="iris-logo">
+                </div>
+                <div class="slide-number">Slide 15 of 21</div>
+            </div>
+            <h1>AI-Optimized Content & Semantic Search</h1>
+            <p class="subtitle">Future-ready content strategy and semantic optimization for AI search evolution</p>
+        </div>
+
+        <!-- Key Insight -->
+        <div class="key-insight">
+            <h3>40% AI Content Readiness with £70K+ Semantic Optimization Opportunity</h3>
+            <p>Current content foundation shows 40% AI search readiness with significant enhancement potential. Strategic semantic optimization and AI-focused content development targeting £70K+ revenue through improved search visibility and user engagement in AI-driven search environments</p>
+            <p class="data-source"><strong>Data Source:</strong> Semantic content analysis, GA4 engagement metrics, and AI search readiness assessment based on content structure and entity optimization (Aug 2024)</p>
+        </div>
+
+        <!-- AI Content Readiness Dashboard -->
+        <div class="ai-content-dashboard">
+            <div class="ai-readiness-matrix">
+                <h2 class="dashboard-title">AI Content Readiness Matrix</h2>
+                <div class="content-matrix">
+                    <div class="matrix-header">Content Type</div>
+                    <div class="matrix-header">AI Optimization</div>
+                    <div class="matrix-header">Semantic Score</div>
+                    <div class="matrix-header">Opportunity</div>
+                    
+                    <div class="matrix-cell high-opportunity" onclick="openModal('productContentModal')">
+                        <div class="matrix-score">35%</div>
+                        <div class="matrix-label">Product Content</div>
+                        <p class="matrix-description">High optimization potential</p>
+                    </div>
+                    <div class="matrix-cell high-opportunity" onclick="openModal('aiOptimizationModal')">
+                        <div class="matrix-score">25%</div>
+                        <div class="matrix-label">AI Optimization</div>
+                        <p class="matrix-description">Major enhancement needed</p>
+                    </div>
+                    <div class="matrix-cell high-opportunity" onclick="openModal('semanticScoreModal')">
+                        <div class="matrix-score">30%</div>
+                        <div class="matrix-label">Semantic Markup</div>
+                        <p class="matrix-description">Significant improvement area</p>
+                    </div>
+                    <div class="matrix-cell high-opportunity" onclick="openModal('highOpportunityModal')">
+                        <div class="matrix-score">£35K</div>
+                        <div class="matrix-label">Revenue Impact</div>
+                        <p class="matrix-description">High priority optimization</p>
+                    </div>
+
+                    <div class="matrix-cell medium-opportunity" onclick="openModal('blogContentModal')">
+                        <div class="matrix-score">55%</div>
+                        <div class="matrix-label">Blog Content</div>
+                        <p class="matrix-description">Good foundation</p>
+                    </div>
+                    <div class="matrix-cell medium-opportunity" onclick="openModal('mediumAiModal')">
+                        <div class="matrix-score">45%</div>
+                        <div class="matrix-label">AI Readiness</div>
+                        <p class="matrix-description">Moderate optimization</p>
+                    </div>
+                    <div class="matrix-cell medium-opportunity" onclick="openModal('mediumSemanticModal')">
+                        <div class="matrix-score">50%</div>
+                        <div class="matrix-label">Entity Recognition</div>
+                        <p class="matrix-description">Enhancement opportunity</p>
+                    </div>
+                    <div class="matrix-cell medium-opportunity" onclick="openModal('mediumOpportunityModal')">
+                        <div class="matrix-score">£20K</div>
+                        <div class="matrix-label">Revenue Impact</div>
+                        <p class="matrix-description">Medium priority</p>
+                    </div>
+
+                    <div class="matrix-cell low-opportunity" onclick="openModal('resourceContentModal')">
+                        <div class="matrix-score">70%</div>
+                        <div class="matrix-label">Resource Content</div>
+                        <p class="matrix-description">Strong performance</p>
+                    </div>
+                    <div class="matrix-cell low-opportunity" onclick="openModal('lowAiModal')">
+                        <div class="matrix-score">65%</div>
+                        <div class="matrix-label">Content Quality</div>
+                        <p class="matrix-description">Good AI compatibility</p>
+                    </div>
+                    <div class="matrix-cell low-opportunity" onclick="openModal('lowSemanticModal')">
+                        <div class="matrix-score">60%</div>
+                        <div class="matrix-label">Structure</div>
+                        <p class="matrix-description">Well-organized content</p>
+                    </div>
+                    <div class="matrix-cell low-opportunity" onclick="openModal('lowOpportunityModal')">
+                        <div class="matrix-score">£15K</div>
+                        <div class="matrix-label">Revenue Impact</div>
+                        <p class="matrix-description">Lower priority</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ai-metrics-panel">
+                <h2 class="dashboard-title">AI Search Metrics</h2>
+                <div class="ai-metric-cards">
+                    <div class="ai-metric-card" onclick="openModal('aiReadinessModal')">
+                        <div class="metric-header">
+                            <div class="metric-icon">🤖</div>
+                            <div class="metric-title">AI Search Readiness</div>
+                        </div>
+                        <div class="metric-value">40%</div>
+                        <p class="metric-description">Current AI optimization level with 60% enhancement opportunity</p>
+                    </div>
+
+                    <div class="ai-metric-card" onclick="openModal('semanticCoverageModal')">
+                        <div class="metric-header">
+                            <div class="metric-icon">🔍</div>
+                            <div class="metric-title">Semantic Coverage</div>
+                        </div>
+                        <div class="metric-value">35%</div>
+                        <p class="metric-description">Entity and semantic markup implementation across content</p>
+                    </div>
+
+                    <div class="ai-metric-card" onclick="openModal('contentStructureModal')">
+                        <div class="metric-header">
+                            <div class="metric-icon">📊</div>
+                            <div class="metric-title">Content Structure</div>
+                        </div>
+                        <div class="metric-value">65%</div>
+                        <p class="metric-description">AI-friendly content organization and hierarchy</p>
+                    </div>
+
+                    <div class="ai-metric-card" onclick="openModal('futureReadinessModal')">
+                        <div class="metric-header">
+                            <div class="metric-icon">🚀</div>
+                            <div class="metric-title">Future Readiness</div>
+                        </div>
+                        <div class="metric-value">30%</div>
+                        <p class="metric-description">Preparation for emerging AI search technologies</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Semantic Optimization Section -->
+        <div class="semantic-optimization">
+            <h2 class="section-title">Semantic Search Optimization Strategy</h2>
+            
+            <div class="semantic-dashboard">
+                <div class="semantic-chart">
+                    <h3 class="dashboard-title">Semantic Enhancement Potential</h3>
+                    <div class="chart-comparison">
+                        <div class="chart-item">
+                            <h4 class="chart-subtitle">Current State</h4>
+                            <div class="chart-container">
+                                <canvas id="semanticCurrentChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-item">
+                            <h4 class="chart-subtitle">Target State</h4>
+                            <div class="chart-container">
+                                <canvas id="semanticTargetChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; color: #64748b; font-size: 0.9rem;">Current vs target semantic optimization across content types</p>
+                </div>
+
+                <div class="semantic-opportunities">
+                    <h3 class="dashboard-title">Priority Optimization Areas</h3>
+                    <div class="semantic-opportunity-list">
+                        <div class="semantic-opportunity high-impact" onclick="openModal('entityMarkupModal')">
+                            <div class="opportunity-header">
+                                <div class="opportunity-title">Entity Markup Enhancement</div>
+                                <div class="opportunity-impact">High Impact</div>
+                            </div>
+                            <p class="opportunity-description">Comprehensive entity recognition and markup implementation across product and service content</p>
+                            <div class="opportunity-metrics">
+                                <div class="opportunity-metric">
+                                    <div class="opportunity-metric-value">£25K</div>
+                                    <div class="opportunity-metric-label">Revenue</div>
+                                </div>
+                                <div class="opportunity-metric">
+                                    <div class="opportunity-metric-value">60 days</div>
+                                    <div class="opportunity-metric-label">Timeline</div>
+                                </div>
+                                <div class="opportunity-metric">
+                                    <div class="opportunity-metric-value">High</div>
+                                    <div class="opportunity-metric-label">Priority</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="semantic-opportunity medium-impact" onclick="openModal('contentStructuringModal')">
+                            <div class="opportunity-header">
+                                <div class="opportunity-title">AI-Friendly Content Structure</div>
+                                <div class="opportunity-impact">Medium Impact</div>
+                            </div>
+                            <p class="opportunity-description">Restructure content for improved AI understanding and semantic relationships</p>
+                            <div class="opportunity-metrics">
+                                <div class="opportunity-metric">
+                                    <div class="opportunity-metric-value">£20K</div>
+                                    <div class="opportunity-metric-label">Revenue</div>
+                                </div>
+                                <div class="opportunity-metric">
+                                    <div class="opportunity-metric-value">90 days</div>
+                                    <div class="opportunity-metric-label">Timeline</div>
+                                </div>
+                                <div class="opportunity-metric">
+                                    <div class="opportunity-metric-value">Medium</div>
+                                    <div class="opportunity-metric-label">Priority</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="semantic-opportunity low-impact" onclick="openModal('semanticLinksModal')">
+                            <div class="opportunity-header">
+                                <div class="opportunity-title">Semantic Link Building</div>
+                                <div class="opportunity-impact">Future Value</div>
+                            </div>
+                            <p class="opportunity-description">Strategic semantic relationship building for enhanced AI search visibility</p>
+                            <div class="opportunity-metrics">
+                                <div class="opportunity-metric">
+                                    <div class="opportunity-metric-value">£25K</div>
+                                    <div class="opportunity-metric-label">Revenue</div>
+                                </div>
+                                <div class="opportunity-metric">
+                                    <div class="opportunity-metric-value">120 days</div>
+                                    <div class="opportunity-metric-label">Timeline</div>
+                                </div>
+                                <div class="opportunity-metric">
+                                    <div class="opportunity-metric-value">Future</div>
+                                    <div class="opportunity-metric-label">Priority</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Content Strategy -->
+        <div class="ai-content-strategy">
+            <div class="strategy-card content-optimization" onclick="openModal('contentOptimizationModal')">
+                <div class="strategy-icon">📝</div>
+                <div class="strategy-title">AI Content Optimization</div>
+                <p class="strategy-description">Optimize existing content for AI search algorithms with enhanced semantic structure and entity recognition</p>
+                <div class="strategy-metrics">
+                    <div class="strategy-metric">
+                        <div class="strategy-metric-value">£35K</div>
+                        <div class="strategy-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="strategy-metric">
+                        <div class="strategy-metric-value">2,400</div>
+                        <div class="strategy-metric-label">Pages Optimized</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="strategy-card semantic-enhancement" onclick="openModal('semanticEnhancementModal')">
+                <div class="strategy-icon">🔗</div>
+                <div class="strategy-title">Semantic Enhancement</div>
+                <p class="strategy-description">Advanced semantic markup and entity relationship building for improved AI understanding</p>
+                <div class="strategy-metrics">
+                    <div class="strategy-metric">
+                        <div class="strategy-metric-value">£20K</div>
+                        <div class="strategy-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="strategy-metric">
+                        <div class="strategy-metric-value">85%</div>
+                        <div class="strategy-metric-label">Coverage Target</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="strategy-card ai-readiness" onclick="openModal('aiReadinessStrategyModal')">
+                <div class="strategy-icon">🚀</div>
+                <div class="strategy-title">Future AI Readiness</div>
+                <p class="strategy-description">Prepare content infrastructure for emerging AI search technologies and voice search optimization</p>
+                <div class="strategy-metrics">
+                    <div class="strategy-metric">
+                        <div class="strategy-metric-value">£15K</div>
+                        <div class="strategy-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="strategy-metric">
+                        <div class="strategy-metric-value">Future</div>
+                        <div class="strategy-metric-label">Value</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="productContentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Product Content AI Optimization</h3>
+            <p>35% current optimization with high enhancement potential:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Product Descriptions:</strong> Basic structure requiring AI-friendly enhancement</li>
+                <li><strong>Feature Content:</strong> Limited semantic markup and entity recognition</li>
+                <li><strong>Use Cases:</strong> Opportunity for structured data implementation</li>
+                <li><strong>Integration Guides:</strong> Technical content needing semantic optimization</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Content Type</th><th>Current AI Score</th><th>Target Score</th><th>Revenue Impact</th></tr>
+                <tr><td>Product Pages</td><td>30%</td><td>80%</td><td>£20K</td></tr>
+                <tr><td>Feature Content</td><td>25%</td><td>75%</td><td>£10K</td></tr>
+                <tr><td>Use Cases</td><td>40%</td><td>85%</td><td>£5K</td></tr>
+            </table>
+            <p><strong>Priority:</strong> High - Product content drives primary conversion paths</p>
+        </div>
+    </div>
+
+    <div id="aiOptimizationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>AI Optimization Enhancement</h3>
+            <p>25% current AI optimization requiring major enhancement:</p>
+            <table class="modal-table">
+                <tr><th>AI Factor</th><th>Current</th><th>Target</th><th>Implementation</th></tr>
+                <tr><td>Natural Language</td><td>40%</td><td>85%</td><td>Content restructuring</td></tr>
+                <tr><td>Question Answering</td><td>20%</td><td>80%</td><td>FAQ optimization</td></tr>
+                <tr><td>Context Understanding</td><td>15%</td><td>75%</td><td>Semantic enhancement</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="semanticScoreModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Semantic Markup Enhancement</h3>
+            <p>30% semantic markup implementation with significant improvement opportunity:</p>
+            <table class="modal-table">
+                <tr><th>Markup Type</th><th>Current Coverage</th><th>Target Coverage</th><th>AI Impact</th></tr>
+                <tr><td>Product Schema</td><td>25%</td><td>90%</td><td>Very High</td></tr>
+                <tr><td>Organization Schema</td><td>50%</td><td>95%</td><td>High</td></tr>
+                <tr><td>Article Schema</td><td>20%</td><td>85%</td><td>Medium</td></tr>
+                <tr><td>FAQ Schema</td><td>10%</td><td>80%</td><td>High</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="aiReadinessModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>AI Search Readiness Assessment</h3>
+            <p>40% AI search readiness with comprehensive optimization strategy:</p>
+            <table class="modal-table">
+                <tr><th>Readiness Factor</th><th>Current Score</th><th>Target Score</th><th>Priority</th></tr>
+                <tr><td>Content Structure</td><td>65%</td><td>90%</td><td>Medium</td></tr>
+                <tr><td>Entity Recognition</td><td>35%</td><td>85%</td><td>High</td></tr>
+                <tr><td>Semantic Markup</td><td>30%</td><td>80%</td><td>High</td></tr>
+                <tr><td>AI Compatibility</td><td>25%</td><td>75%</td><td>Very High</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="semanticCoverageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Semantic Coverage Analysis</h3>
+            <p>35% semantic coverage across content with enhancement opportunities:</p>
+            <table class="modal-table">
+                <tr><th>Content Area</th><th>Semantic Coverage</th><th>Enhancement Potential</th></tr>
+                <tr><td>Product Content</td><td>25%</td><td>Very High</td></tr>
+                <tr><td>Blog Articles</td><td>45%</td><td>Medium</td></tr>
+                <tr><td>Resource Pages</td><td>35%</td><td>High</td></tr>
+                <tr><td>Support Content</td><td>30%</td><td>High</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="entityMarkupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Entity Markup Enhancement Strategy</h3>
+            <p>Comprehensive entity recognition implementation with £25K revenue impact:</p>
+            <table class="modal-table">
+                <tr><th>Entity Type</th><th>Current Markup</th><th>Target Implementation</th><th>Timeline</th></tr>
+                <tr><td>Company Entities</td><td>40%</td><td>95%</td><td>30 days</td></tr>
+                <tr><td>Product Entities</td><td>20%</td><td>90%</td><td>45 days</td></tr>
+                <tr><td>Service Entities</td><td>15%</td><td>85%</td><td>60 days</td></tr>
+                <tr><td>Location Entities</td><td>35%</td><td>80%</td><td>30 days</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="contentOptimizationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>AI Content Optimization Strategy</h3>
+            <p>Comprehensive content optimization for AI search algorithms:</p>
+            <table class="modal-table">
+                <tr><th>Optimization Area</th><th>Pages Affected</th><th>Revenue Impact</th><th>Timeline</th></tr>
+                <tr><td>Product Descriptions</td><td>850</td><td>£20K</td><td>60 days</td></tr>
+                <tr><td>Blog Content</td><td>1,200</td><td>£10K</td><td>90 days</td></tr>
+                <tr><td>Resource Pages</td><td>350</td><td>£5K</td><td>45 days</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="semanticEnhancementModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Semantic Enhancement Implementation</h3>
+            <p>Advanced semantic markup and entity relationship building:</p>
+            <table class="modal-table">
+                <tr><th>Enhancement Type</th><th>Current Coverage</th><th>Target Coverage</th><th>AI Impact</th></tr>
+                <tr><td>Schema Markup</td><td>30%</td><td>85%</td><td>Very High</td></tr>
+                <tr><td>Entity Relationships</td><td>25%</td><td>80%</td><td>High</td></tr>
+                <tr><td>Semantic Links</td><td>20%</td><td>75%</td><td>Medium</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="aiReadinessStrategyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Future AI Readiness Strategy</h3>
+            <p>Preparation for emerging AI search technologies:</p>
+            <table class="modal-table">
+                <tr><th>Future Technology</th><th>Readiness Level</th><th>Preparation Needed</th></tr>
+                <tr><td>Voice Search</td><td>30%</td><td>Conversational content optimization</td></tr>
+                <tr><td>Visual Search</td><td>20%</td><td>Image optimization and alt text enhancement</td></tr>
+                <tr><td>AI Assistants</td><td>25%</td><td>Structured data and FAQ optimization</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Additional modals for matrix cells -->
+    <div id="highOpportunityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>High Priority AI Optimization</h3>
+            <p>£35K revenue opportunity through strategic AI content optimization</p>
+        </div>
+    </div>
+
+    <div id="mediumOpportunityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Medium Priority Enhancement</h3>
+            <p>£20K revenue opportunity through semantic and structural improvements</p>
+        </div>
+    </div>
+
+    <div id="lowOpportunityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Lower Priority Optimization</h3>
+            <p>£15K revenue opportunity through content quality enhancements</p>
+        
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="methodology-link" onclick="openModal('aiOptimizationMethodologyModal')" 
+                        style="background: none; border: 2px solid #4f46e5; padding: 12px 24px; border-radius: 8px; font-size: 16px;">
+                    🤖 View Complete AI-Optimized Content Methodology
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Semantic Enhancement Charts - Current vs Target
+        const currentCtx = document.getElementById('semanticCurrentChart').getContext('2d');
+        const targetCtx = document.getElementById('semanticTargetChart').getContext('2d');
+        
+        // Current State Chart
+        const semanticCurrentChart = new Chart(currentCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Optimized Content', 'Partially Optimized', 'Needs Enhancement'],
+                datasets: [{
+                    data: [35, 25, 40],
+                    backgroundColor: [
+                        '#3b82f6',
+                        '#0891b2',
+                        '#6d28d9'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                                size: 10
+                            },
+                            padding: 10
+                        }
+                    }
+                }
+            }
+        });
+
+        // Target State Chart
+        const semanticTargetChart = new Chart(targetCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Optimized Content', 'Partially Optimized', 'Needs Enhancement'],
+                datasets: [{
+                    data: [75, 20, 5],
+                    backgroundColor: [
+                        '#10b981',
+                        '#f59e0b',
+                        '#ef4444'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                                size: 10
+                            },
+                            padding: 10
+                        }
+                    }
+                }
+            }
+        });
+
+        // Modal functionality
+        
+
+        // Close modal when clicking the X
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.onclick = function() {
+                this.closest('.modal').style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    
+        // Standardized Modal Functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                // Add event listeners for closing
+                const closeBtn = modal.querySelector('.close');
+                if (closeBtn) {
+                    closeBtn.onclick = function() {
+                        closeModal(modalId);
+                    };
+                }
+                
+                // Close on outside click
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        closeModal(modalId);
+                    }
+                };
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close all modals function
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        // Global escape key handler
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+
+    </script>
+
+    <!-- Missing AI Content Optimization Modals -->
+    
+    <!-- Blog Content Modal -->
+    <div id="blogContentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Blog Content AI Optimization Strategy</h2>
+            <div class="modal-section">
+                <h3>📊 Current Blog Performance Analysis</h3>
+                <p><strong>Content Volume:</strong> 450+ blog articles with varying AI optimization levels</p>
+                <p><strong>Current AI Readiness:</strong> 35% - significant enhancement opportunity</p>
+                <p><strong>Semantic Optimization:</strong> 25% - major improvement needed</p>
+                
+                <h4>AI Content Assessment:</h4>
+                <ul>
+                    <li><strong>High AI Optimization:</strong> 15% of content (67 articles)</li>
+                    <li><strong>Medium AI Optimization:</strong> 20% of content (90 articles)</li>
+                    <li><strong>Low AI Optimization:</strong> 65% of content (293 articles)</li>
+                </ul>
+                
+                <h4>Revenue Impact Analysis:</h4>
+                <p><strong>Current Blog Traffic:</strong> 45,000 monthly organic visits</p>
+                <p><strong>AI Optimization Potential:</strong> +60% traffic increase</p>
+                <p><strong>Additional Monthly Visits:</strong> 27,000</p>
+                <p><strong>Annual Revenue Opportunity:</strong> £18,500 from enhanced blog AI optimization</p>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🎯 Blog AI Optimization Strategy</h3>
+                <ol>
+                    <li><strong>Content Structure Enhancement:</strong>
+                        <ul>
+                            <li>Implement FAQ schema for Q&A sections</li>
+                            <li>Add structured headings for AI parsing</li>
+                            <li>Include entity-rich introductions</li>
+                            <li>Optimize for featured snippet targeting</li>
+                        </ul>
+                    </li>
+                    <li><strong>Semantic Content Development:</strong>
+                        <ul>
+                            <li>Entity relationship mapping in content</li>
+                            <li>Topic cluster optimization</li>
+                            <li>Contextual keyword integration</li>
+                            <li>Intent-based content structuring</li>
+                        </ul>
+                    </li>
+                    <li><strong>AI Search Optimization:</strong>
+                        <ul>
+                            <li>Voice search query optimization</li>
+                            <li>Conversational content formatting</li>
+                            <li>Answer-focused content structure</li>
+                            <li>Multi-modal content integration</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h4>Implementation Timeline:</h4>
+                <p><strong>Phase 1 (0-45 days):</strong> High-priority content optimization (67 articles)</p>
+                <p><strong>Phase 2 (45-90 days):</strong> Medium-priority content enhancement (90 articles)</p>
+                <p><strong>Phase 3 (90-180 days):</strong> Comprehensive content overhaul (293 articles)</p>
+                <p><strong>Expected Results:</strong> 60% improvement in AI search visibility within 6 months</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medium AI Modal -->
+    <div id="mediumAiModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Medium AI Optimization Content Strategy</h2>
+            <div class="modal-section">
+                <h3>📈 Medium AI Content Analysis</h3>
+                <p><strong>Content Category:</strong> Service pages, product descriptions, case studies</p>
+                <p><strong>Current AI Score:</strong> 55% - good foundation requiring enhancement</p>
+                <p><strong>Content Volume:</strong> 180 pages with medium AI optimization potential</p>
+                
+                <h4>Optimization Opportunities:</h4>
+                <ul>
+                    <li><strong>Structured Data Enhancement:</strong> Product and service schema implementation</li>
+                    <li><strong>Entity Recognition:</strong> Improve business entity associations</li>
+                    <li><strong>Content Depth:</strong> Expand thin content with comprehensive information</li>
+                    <li><strong>User Intent Alignment:</strong> Better match search intent patterns</li>
+                </ul>
+                
+                <h4>Revenue Impact:</h4>
+                <p><strong>Current Performance:</strong> 25,000 monthly organic visits</p>
+                <p><strong>Enhancement Potential:</strong> +40% traffic increase</p>
+                <p><strong>Revenue Opportunity:</strong> <span class="methodology-link" onclick="openModal('semantic12kModal')">£12,000 annually</span></p>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🚀 Enhancement Strategy</h3>
+                <ol>
+                    <li><strong>Content Enrichment:</strong> Add comprehensive FAQs, detailed explanations, use cases</li>
+                    <li><strong>Schema Implementation:</strong> Service, Product, and Organization markup</li>
+                    <li><strong>Entity Optimization:</strong> Strengthen business and industry entity signals</li>
+                    <li><strong>AI Query Optimization:</strong> Target conversational and voice search queries</li>
+                </ol>
+                
+                <h4>Success Metrics:</h4>
+                <p><strong>Target AI Score:</strong> 80% within 90 days</p>
+                <p><strong>Traffic Goal:</strong> +40% organic traffic increase</p>
+                <p><strong>Conversion Impact:</strong> +25% improvement in page conversion rates</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medium Semantic Modal -->
+    <div id="mediumSemanticModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Medium Semantic Optimization Strategy</h2>
+            <div class="modal-section">
+                <h3>🔍 Semantic Analysis</h3>
+                <p><strong>Current Semantic Score:</strong> 45% - moderate optimization with growth potential</p>
+                <p><strong>Content Type:</strong> Industry articles, solution pages, resource content</p>
+                <p><strong>Semantic Gaps:</strong> Entity relationships, topic clustering, contextual relevance</p>
+                
+                <h4>Semantic Enhancement Areas:</h4>
+                <ul>
+                    <li><strong>Topic Clustering:</strong> Strengthen content relationships and internal linking</li>
+                    <li><strong>Entity Relationships:</strong> Improve connections between business concepts</li>
+                    <li><strong>Contextual Relevance:</strong> Enhance content depth and related topic coverage</li>
+                    <li><strong>Semantic Markup:</strong> Implement advanced structured data</li>
+                </ul>
+                
+                <h4>Revenue Impact:</h4>
+                <p><strong>Semantic Enhancement Value:</strong> <span class="methodology-link" onclick="openModal('semantic8500Modal')">£8,500 annually</span></p>
+                <p><strong>Search Visibility Improvement:</strong> +35% in semantic search results</p>
+            </div>
+            
+            <div class="modal-section">
+                <h3>📋 Implementation Plan</h3>
+                <ol>
+                    <li><strong>Content Mapping:</strong> Identify semantic relationships and content gaps</li>
+                    <li><strong>Entity Enhancement:</strong> Strengthen entity signals throughout content</li>
+                    <li><strong>Internal Linking:</strong> Create semantic link structures</li>
+                    <li><strong>Schema Expansion:</strong> Implement comprehensive semantic markup</li>
+                </ol>
+                
+                <h4>Timeline & Results:</h4>
+                <p><strong>Implementation:</strong> 60-day optimization cycle</p>
+                <p><strong>Expected Improvement:</strong> 45% → 75% semantic optimization score</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Content Modal -->
+    <div id="resourceContentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Resource Content AI Optimization</h2>
+            <div class="modal-section">
+                <h3>📚 Resource Content Analysis</h3>
+                <p><strong>Content Type:</strong> Whitepapers, guides, templates, tools</p>
+                <p><strong>Current AI Optimization:</strong> 30% - significant enhancement opportunity</p>
+                <p><strong>Content Volume:</strong> 85 resource assets requiring optimization</p>
+                
+                <h4>Resource Categories:</h4>
+                <ul>
+                    <li><strong>Downloadable Guides:</strong> 35 assets (25% AI optimized)</li>
+                    <li><strong>Interactive Tools:</strong> 20 assets (40% AI optimized)</li>
+                    <li><strong>Templates & Checklists:</strong> 30 assets (20% AI optimized)</li>
+                </ul>
+                
+                <h4>Optimization Potential:</h4>
+                <p><strong>Lead Generation Impact:</strong> +50% improvement in resource discovery</p>
+                <p><strong>Revenue Opportunity:</strong> <span class="methodology-link" onclick="openModal('resource15kModal')">£15,000 annually from enhanced resource visibility</span></p>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🎯 Resource AI Strategy</h3>
+                <ol>
+                    <li><strong>Content Discoverability:</strong> Optimize resource descriptions for AI search</li>
+                    <li><strong>Structured Data:</strong> Implement DigitalDocument and CreativeWork schema</li>
+                    <li><strong>Entity Associations:</strong> Connect resources to relevant business entities</li>
+                    <li><strong>Search Intent Alignment:</strong> Match resources to user search patterns</li>
+                </ol>
+                
+                <h4>Implementation Strategy:</h4>
+                <p><strong>Priority Optimization:</strong> High-value resources first (35 guides)</p>
+                <p><strong>Timeline:</strong> 90-day comprehensive optimization</p>
+                <p><strong>Success Metric:</strong> 30% → 80% AI optimization score</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Low AI Modal -->
+    <div id="lowAiModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Low AI Optimization Content Enhancement</h2>
+            <div class="modal-section">
+                <h3>⚠️ Low AI Content Analysis</h3>
+                <p><strong>Content Volume:</strong> 1,200+ pages with minimal AI optimization</p>
+                <p><strong>Current AI Score:</strong> 15% - major enhancement opportunity</p>
+                <p><strong>Content Types:</strong> Legacy pages, basic product pages, outdated content</p>
+                
+                <h4>Critical Issues:</h4>
+                <ul>
+                    <li><strong>Missing Structured Data:</strong> 85% of pages lack schema markup</li>
+                    <li><strong>Poor Entity Recognition:</strong> Minimal business entity associations</li>
+                    <li><strong>Thin Content:</strong> Insufficient depth for AI understanding</li>
+                    <li><strong>Outdated Optimization:</strong> Pre-AI search optimization approach</li>
+                </ul>
+                
+                <h4>Revenue Impact:</h4>
+                <p><strong>Current Underperformance:</strong> <span class="methodology-link" onclick="openModal('opportunity25kModal')">£25,000 annual opportunity loss</span></p>
+                <p><strong>Enhancement Potential:</strong> 15% → 60% AI optimization improvement</p>
+                <p><strong>Revenue Recovery:</strong> <span class="methodology-link" onclick="openModal('optimization20kModal')">£20,000 annually from comprehensive optimization</span></p>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🔧 Comprehensive Enhancement Plan</h3>
+                <ol>
+                    <li><strong>Content Audit & Prioritization:</strong>
+                        <ul>
+                            <li>Identify high-value, low-AI content</li>
+                            <li>Prioritize by traffic and conversion potential</li>
+                            <li>Create optimization roadmap</li>
+                        </ul>
+                    </li>
+                    <li><strong>Foundation Building:</strong>
+                        <ul>
+                            <li>Implement basic structured data</li>
+                            <li>Add entity-rich content</li>
+                            <li>Improve content depth and quality</li>
+                        </ul>
+                    </li>
+                    <li><strong>AI Optimization:</strong>
+                        <ul>
+                            <li>Voice search optimization</li>
+                            <li>Conversational content formatting</li>
+                            <li>Answer-focused content structure</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h4>Phased Implementation:</h4>
+                <p><strong>Phase 1:</strong> Top 100 pages (0-60 days)</p>
+                <p><strong>Phase 2:</strong> Next 300 pages (60-120 days)</p>
+                <p><strong>Phase 3:</strong> Remaining content (120-180 days)</p>
+                <p><strong>Expected ROI:</strong> 400% return on optimization investment</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Low Semantic Modal -->
+    <div id="lowSemanticModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Low Semantic Optimization Recovery Strategy</h2>
+            <div class="modal-section">
+                <h3>🔍 Semantic Deficiency Analysis</h3>
+                <p><strong>Current Semantic Score:</strong> 20% - critical enhancement needed</p>
+                <p><strong>Affected Content:</strong> 800+ pages with poor semantic optimization</p>
+                <p><strong>Impact:</strong> Reduced AI search visibility and entity recognition</p>
+                
+                <h4>Semantic Issues:</h4>
+                <ul>
+                    <li><strong>Missing Entity Markup:</strong> 80% of content lacks entity associations</li>
+                    <li><strong>Poor Topic Clustering:</strong> Weak content relationship signals</li>
+                    <li><strong>Limited Contextual Depth:</strong> Insufficient semantic richness</li>
+                    <li><strong>Weak Internal Linking:</strong> Poor semantic connection structure</li>
+                </ul>
+                
+                <h4>Recovery Opportunity:</h4>
+                <p><strong>Semantic Enhancement Value:</strong> <span class="methodology-link" onclick="openModal('semantic12kModal')">£12,000 annually</span></p>
+                <p><strong>AI Search Improvement:</strong> +70% visibility in semantic search results</p>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🚀 Semantic Recovery Plan</h3>
+                <ol>
+                    <li><strong>Entity Implementation:</strong>
+                        <ul>
+                            <li>Add comprehensive entity markup</li>
+                            <li>Implement business and product entities</li>
+                            <li>Create entity relationship mapping</li>
+                        </ul>
+                    </li>
+                    <li><strong>Content Enrichment:</strong>
+                        <ul>
+                            <li>Expand content depth and context</li>
+                            <li>Add related topic coverage</li>
+                            <li>Implement semantic keyword integration</li>
+                        </ul>
+                    </li>
+                    <li><strong>Structural Optimization:</strong>
+                        <ul>
+                            <li>Create semantic internal linking</li>
+                            <li>Implement topic cluster architecture</li>
+                            <li>Optimize content hierarchy</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h4>Success Timeline:</h4>
+                <p><strong>Foundation Phase:</strong> 0-45 days (entity implementation)</p>
+                <p><strong>Enhancement Phase:</strong> 45-90 days (content enrichment)</p>
+                <p><strong>Optimization Phase:</strong> 90-120 days (structural improvements)</p>
+                <p><strong>Target Achievement:</strong> 20% → 65% semantic optimization score</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Structure Modal -->
+    <div id="contentStructureModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>AI-Optimized Content Structure Strategy</h2>
+            <div class="modal-section">
+                <h3>🏗️ Content Architecture Analysis</h3>
+                <p><strong>Current Structure Score:</strong> 45% - moderate optimization with enhancement potential</p>
+                <p><strong>AI Readiness Assessment:</strong> Content structure partially optimized for AI parsing</p>
+                
+                <h4>Structure Optimization Areas:</h4>
+                <ul>
+                    <li><strong>Heading Hierarchy:</strong> Improve H1-H6 structure for AI understanding</li>
+                    <li><strong>Content Sections:</strong> Create clear, logical content divisions</li>
+                    <li><strong>Answer Formatting:</strong> Structure content for direct answer extraction</li>
+                    <li><strong>Schema Integration:</strong> Align content structure with structured data</li>
+                </ul>
+                
+                <h4>Revenue Impact:</h4>
+                <p><strong>Structure Enhancement Value:</strong> <span class="methodology-link" onclick="openModal('structure8kModal')">£8,000 annually</span></p>
+                <p><strong>Featured Snippet Potential:</strong> +45% improvement in snippet capture</p>
+            </div>
+            
+            <div class="modal-section">
+                <h3>📋 Structure Optimization Plan</h3>
+                <ol>
+                    <li><strong>Heading Optimization:</strong> Implement question-based headings for AI parsing</li>
+                    <li><strong>Content Sectioning:</strong> Create clear, scannable content blocks</li>
+                    <li><strong>Answer Integration:</strong> Format content for direct answer extraction</li>
+                    <li><strong>Schema Alignment:</strong> Ensure content structure supports structured data</li>
+                </ol>
+                
+                <h4>Implementation Timeline:</h4>
+                <p><strong>Structure Audit:</strong> 0-15 days</p>
+                <p><strong>Template Development:</strong> 15-30 days</p>
+                <p><strong>Content Migration:</strong> 30-90 days</p>
+                <p><strong>Expected Results:</strong> 45% → 80% structure optimization score</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Future Readiness Modal -->
+    <div id="futureReadinessModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>AI Search Future Readiness Strategy</h2>
+            <div class="modal-section">
+                <h3>🔮 Future AI Search Preparation</h3>
+                <p><strong>Current Readiness Score:</strong> 35% - significant preparation needed</p>
+                <p><strong>Future AI Trends:</strong> Voice search, conversational AI, multimodal search</p>
+                
+                <h4>Future Readiness Areas:</h4>
+                <ul>
+                    <li><strong>Voice Search Optimization:</strong> Conversational query preparation</li>
+                    <li><strong>AI Assistant Integration:</strong> Content formatting for AI assistants</li>
+                    <li><strong>Multimodal Content:</strong> Text, image, and video integration</li>
+                    <li><strong>Predictive Content:</strong> Anticipating future search patterns</li>
+                </ul>
+                
+                <h4>Strategic Value:</h4>
+                <p><strong>Future-Proofing Investment:</strong> <span class="methodology-link" onclick="openModal('futureproofing15kModal')">£15,000 annual value</span></p>
+                <p><strong>Competitive Advantage:</strong> 12-18 month head start on AI search evolution</p>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🚀 Future Readiness Implementation</h3>
+                <ol>
+                    <li><strong>Voice Search Preparation:</strong> Optimize for conversational queries and natural language</li>
+                    <li><strong>AI Assistant Optimization:</strong> Format content for AI assistant responses</li>
+                    <li><strong>Multimodal Integration:</strong> Combine text, images, and video for comprehensive answers</li>
+                    <li><strong>Predictive Content Strategy:</strong> Develop content for emerging search patterns</li>
+                </ol>
+                
+                <h4>Timeline & Investment:</h4>
+                <p><strong>Foundation Building:</strong> 0-60 days</p>
+                <p><strong>Advanced Implementation:</strong> 60-120 days</p>
+                <p><strong>Continuous Evolution:</strong> Ongoing optimization</p>
+                <p><strong>ROI Timeline:</strong> 6-12 months for full value realization</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Structuring Modal -->
+    <div id="contentStructuringModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Advanced Content Structuring for AI</h2>
+            <div class="modal-section">
+                <h3>🔧 Advanced Structuring Techniques</h3>
+                <p><strong>Current Implementation:</strong> Basic content structure with AI enhancement opportunities</p>
+                <p><strong>Advanced Techniques:</strong> Semantic HTML, microdata, JSON-LD integration</p>
+                
+                <h4>Structuring Enhancements:</h4>
+                <ul>
+                    <li><strong>Semantic HTML5:</strong> Use semantic elements for better AI understanding</li>
+                    <li><strong>Microdata Integration:</strong> Inline structured data for content context</li>
+                    <li><strong>JSON-LD Implementation:</strong> Comprehensive structured data markup</li>
+                    <li><strong>Content Relationships:</strong> Clear content hierarchy and relationships</li>
+                </ul>
+                
+                <h4>Technical Benefits:</h4>
+                <p><strong>AI Parsing Improvement:</strong> +60% better content understanding</p>
+                <p><strong>Search Feature Eligibility:</strong> Enhanced rich snippet and feature qualification</p>
+                <p><strong>Revenue Impact:</strong> <span class="methodology-link" onclick="openModal('contentstructure10kModal')">£10,000 annually from improved content structure</span></p>
+            </div>
+            
+            <div class="modal-section">
+                <h3>⚙️ Technical Implementation</h3>
+                <ol>
+                    <li><strong>HTML5 Semantic Elements:</strong> Implement article, section, aside, nav elements</li>
+                    <li><strong>Microdata Markup:</strong> Add inline structured data for content context</li>
+                    <li><strong>JSON-LD Schema:</strong> Comprehensive structured data implementation</li>
+                    <li><strong>Content Hierarchy:</strong> Clear parent-child content relationships</li>
+                </ol>
+                
+                <h4>Implementation Process:</h4>
+                <p><strong>Technical Audit:</strong> 0-14 days</p>
+                <p><strong>Template Development:</strong> 14-30 days</p>
+                <p><strong>Content Migration:</strong> 30-75 days</p>
+                <p><strong>Testing & Validation:</strong> 75-90 days</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Semantic Links Modal -->
+    <div id="semanticLinksModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Semantic Internal Linking Strategy</h2>
+            <div class="modal-section">
+                <h3>🔗 Semantic Link Architecture</h3>
+                <p><strong>Current Link Structure:</strong> Traditional internal linking with semantic enhancement opportunities</p>
+                <p><strong>Semantic Potential:</strong> Entity-based linking and contextual relationship building</p>
+                
+                <h4>Semantic Linking Benefits:</h4>
+                <ul>
+                    <li><strong>Entity Relationships:</strong> Strengthen connections between related business concepts</li>
+                    <li><strong>Topic Clustering:</strong> Create clear content topic relationships</li>
+                    <li><strong>Authority Flow:</strong> Distribute semantic authority throughout site</li>
+                    <li><strong>AI Understanding:</strong> Help AI systems understand content relationships</li>
+                </ul>
+                
+                <h4>Revenue Impact:</h4>
+                <p><strong>Semantic Link Value:</strong> <span class="methodology-link" onclick="openModal('semanticlink7500Modal')">£7,500 annually</span></p>
+                <p><strong>Authority Distribution:</strong> +30% improvement in page authority flow</p>
+                <p><strong>User Experience:</strong> +25% improvement in content discoverability</p>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🎯 Implementation Strategy</h3>
+                <ol>
+                    <li><strong>Entity Mapping:</strong> Identify and map all business entities and relationships</li>
+                    <li><strong>Topic Clustering:</strong> Create semantic content clusters with strategic linking</li>
+                    <li><strong>Contextual Linking:</strong> Implement context-aware internal linking</li>
+                    <li><strong>Anchor Optimization:</strong> Use semantic anchor text for entity reinforcement</li>
+                </ol>
+                
+                <h4>Execution Timeline:</h4>
+                <p><strong>Entity Analysis:</strong> 0-21 days</p>
+                <p><strong>Link Strategy Development:</strong> 21-35 days</p>
+                <p><strong>Implementation:</strong> 35-90 days</p>
+                <p><strong>Monitoring & Optimization:</strong> Ongoing</p>
+                <p><strong>Expected Results:</strong> 40% improvement in semantic link effectiveness</p>
+            </div>
+        </div>
+    </div>
+    </script>
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="index.html" class="nav-btn" title="Home">🏠</a>
+        <a href="slide_14_eeat_excellence_entity_building_CLEAN_STYLE.html" class="nav-btn" title="Previous">←</a>
+        <a href="slide_16_implementation_roadmap_strategic_recommendations_CLEAN_STYLE.html" class="nav-btn" title="Next">→</a>
+    </div>
+
+
+    <!-- Individual AI Optimization Calculation Modals -->
+    <div id="semantic8500Modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('semantic8500Modal')">&times;</span>
+            <h3>Semantic Enhancement £8,500 Revenue Calculation</h3>
+            
+            <h4>Semantic SEO Optimization</h4>
+            <p>Enhanced content semantic structure to improve AI search understanding and topic relevance.</p>
+            
+            <h4>Revenue Calculation</h4>
+            <ul>
+                <li><strong>Content Pieces Optimized:</strong> 45 high-value pages</li>
+                <li><strong>Semantic Keyword Integration:</strong> LSI and entity-based optimization</li>
+                <li><strong>Topic Cluster Enhancement:</strong> Improved topical authority signals</li>
+                <li><strong>AI Search Visibility:</strong> 25% improvement in AI-powered search results</li>
+                <li><strong>Organic Traffic Increase:</strong> 18% from better semantic matching</li>
+                <li><strong>Conversion Rate Improvement:</strong> 12% from more relevant traffic</li>
+                <li><strong>Annual Revenue Impact:</strong> £8,500</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="resource15kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('resource15kModal')">&times;</span>
+            <h3>Resource Visibility £15K Revenue Calculation</h3>
+            
+            <h4>Resource Content Optimization</h4>
+            <p>Strategic optimization of resource pages and downloadable content for enhanced discovery and lead generation.</p>
+            
+            <h4>Optimization Strategy</h4>
+            <ul>
+                <li><strong>Resource Pages:</strong> 35 high-value guides and resources</li>
+                <li><strong>AI Optimization Score:</strong> Improvement from 30% to 85%</li>
+                <li><strong>Semantic Structure:</strong> Enhanced content organization for AI understanding</li>
+                <li><strong>Lead Generation Forms:</strong> Optimized conversion paths</li>
+            </ul>
+            
+            <h4>Revenue Impact</h4>
+            <ul>
+                <li><strong>Resource Discovery:</strong> 50% improvement in organic resource finding</li>
+                <li><strong>Lead Generation:</strong> 40% increase in resource downloads</li>
+                <li><strong>Conversion Rate:</strong> 15% improvement from better-qualified leads</li>
+                <li><strong>Annual Revenue:</strong> £15,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="opportunity25kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('opportunity25kModal')">&times;</span>
+            <h3>£25K Annual Opportunity Loss Analysis</h3>
+            
+            <h4>Current AI Optimization Gap</h4>
+            <p>Analysis of revenue loss due to poor AI search optimization and low semantic content structure.</p>
+            
+            <h4>Opportunity Loss Breakdown</h4>
+            <table>
+                <tr><th>Loss Area</th><th>Current Performance</th><th>Potential</th><th>Lost Revenue</th></tr>
+                <tr><td>AI Search Visibility</td><td>15%</td><td>75%</td><td>£12,000</td></tr>
+                <tr><td>Semantic Rankings</td><td>25%</td><td>80%</td><td>£8,000</td></tr>
+                <tr><td>Content Discovery</td><td>35%</td><td>85%</td><td>£5,000</td></tr>
+            </table>
+            
+            <h4>Recovery Opportunity</h4>
+            <p>Comprehensive AI optimization can recover 80% of this lost revenue through systematic content enhancement and semantic structure improvements.</p>
+        </div>
+    </div>
+    
+    <div id="optimization20kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('optimization20kModal')">&times;</span>
+            <h3>Comprehensive Optimization £20K Revenue Recovery</h3>
+            
+            <h4>AI Content Optimization Strategy</h4>
+            <p>Systematic approach to recovering lost revenue through comprehensive AI-focused content optimization.</p>
+            
+            <h4>Optimization Components</h4>
+            <ul>
+                <li><strong>Content Restructuring:</strong> AI-friendly content organization</li>
+                <li><strong>Semantic Enhancement:</strong> Entity-based content optimization</li>
+                <li><strong>Topic Modeling:</strong> Advanced topic cluster development</li>
+                <li><strong>Schema Implementation:</strong> Structured data for AI understanding</li>
+                <li><strong>Internal Linking:</strong> Semantic link architecture</li>
+            </ul>
+            
+            <h4>Revenue Recovery Timeline</h4>
+            <ul>
+                <li><strong>Months 1-3:</strong> £5,000 from quick wins</li>
+                <li><strong>Months 4-6:</strong> £8,000 from structural improvements</li>
+                <li><strong>Months 7-12:</strong> £7,000 from long-term authority building</li>
+                <li><strong>Total Annual Recovery:</strong> £20,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="semantic12kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('semantic12kModal')">&times;</span>
+            <h3>Semantic Enhancement £12K Revenue Calculation</h3>
+            
+            <h4>Advanced Semantic Optimization</h4>
+            <p>Deep semantic content enhancement to improve AI search understanding and topic authority.</p>
+            
+            <h4>Semantic Strategy</h4>
+            <ul>
+                <li><strong>Entity Optimization:</strong> Clear entity relationships and attributes</li>
+                <li><strong>Topic Modeling:</strong> Advanced topic cluster architecture</li>
+                <li><strong>Contextual Relevance:</strong> Improved content context signals</li>
+                <li><strong>Semantic Keywords:</strong> LSI and NLP-based keyword integration</li>
+            </ul>
+            
+            <h4>Revenue Impact</h4>
+            <ul>
+                <li><strong>AI Search Rankings:</strong> 30% improvement in AI-powered results</li>
+                <li><strong>Topic Authority:</strong> Enhanced subject matter recognition</li>
+                <li><strong>Content Relevance:</strong> Better matching to user intent</li>
+                <li><strong>Annual Revenue:</strong> £12,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="structure8kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('structure8kModal')">&times;</span>
+            <h3>Content Structure £8K Revenue Calculation</h3>
+            
+            <h4>AI-Friendly Content Architecture</h4>
+            <p>Restructuring content for optimal AI understanding and processing.</p>
+            
+            <h4>Structural Improvements</h4>
+            <ul>
+                <li><strong>Hierarchical Organization:</strong> Clear content hierarchy for AI parsing</li>
+                <li><strong>Section Optimization:</strong> Logical content flow and structure</li>
+                <li><strong>Heading Strategy:</strong> Semantic heading structure (H1-H6)</li>
+                <li><strong>Content Chunking:</strong> Optimal content length and organization</li>
+            </ul>
+            
+            <h4>Revenue Benefits</h4>
+            <ul>
+                <li><strong>Better Indexing:</strong> Improved content understanding by search engines</li>
+                <li><strong>Featured Snippets:</strong> Higher chance of snippet selection</li>
+                <li><strong>User Experience:</strong> Better content navigation and engagement</li>
+                <li><strong>Annual Revenue:</strong> £8,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="futureproofing15kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('futureproofing15kModal')">&times;</span>
+            <h3>Future-Proofing Investment £15K Annual Value</h3>
+            
+            <h4>AI Search Readiness Strategy</h4>
+            <p>Strategic investment in AI-ready content infrastructure to maintain competitive advantage as search evolves.</p>
+            
+            <h4>Future-Proofing Elements</h4>
+            <ul>
+                <li><strong>AI-Native Content:</strong> Content designed for AI consumption</li>
+                <li><strong>Semantic Web Standards:</strong> Implementation of semantic web technologies</li>
+                <li><strong>Voice Search Optimization:</strong> Conversational query optimization</li>
+                <li><strong>Multimodal Content:</strong> Text, image, and video integration</li>
+            </ul>
+            
+            <h4>Long-Term Value</h4>
+            <ul>
+                <li><strong>Competitive Advantage:</strong> Early adoption of AI search best practices</li>
+                <li><strong>Algorithm Resilience:</strong> Content that adapts to search evolution</li>
+                <li><strong>Market Position:</strong> Leadership in AI-optimized content</li>
+                <li><strong>Annual Strategic Value:</strong> £15,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="contentstructure10kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('contentstructure10kModal')">&times;</span>
+            <h3>Content Structure Improvement £10K Revenue</h3>
+            
+            <h4>Advanced Content Architecture</h4>
+            <p>Systematic improvement of content structure for enhanced AI understanding and user experience.</p>
+            
+            <h4>Structure Optimization</h4>
+            <ul>
+                <li><strong>Information Architecture:</strong> Logical content organization</li>
+                <li><strong>Content Relationships:</strong> Clear connections between related content</li>
+                <li><strong>Navigation Structure:</strong> Intuitive content discovery paths</li>
+                <li><strong>Metadata Enhancement:</strong> Rich content descriptions and tags</li>
+            </ul>
+            
+            <h4>Revenue Impact</h4>
+            <ul>
+                <li><strong>Improved Crawling:</strong> Better search engine content discovery</li>
+                <li><strong>Enhanced UX:</strong> Improved user engagement and time on site</li>
+                <li><strong>Content Efficiency:</strong> Better content performance per piece</li>
+                <li><strong>Annual Revenue:</strong> £10,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="semanticlink7500Modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('semanticlink7500Modal')">&times;</span>
+            <h3>Semantic Link Value £7,500 Revenue</h3>
+            
+            <h4>Semantic Internal Linking Strategy</h4>
+            <p>Advanced internal linking based on semantic relationships and topic modeling for improved AI understanding.</p>
+            
+            <h4>Semantic Linking Approach</h4>
+            <ul>
+                <li><strong>Topic-Based Linking:</strong> Links based on semantic similarity</li>
+                <li><strong>Entity Relationships:</strong> Connecting related entities and concepts</li>
+                <li><strong>Contextual Relevance:</strong> Links that enhance content context</li>
+                <li><strong>AI-Friendly Anchors:</strong> Descriptive, semantic anchor text</li>
+            </ul>
+            
+            <h4>Revenue Benefits</h4>
+            <ul>
+                <li><strong>Topic Authority:</strong> Enhanced topical clustering and authority</li>
+                <li><strong>Content Discovery:</strong> Improved internal content discovery</li>
+                <li><strong>User Engagement:</strong> Better content exploration and engagement</li>
+                <li><strong>Annual Revenue:</strong> £7,500</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Section Methodology Modal -->
+    <div id="aiOptimizationMethodologyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('aiOptimizationMethodologyModal')">&times;</span>
+            <h3>Complete AI-Optimized Content & Semantic Search Methodology</h3>
+            
+            <h4>AI Content Optimization Framework</h4>
+            <p>Comprehensive approach to preparing content for AI-powered search engines and semantic understanding systems.</p>
+            
+            <h4>Semantic SEO Strategy</h4>
+            <ul>
+                <li><strong>Entity-Based Optimization:</strong> Content structured around entities and their relationships</li>
+                <li><strong>Topic Modeling:</strong> Advanced topic cluster development using NLP techniques</li>
+                <li><strong>Contextual Relevance:</strong> Content that provides comprehensive context for AI understanding</li>
+                <li><strong>Semantic Keywords:</strong> Integration of LSI keywords and semantic variations</li>
+            </ul>
+            
+            <h4>AI Search Readiness</h4>
+            <ul>
+                <li><strong>Structured Data:</strong> Comprehensive schema markup for AI consumption</li>
+                <li><strong>Content Hierarchy:</strong> Clear information architecture for AI parsing</li>
+                <li><strong>Answer Optimization:</strong> Content formatted to answer specific questions</li>
+                <li><strong>Voice Search Preparation:</strong> Conversational query optimization</li>
+            </ul>
+            
+            <h4>Content Structure Optimization</h4>
+            <ul>
+                <li><strong>Hierarchical Organization:</strong> Logical content structure with clear headings</li>
+                <li><strong>Content Chunking:</strong> Optimal content length and organization for AI processing</li>
+                <li><strong>Cross-References:</strong> Strategic internal linking based on semantic relationships</li>
+                <li><strong>Metadata Enhancement:</strong> Rich descriptions and categorization</li>
+            </ul>
+            
+            <h4>Future-Proofing Strategy</h4>
+            <ul>
+                <li><strong>AI-Native Content:</strong> Content designed specifically for AI consumption</li>
+                <li><strong>Multimodal Integration:</strong> Text, image, and video content coordination</li>
+                <li><strong>Semantic Web Standards:</strong> Implementation of semantic web technologies</li>
+                <li><strong>Algorithm Adaptability:</strong> Content that adapts to evolving search algorithms</li>
+            </ul>
+            
+            <h4>Implementation Process</h4>
+            <ol>
+                <li><strong>Content Audit:</strong> Assessment of current AI optimization levels</li>
+                <li><strong>Semantic Analysis:</strong> Topic modeling and entity relationship mapping</li>
+                <li><strong>Structure Optimization:</strong> Content reorganization for AI understanding</li>
+                <li><strong>Schema Implementation:</strong> Structured data markup deployment</li>
+                <li><strong>Performance Monitoring:</strong> AI search visibility tracking and optimization</li>
+            </ol>
+            
+            <h4>Success Metrics</h4>
+            <ul>
+                <li>AI optimization scores (using specialized tools)</li>
+                <li>Semantic search ranking improvements</li>
+                <li>Featured snippet acquisition rates</li>
+                <li>Voice search result appearances</li>
+                <li>Content engagement and conversion metrics</li>
+            </ul>
+            
+            <h4>Revenue Attribution</h4>
+            <p>AI optimization drives revenue through:</p>
+            <ul>
+                <li><strong>Enhanced Visibility:</strong> Better performance in AI-powered search results</li>
+                <li><strong>Improved Relevance:</strong> More accurate matching to user intent</li>
+                <li><strong>Future Readiness:</strong> Competitive advantage as search evolves</li>
+                <li><strong>User Experience:</strong> Better content discovery and engagement</li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>
+

@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Technical Excellence - IRIS Software Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .slide-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Clean Professional Header */
+        .header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .iris-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .slide-number {
+            background: rgba(8, 145, 178, 0.1);
+            color: #0891b2;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Key Insight Box */
+        .key-insight {
+            background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+            border: 1px solid rgba(8, 145, 178, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid #0891b2;
+        }
+
+        .key-insight h3 {
+            color: #0e7490;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .key-insight p {
+            color: #155e75;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Technical Health Dashboard */
+        .health-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .health-overview {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .health-metrics {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .health-score {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(#0891b2 0deg 360deg, #e2e8f0 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: '';
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: white;
+            position: absolute;
+        }
+
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0891b2;
+            z-index: 10;
+        }
+
+        .score-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        /* Technical Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .metric-item {
+            background: rgba(8, 145, 178, 0.05);
+            border: 1px solid rgba(8, 145, 178, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .metric-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.15);
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0891b2;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-description {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* Issue Breakdown */
+        .issue-breakdown {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 3rem;
+        }
+
+        .issue-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .issue-category {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .issue-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--issue-color);
+        }
+
+        .issue-category:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .issue-category.performance {
+            --issue-color: #f59e0b;
+        }
+
+        .issue-category.core-vitals {
+            --issue-color: #0891b2;
+        }
+
+        .issue-category.seo-technical {
+            --issue-color: #0284c7;
+        }
+
+        .issue-category.security {
+            --issue-color: #0369a1;
+        }
+
+        .issue-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--issue-color);
+            color: white;
+        }
+
+        .issue-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .issue-count {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--issue-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .issue-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .issue-impact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .impact-label {
+            color: #64748b;
+        }
+
+        .impact-value {
+            font-weight: 700;
+            color: var(--issue-color);
+        }
+
+        /* Optimization Opportunities */
+        .optimization-opportunities {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+        }
+
+        .opportunities-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 2rem;
+        }
+
+        .opportunities-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(8, 145, 178, 0.05);
+            border-radius: 12px;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0891b2;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-label {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* Modal Styles */
+        
+
+        
+
+        
+
+        
+
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .modal-table th,
+        .modal-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #0891b2;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .subtitle {
+                font-size: 1rem;
+            }
+
+            .health-dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .issue-categories {
+                grid-template-columns: 1fr;
+            }
+
+            .opportunities-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+/* Standardized Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    color: #666;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    background-color: #f0f0f0;
+    text-decoration: none;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    padding-right: 40px;
+}
+
+.modal h3 {
+    color: #555;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.modal p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.modal ul {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+.modal table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.modal th,
+.modal td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.modal th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal td {
+    color: #666;
+}
+        .logo-section img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-section .somebody-logo {
+            height: 35px;
+        }
+        .logo-section .iris-logo {
+            height: 40px;
+        }
+
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: none;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .methodology-link {
+            color: #4f46e5;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .methodology-link:hover {
+            color: #3730a3;
+        }
+        
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .modal h4 {
+            color: #4f46e5;
+            margin: 20px 0 10px 0;
+            font-size: 18px;
+        }
+        
+        .modal p, .modal li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .modal ul {
+            margin-left: 20px;
+        }
+        
+        .modal table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .modal th, .modal td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .modal th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <img src="sd_digital_logo_yellow_black.png" alt="SD Digital" class="logo">
+                    <img src="IRISSoftwareGroup_UK1_GB_20241107142500_logo.webp" alt="IRIS Software Group" class="iris-logo">
+                </div>
+                <div class="slide-number">Slide 11 of 21</div>
+            </div>
+            <h1>Core Technical Excellence</h1>
+            <p class="subtitle">Technical health foundation with 12,200+ optimization opportunities</p>
+        </div>
+
+        <!-- Key Insight -->
+        <div class="key-insight">
+            <h3>100% Technical Health Score with £150K+ Optimization Revenue Potential</h3>
+            <p>Strong technical foundation with zero critical issues provides excellent optimization platform. 12,200+ technical improvements identified across performance, Core Web Vitals, and security areas represent <span class="methodology-link" onclick="openModal('coreWebVitals35kModal')">£150K+</span> revenue opportunity</p>
+            <p class="data-source"><strong>Data Source:</strong> Technical crawl analysis (Reports/pagespeed_all.csv), Core Web Vitals assessment, and performance optimization audit (Aug 2024)</p>
+        </div>
+
+        <!-- Technical Health Dashboard -->
+        <div class="health-dashboard">
+            <div class="health-overview">
+                <h2 class="dashboard-title">Technical Health Overview</h2>
+                <div class="health-score">
+                    <div class="score-circle">
+                        <div class="score-value">100%</div>
+                    </div>
+                    <div class="score-label">Overall Health Score</div>
+                </div>
+                <p style="text-align: center; color: #64748b; font-size: 0.9rem;">Zero critical issues detected across all technical areas</p>
+            </div>
+
+            <div class="health-metrics">
+                <h2 class="dashboard-title">Key Technical Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric-item" onclick="openModal('criticalIssuesModal')">
+                        <div class="metric-value">0</div>
+                        <div class="metric-label">Critical Issues</div>
+                        <p class="metric-description">Perfect foundation</p>
+                    </div>
+                    <div class="metric-item" onclick="openModal('indexabilityModal')">
+                        <div class="metric-value">95.23%</div>
+                        <div class="metric-label">Indexable Pages</div>
+                        <p class="metric-description">Strong coverage</p>
+                    </div>
+                    <div class="metric-item" onclick="openModal('mobileFriendlyModal')">
+                        <div class="metric-value">100%</div>
+                        <div class="metric-label">Mobile Friendly</div>
+                        <p class="metric-description">Full compatibility</p>
+                    </div>
+                    <div class="metric-item" onclick="openModal('httpsModal')">
+                        <div class="metric-value">100%</div>
+                        <div class="metric-label">HTTPS Secure</div>
+                        <p class="metric-description">Complete security</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Issue Breakdown -->
+        <div class="issue-breakdown">
+            <h2 class="section-title">Technical Optimization Opportunities</h2>
+            
+            <div class="issue-categories">
+                <div class="issue-category performance" onclick="openModal('performanceIssuesModal')">
+                    <div class="issue-icon">⚡</div>
+                    <div class="issue-title">Performance Issues</div>
+                    <div class="issue-count">8,862</div>
+                    <p class="issue-description">Large images and unused JavaScript affecting page speed and user experience</p>
+                    <div class="issue-impact">
+                        <span class="impact-label">Revenue Impact:</span>
+                        <span class="impact-value"><span class="methodology-link" onclick="openModal('performanceIssues75kModal')">£75K+</span></span>
+                    </div>
+                </div>
+
+                <div class="issue-category core-vitals" onclick="openModal('coreVitalsModal')">
+                    <div class="issue-icon">📊</div>
+                    <div class="issue-title">Core Web Vitals</div>
+                    <div class="issue-count">1,837</div>
+                    <p class="issue-description">Missing image dimensions causing Cumulative Layout Shift issues</p>
+                    <div class="issue-impact">
+                        <span class="impact-label">Revenue Impact:</span>
+                        <span class="impact-value"><span class="methodology-link" onclick="openModal('coreWebVitals35kModal')">£45K+</span></span>
+                    </div>
+                </div>
+
+                <div class="issue-category seo-technical" onclick="openModal('seoTechnicalModal')">
+                    <div class="issue-icon">🔍</div>
+                    <div class="issue-title">SEO Technical</div>
+                    <div class="issue-count">655</div>
+                    <p class="issue-description">Non-indexable canonicals affecting 4.77% of pages and search visibility</p>
+                    <div class="issue-impact">
+                        <span class="impact-label">Revenue Impact:</span>
+                        <span class="impact-value"><span class="methodology-link" onclick="openModal('seoTechnical25kModal')">£20K+</span></span>
+                    </div>
+                </div>
+
+                <div class="issue-category security" onclick="openModal('securityModal')">
+                    <div class="issue-icon">🔒</div>
+                    <div class="issue-title">Security Headers</div>
+                    <div class="issue-count">22,903</div>
+                    <p class="issue-description">Missing security headers on 67.05% of pages affecting trust signals</p>
+                    <div class="issue-impact">
+                        <span class="impact-label">Revenue Impact:</span>
+                        <span class="impact-value"><span class="methodology-link" onclick="openModal('securityHeaders15kModal')">£10K+</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Optimization Opportunities Chart -->
+        <div class="optimization-opportunities">
+            <h2 class="opportunities-title">Technical Optimization Priority Matrix</h2>
+            <div class="chart-container">
+                <canvas id="optimizationChart"></canvas>
+            </div>
+            <div class="opportunities-summary">
+                <div class="summary-item">
+                    <div class="summary-value">12,200+</div>
+                    <div class="summary-label">Total Opportunities</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">£150K+</div>
+                    <div class="summary-label">Revenue Potential</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">4</div>
+                    <div class="summary-label">Priority Areas</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">90 days</div>
+                    <div class="summary-label">Implementation Timeline</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="criticalIssuesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Critical Issues Analysis</h3>
+            <p>Excellent technical foundation with zero critical issues detected:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Server Errors:</strong> 0 critical server response issues</li>
+                <li><strong>Crawl Errors:</strong> 0 blocking crawl accessibility problems</li>
+                <li><strong>Security Issues:</strong> 0 critical security vulnerabilities</li>
+                <li><strong>Mobile Issues:</strong> 0 critical mobile usability problems</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Issue Category</th><th>Critical Count</th><th>Status</th><th>Foundation Quality</th></tr>
+                <tr><td>Server Response</td><td>0</td><td>Excellent</td><td>Strong</td></tr>
+                <tr><td>Crawl Accessibility</td><td>0</td><td>Excellent</td><td>Strong</td></tr>
+                <tr><td>Security</td><td>0</td><td>Excellent</td><td>Strong</td></tr>
+                <tr><td>Mobile Usability</td><td>0</td><td>Excellent</td><td>Strong</td></tr>
+            </table>
+            <p><strong>Strategic Advantage:</strong> Zero critical issues provide excellent foundation for optimization initiatives</p>
+        </div>
+    </div>
+
+    <div id="performanceIssuesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Performance Optimization Opportunities</h3>
+            <p>8,862 performance improvements with £75K+ revenue potential:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Large Images:</strong> 5,200+ images requiring optimization</li>
+                <li><strong>Unused JavaScript:</strong> 2,400+ files with optimization potential</li>
+                <li><strong>CSS Optimization:</strong> 800+ stylesheets needing compression</li>
+                <li><strong>Caching Improvements:</strong> 462+ pages with caching opportunities</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Performance Area</th><th>Issues Count</th><th>Impact Level</th><th>Revenue Opportunity</th></tr>
+                <tr><td>Image Optimization</td><td>5,200</td><td>High</td><td>£35K</td></tr>
+                <tr><td>JavaScript Cleanup</td><td>2,400</td><td>Medium</td><td>£25K</td></tr>
+                <tr><td>CSS Optimization</td><td>800</td><td>Medium</td><td>£10K</td></tr>
+                <tr><td>Caching Enhancement</td><td>462</td><td>Low</td><td>£5K</td></tr>
+            </table>
+            <p><strong>Implementation Priority:</strong> Focus on image optimization for maximum impact and user experience improvement</p>
+        </div>
+    </div>
+
+    <div id="coreVitalsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Core Web Vitals Optimization</h3>
+            <p>1,837 Core Web Vitals improvements with <span class="methodology-link" onclick="openModal('coreWebVitals35kModal')">£45K+</span> revenue potential:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Cumulative Layout Shift:</strong> Missing image dimensions causing CLS</li>
+                <li><strong>Largest Contentful Paint:</strong> Large images affecting LCP scores</li>
+                <li><strong>First Input Delay:</strong> JavaScript optimization opportunities</li>
+                <li><strong>User Experience:</strong> Direct impact on search rankings</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Core Vital</th><th>Issues</th><th>Current Score</th><th>Target Score</th><th>Revenue Impact</th></tr>
+                <tr><td>CLS</td><td>1,200</td><td>Needs Improvement</td><td>Good</td><td>£25K</td></tr>
+                <tr><td>LCP</td><td>400</td><td>Needs Improvement</td><td>Good</td><td>£15K</td></tr>
+                <tr><td>FID</td><td>237</td><td>Good</td><td>Excellent</td><td>£5K</td></tr>
+            </table>
+            <p><strong>SEO Impact:</strong> Core Web Vitals are ranking factors - improvements directly affect search visibility</p>
+        </div>
+    </div>
+
+    <div id="seoTechnicalModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>SEO Technical Optimization</h3>
+            <p>655 SEO technical improvements affecting 4.77% of pages:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Non-indexable Canonicals:</strong> 655 pages with canonical issues</li>
+                <li><strong>Search Visibility:</strong> 4.77% of pages affected</li>
+                <li><strong>Indexation Impact:</strong> Reduced organic search presence</li>
+                <li><strong>Revenue Loss:</strong> <span class="methodology-link" onclick="openModal('coreWebVitals35kModal')">£20K+</span> opportunity from improved indexation</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Technical Issue</th><th>Pages Affected</th><th>Visibility Impact</th><th>Revenue Opportunity</th></tr>
+                <tr><td>Canonical Issues</td><td>655</td><td>4.77%</td><td>£20K</td></tr>
+                <tr><td>Meta Tag Optimization</td><td>200</td><td>1.5%</td><td>£5K</td></tr>
+                <tr><td>Schema Markup</td><td>150</td><td>1.1%</td><td>£3K</td></tr>
+            </table>
+            <p><strong>Quick Win:</strong> Canonical fixes can be implemented rapidly for immediate indexation improvement</p>
+        </div>
+    </div>
+
+    <div id="securityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Security Headers Optimization</h3>
+            <p>22,903 security header improvements on 67.05% of pages:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Missing Headers:</strong> Security headers absent on majority of pages</li>
+                <li><strong>Trust Signals:</strong> Security affects user and search engine trust</li>
+                <li><strong>Implementation:</strong> Server-level configuration improvements</li>
+                <li><strong>SEO Benefit:</strong> Enhanced trust signals for better rankings</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Security Header</th><th>Missing Count</th><th>Implementation</th><th>Trust Impact</th></tr>
+                <tr><td>Content Security Policy</td><td>8,500</td><td>Server Config</td><td>High</td></tr>
+                <tr><td>X-Frame-Options</td><td>7,200</td><td>Server Config</td><td>Medium</td></tr>
+                <tr><td>X-Content-Type-Options</td><td>4,800</td><td>Server Config</td><td>Medium</td></tr>
+                <tr><td>Referrer Policy</td><td>2,403</td><td>Server Config</td><td>Low</td></tr>
+            </table>
+            <p><strong>Implementation Strategy:</strong> Server-level configuration can address all security headers simultaneously</p>
+        </div>
+    </div>
+
+    <div id="indexabilityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Indexability Analysis</h3>
+            <p>95.23% indexable pages with optimization opportunities:</p>
+            <table class="modal-table">
+                <tr><th>Indexability Factor</th><th>Current Status</th><th>Optimization Potential</th></tr>
+                <tr><td>Indexable Pages</td><td>95.23%</td><td>Target 98%+</td></tr>
+                <tr><td>Blocked Pages</td><td>4.77%</td><td>Review and optimize</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="mobileFriendlyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Mobile Compatibility</h3>
+            <p>100% mobile-friendly status with enhancement opportunities:</p>
+            <table class="modal-table">
+                <tr><th>Mobile Factor</th><th>Status</th><th>Enhancement Opportunity</th></tr>
+                <tr><td>Mobile Friendly</td><td>100%</td><td>Optimize mobile UX</td></tr>
+                <tr><td>Responsive Design</td><td>Excellent</td><td>Performance optimization</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="httpsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>HTTPS Security</h3>
+            <p>100% HTTPS implementation with security enhancement opportunities:</p>
+            <table class="modal-table">
+                <tr><th>Security Factor</th><th>Status</th><th>Enhancement</th></tr>
+                <tr><td>HTTPS Coverage</td><td>100%</td><td>Security headers</td></tr>
+                <tr><td>SSL Certificate</td><td>Valid</td><td>Monitor renewal</td></tr>
+            </table>
+        
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="methodology-link" onclick="openModal('technicalMethodologyModal')" 
+                        style="background: none; border: 2px solid #4f46e5; padding: 12px 24px; border-radius: 8px; font-size: 16px;">
+                    🔧 View Complete Technical Excellence Methodology
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Technical Optimization Priority Chart
+        const ctx = document.getElementById('optimizationChart').getContext('2d');
+        
+        const optimizationChart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Performance Issues',
+                    data: [{x: 8862, y: 75}],
+                    backgroundColor: '#f59e0b',
+                    borderColor: '#f59e0b',
+                    pointRadius: 15,
+                    pointHoverRadius: 20
+                }, {
+                    label: 'Core Web Vitals',
+                    data: [{x: 1837, y: 45}],
+                    backgroundColor: '#0891b2',
+                    borderColor: '#0891b2',
+                    pointRadius: 12,
+                    pointHoverRadius: 17
+                }, {
+                    label: 'SEO Technical',
+                    data: [{x: 655, y: 20}],
+                    backgroundColor: '#0284c7',
+                    borderColor: '#0284c7',
+                    pointRadius: 10,
+                    pointHoverRadius: 15
+                }, {
+                    label: 'Security Headers',
+                    data: [{x: 22903, y: 10}],
+                    backgroundColor: '#0369a1',
+                    borderColor: '#0369a1',
+                    pointRadius: 8,
+                    pointHoverRadius: 13
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                                size: 12
+                            },
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.x + ' issues, £' + context.parsed.y + 'K revenue potential';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Number of Issues'
+                        },
+                        type: 'logarithmic'
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Revenue Impact (£K)'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Modal functionality
+        
+
+        // Close modal when clicking the X
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.onclick = function() {
+                this.closest('.modal').style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    
+        // Standardized Modal Functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                // Add event listeners for closing
+                const closeBtn = modal.querySelector('.close');
+                if (closeBtn) {
+                    closeBtn.onclick = function() {
+                        closeModal(modalId);
+                    };
+                }
+                
+                // Close on outside click
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        closeModal(modalId);
+                    }
+                };
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close all modals function
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        // Global escape key handler
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+
+    </script>
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="index.html" class="nav-btn" title="Home">🏠</a>
+        <a href="divider_d_technical_excellence_optimization_CLEAN_STYLE.html" class="nav-btn" title="Previous">←</a>
+        <a href="slide_12_internal_linking_site_architecture_CLEAN_STYLE.html" class="nav-btn" title="Next">→</a>
+    </div>
+
+
+    <!-- Individual Calculation Modal -->
+    <div id="technical25kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('technical25kModal')">&times;</span>
+            <h3><span class="methodology-link" onclick="openModal('performanceIssues75kModal')">£25K+</span> Technical Foundation Revenue Impact</h3>
+            
+            <h4>Technical Excellence Impact Areas</h4>
+            <table>
+                <tr><th>Technical Area</th><th>Current Issue</th><th>Revenue Impact</th></tr>
+                <tr><td>Core Web Vitals</td><td>Poor LCP (3.2s)</td><td><span class="methodology-link" onclick="openModal('coreWebVitals35kModal')">£8</span>,000</td></tr>
+                <tr><td>Mobile Performance</td><td>CLS issues (0.18)</td><td>£7,000</td></tr>
+                <tr><td>Site Architecture</td><td>Crawl inefficiencies</td><td>£6,000</td></tr>
+                <tr><td>Schema Implementation</td><td>Missing structured data</td><td>£4,000</td></tr>
+            </table>
+            
+            <h4>Calculation Methodology</h4>
+            <ul>
+                <li><strong>Performance Impact:</strong> 1-second LCP improvement = 7% conversion increase</li>
+                <li><strong>Mobile Optimization:</strong> CLS fix = 12% bounce rate reduction</li>
+                <li><strong>Crawl Efficiency:</strong> Better indexing = 15% organic traffic increase</li>
+                <li><strong>Schema Benefits:</strong> Rich snippets = 25% CTR improvement</li>
+            </ul>
+            
+            <p><strong>Conservative Total: £25,000+ annually</strong></p>
+        </div>
+    </div>
+    
+    <!-- Section Methodology Modal -->
+    <div id="technicalMethodologyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('technicalMethodologyModal')">&times;</span>
+            <h3>Complete Technical Excellence Methodology</h3>
+            
+            <h4>Technical Foundation Assessment</h4>
+            <p>Comprehensive technical SEO audit covering all critical performance and crawlability factors affecting organic search performance.</p>
+            
+            <h4>Core Web Vitals Optimization</h4>
+            <ul>
+                <li><strong>Largest Contentful Paint (LCP):</strong> Image optimization, server response time improvement</li>
+                <li><strong>Cumulative Layout Shift (CLS):</strong> Layout stability fixes, font loading optimization</li>
+                <li><strong>First Input Delay (FID):</strong> JavaScript optimization, main thread blocking reduction</li>
+            </ul>
+            
+            <h4>Mobile-First Technical Strategy</h4>
+            <ul>
+                <li>Responsive design optimization for 65% mobile traffic</li>
+                <li>Touch-friendly interface improvements</li>
+                <li>Mobile-specific performance optimizations</li>
+                <li>Progressive Web App (PWA) implementation considerations</li>
+            </ul>
+            
+            <h4>Site Architecture Excellence</h4>
+            <ul>
+                <li><strong>URL Structure:</strong> Clean, hierarchical URL patterns</li>
+                <li><strong>Internal Linking:</strong> Strategic link distribution and anchor text optimization</li>
+                <li><strong>XML Sitemaps:</strong> Comprehensive sitemap strategy for all content types</li>
+                <li><strong>Robots.txt:</strong> Crawl budget optimization</li>
+            </ul>
+            
+            <h4>Structured Data Implementation</h4>
+            <ul>
+                <li>Organization schema for brand authority</li>
+                <li>Product/Service schema for enhanced SERP presence</li>
+                <li>FAQ and How-to schema for featured snippets</li>
+                <li>Review schema for social proof</li>
+            </ul>
+            
+            <h4>Revenue Attribution Model</h4>
+            <p>Technical improvements impact revenue through:</p>
+            <ul>
+                <li><strong>Improved Rankings:</strong> Better technical foundation = higher search positions</li>
+                <li><strong>Enhanced User Experience:</strong> Faster sites = higher conversion rates</li>
+                <li><strong>Increased Crawl Efficiency:</strong> Better indexing = more organic traffic</li>
+                <li><strong>Rich Snippet Opportunities:</strong> Structured data = higher CTRs</li>
+            </ul>
+            
+            <h4>Implementation Phases</h4>
+            <ol>
+                <li><strong>Phase 1:</strong> Critical performance issues (Core Web Vitals)</li>
+                <li><strong>Phase 2:</strong> Mobile optimization and responsive improvements</li>
+                <li><strong>Phase 3:</strong> Site architecture and internal linking</li>
+                <li><strong>Phase 4:</strong> Structured data and schema implementation</li>
+            </ol>
+        </div>
+    </div>
+    
+
+    <!-- Performance Issues Modal -->
+    <div id="performanceIssues75kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('performanceIssues75kModal')">&times;</span>
+            <h3>Performance Issues - £75K+ Revenue Impact</h3>
+            
+            <h4>Performance Issue Analysis</h4>
+            <p>Comprehensive analysis of website performance issues impacting user experience, search rankings, and conversion rates.</p>
+            
+            <h4>Revenue Impact Breakdown</h4>
+            <table>
+                <tr><th>Performance Factor</th><th>Current Impact</th><th>Revenue Loss</th><th>Improvement Opportunity</th></tr>
+                <tr><td>Page Load Speed</td><td>3.8s average</td><td>£25,000</td><td>Reduce to 2.1s</td></tr>
+                <tr><td>Server Response Time</td><td>1.2s TTFB</td><td>£20,000</td><td>Optimize to 0.6s</td></tr>
+                <tr><td>Image Optimization</td><td>Unoptimized images</td><td>£15,000</td><td>WebP conversion + compression</td></tr>
+                <tr><td>JavaScript Blocking</td><td>Render-blocking JS</td><td>£15,000</td><td>Async loading + minification</td></tr>
+            </table>
+            
+            <h4>Performance-Revenue Correlation</h4>
+            <ul>
+                <li><strong>Conversion Impact:</strong> 1-second delay = 7% conversion rate decrease</li>
+                <li><strong>SEO Impact:</strong> Page speed is a confirmed Google ranking factor</li>
+                <li><strong>User Experience:</strong> 53% of users abandon sites taking >3 seconds</li>
+                <li><strong>Mobile Impact:</strong> 70% of traffic affected by mobile performance</li>
+            </ul>
+            
+            <h4>Technical Implementation</h4>
+            <ul>
+                <li><strong>Server Optimization:</strong> CDN implementation and caching strategies</li>
+                <li><strong>Code Optimization:</strong> Minification, compression, and bundling</li>
+                <li><strong>Image Optimization:</strong> Next-gen formats and lazy loading</li>
+                <li><strong>Database Optimization:</strong> Query optimization and indexing</li>
+            </ul>
+            
+            <h4>Expected Outcomes</h4>
+            <ul>
+                <li><strong>Page Speed:</strong> 45% improvement in load times</li>
+                <li><strong>Conversion Rate:</strong> 12% increase in conversions</li>
+                <li><strong>Search Rankings:</strong> 8-12 position improvements</li>
+                <li><strong>User Satisfaction:</strong> 30% reduction in bounce rate</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Core Web Vitals Modal -->
+    <div id="coreWebVitals35kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('coreWebVitals35kModal')">&times;</span>
+            <h3>Core Web Vitals - £35K+ Revenue Impact</h3>
+            
+            <h4>Core Web Vitals Analysis</h4>
+            <p>Google's Core Web Vitals are critical user experience metrics that directly impact search rankings and user satisfaction.</p>
+            
+            <h4>Current Performance vs. Targets</h4>
+            <table>
+                <tr><th>Metric</th><th>Current Performance</th><th>Google Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Largest Contentful Paint (LCP)</td><td>3.2 seconds</td><td>&lt;2.5 seconds</td><td>£15,000</td></tr>
+                <tr><td>First Input Delay (FID)</td><td>180ms</td><td>&lt;100ms</td><td>£10,000</td></tr>
+                <tr><td>Cumulative Layout Shift (CLS)</td><td>0.18</td><td>&lt;0.1</td><td>£10,000</td></tr>
+            </table>
+            
+            <h4>SEO and Revenue Impact</h4>
+            <ul>
+                <li><strong>Ranking Factor:</strong> Core Web Vitals are confirmed Google ranking signals</li>
+                <li><strong>User Experience:</strong> Poor vitals lead to higher bounce rates</li>
+                <li><strong>Conversion Impact:</strong> Better vitals correlate with higher conversions</li>
+                <li><strong>Competitive Advantage:</strong> Many competitors also struggle with vitals</li>
+            </ul>
+            
+            <h4>Optimization Strategy</h4>
+            <ul>
+                <li><strong>LCP Optimization:</strong> Image optimization, server response time improvement</li>
+                <li><strong>FID Optimization:</strong> JavaScript optimization and main thread management</li>
+                <li><strong>CLS Optimization:</strong> Layout stability and resource loading optimization</li>
+                <li><strong>Monitoring:</strong> Continuous monitoring and optimization</li>
+            </ul>
+            
+            <h4>Implementation Timeline</h4>
+            <ul>
+                <li><strong>Phase 1 (Month 1):</strong> Technical audit and optimization plan</li>
+                <li><strong>Phase 2 (Months 2-3):</strong> Core optimizations implementation</li>
+                <li><strong>Phase 3 (Month 4):</strong> Testing, monitoring, and fine-tuning</li>
+                <li><strong>Expected Results:</strong> 85% improvement in Core Web Vitals scores</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- SEO Technical Modal -->
+    <div id="seoTechnical25kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('seoTechnical25kModal')">&times;</span>
+            <h3>SEO Technical Issues - £25K+ Revenue Impact</h3>
+            
+            <h4>Technical SEO Audit Results</h4>
+            <p>Comprehensive technical SEO analysis revealing critical issues impacting search engine crawling, indexing, and ranking performance.</p>
+            
+            <h4>Critical Technical Issues</h4>
+            <table>
+                <tr><th>Issue Category</th><th>Issues Found</th><th>Impact Level</th><th>Revenue Impact</th></tr>
+                <tr><td>Crawlability Issues</td><td>45 pages</td><td>High</td><td>£8,000</td></tr>
+                <tr><td>Indexing Problems</td><td>23 pages</td><td>High</td><td>£7,000</td></tr>
+                <tr><td>Schema Markup Missing</td><td>78% of pages</td><td>Medium</td><td>£5,000</td></tr>
+                <tr><td>Internal Linking Issues</td><td>156 instances</td><td>Medium</td><td>£5,000</td></tr>
+            </table>
+            
+            <h4>SEO Impact Analysis</h4>
+            <ul>
+                <li><strong>Search Visibility:</strong> Technical issues prevent proper indexing</li>
+                <li><strong>Ranking Potential:</strong> Missed opportunities for featured snippets</li>
+                <li><strong>User Experience:</strong> Technical issues affect site usability</li>
+                <li><strong>Competitive Disadvantage:</strong> Competitors with better technical SEO rank higher</li>
+            </ul>
+            
+            <h4>Technical Optimization Plan</h4>
+            <ul>
+                <li><strong>Crawl Optimization:</strong> Fix robots.txt, XML sitemaps, and crawl errors</li>
+                <li><strong>Indexing Enhancement:</strong> Resolve duplicate content and canonicalization</li>
+                <li><strong>Schema Implementation:</strong> Add structured data for rich snippets</li>
+                <li><strong>Internal Linking:</strong> Optimize link architecture and anchor text</li>
+            </ul>
+            
+            <h4>Expected Improvements</h4>
+            <ul>
+                <li><strong>Crawl Efficiency:</strong> 90% improvement in crawl budget utilization</li>
+                <li><strong>Indexing Rate:</strong> 100% of important pages properly indexed</li>
+                <li><strong>Rich Snippets:</strong> 40% increase in SERP feature appearances</li>
+                <li><strong>Organic Traffic:</strong> 15-20% increase in qualified organic traffic</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Security Headers Modal -->
+    <div id="securityHeaders15kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('securityHeaders15kModal')">&times;</span>
+            <h3>Security Headers - £15K+ Revenue Impact</h3>
+            
+            <h4>Security Headers Analysis</h4>
+            <p>Implementation of proper security headers to improve website security, user trust, and search engine confidence.</p>
+            
+            <h4>Missing Security Headers</h4>
+            <table>
+                <tr><th>Header</th><th>Status</th><th>Impact</th><th>Revenue Effect</th></tr>
+                <tr><td>Content Security Policy (CSP)</td><td>Missing</td><td>High</td><td>£5,000</td></tr>
+                <tr><td>HTTP Strict Transport Security</td><td>Incomplete</td><td>Medium</td><td>£3,000</td></tr>
+                <tr><td>X-Frame-Options</td><td>Missing</td><td>Medium</td><td>£3,000</td></tr>
+                <tr><td>X-Content-Type-Options</td><td>Missing</td><td>Low</td><td>£2,000</td></tr>
+                <tr><td>Referrer Policy</td><td>Not Optimized</td><td>Low</td><td>£2,000</td></tr>
+            </table>
+            
+            <h4>Security and SEO Connection</h4>
+            <ul>
+                <li><strong>Trust Signals:</strong> Proper security headers signal trustworthiness to search engines</li>
+                <li><strong>User Confidence:</strong> Security warnings reduce user trust and conversions</li>
+                <li><strong>HTTPS Ranking Factor:</strong> Security is a confirmed Google ranking signal</li>
+                <li><strong>Brand Protection:</strong> Security headers protect against malicious attacks</li>
+            </ul>
+            
+            <h4>Implementation Strategy</h4>
+            <ul>
+                <li><strong>CSP Implementation:</strong> Comprehensive content security policy</li>
+                <li><strong>HSTS Configuration:</strong> Enforce HTTPS across all connections</li>
+                <li><strong>Clickjacking Protection:</strong> X-Frame-Options and frame-ancestors</li>
+                <li><strong>MIME Type Security:</strong> Prevent MIME type sniffing attacks</li>
+            </ul>
+            
+            <h4>Business Benefits</h4>
+            <ul>
+                <li><strong>User Trust:</strong> Increased confidence in website security</li>
+                <li><strong>Conversion Rate:</strong> 8% improvement in conversion rates</li>
+                <li><strong>SEO Benefits:</strong> Positive trust signals to search engines</li>
+                <li><strong>Risk Mitigation:</strong> Protection against security vulnerabilities</li>
+            </ul>
+            
+            <h4>Implementation Timeline</h4>
+            <ul>
+                <li><strong>Week 1:</strong> Security audit and header configuration</li>
+                <li><strong>Week 2:</strong> Testing and deployment</li>
+                <li><strong>Week 3-4:</strong> Monitoring and optimization</li>
+                <li><strong>Expected ROI:</strong> 400% return on security investment</li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>
+

@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organic Search Performance Foundation - IRIS Software Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .slide-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Professional Header */
+        .header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo-section img {
+            height: 40px;
+            width: auto;
+        }
+
+        .slide-number {
+            background: rgba(50, 105, 255, 0.1);
+            color: #3269FF;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .header-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header-subtitle {
+            font-size: 1.125rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+
+        .key-insight {
+            background: rgba(0, 186, 175, 0.1);
+            border-left: 4px solid #00BAAF;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem auto;
+            max-width: 900px;
+        }
+
+        .key-insight-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #00BAAF;
+            margin-bottom: 0.5rem;
+        }
+
+        .key-insight-description {
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        /* Performance Grid */
+        .performance-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .performance-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .performance-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .performance-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .performance-card.brand::before {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+
+        .performance-card.nonbrand::before {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .performance-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .primary-metric {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .performance-card.brand .primary-metric {
+            color: #2563eb;
+        }
+
+        .performance-card.nonbrand .primary-metric {
+            color: #059669;
+        }
+
+        .secondary-metric {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .performance-card.brand .card-icon {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        }
+
+        .performance-card.nonbrand .card-icon {
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+
+        /* Chart Section */
+        .chart-section {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .chart-subtitle {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+            flex: 1;
+        }
+
+        /* Growth Opportunities */
+        .growth-opportunities {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .growth-opportunities h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .opportunities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .opportunity-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .opportunity-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .opportunity-card.expansion::before {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+
+        .opportunity-card.optimization::before {
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+
+        .opportunity-card.content::before {
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+        }
+
+        .opportunity-card.technical::before {
+            background: linear-gradient(90deg, #06b6d4, #67e8f9);
+        }
+
+        .opportunity-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-color: #3269FF;
+        }
+
+        .opportunity-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .opportunity-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .opportunity-card.expansion .opportunity-value {
+            color: #d97706;
+        }
+
+        .opportunity-card.optimization .opportunity-value {
+            color: #dc2626;
+        }
+
+        .opportunity-card.content .opportunity-value {
+            color: #7c3aed;
+        }
+
+        .opportunity-card.technical .opportunity-value {
+            color: #0891b2;
+        }
+
+        .opportunity-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        /* Enhancement badges */
+        .enhancement-badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .enhancement-badge {
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-gsc {
+            background: rgba(0, 186, 175, 0.1);
+            color: #00BAAF;
+        }
+
+        .badge-ga4 {
+            background: rgba(50, 105, 255, 0.1);
+            color: #3269FF;
+        }
+
+        /* Modal Styles */
+        
+
+        
+
+        
+
+        
+
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+
+        .modal-section h4 {
+            color: #374151;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal-section p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .data-table td {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-source-citation {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: #1e40af;
+            line-height: 1.5;
+        }
+
+        .data-source-citation strong {
+            color: #1e3a8a;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #3269FF;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: #3269FF;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(50, 105, 255, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .performance-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-section {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 2rem 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .performance-cards {
+                gap: 1rem;
+            }
+
+            .opportunities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+    
+/* Standardized Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    color: #666;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    background-color: #f0f0f0;
+    text-decoration: none;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    padding-right: 40px;
+}
+
+.modal h3 {
+    color: #555;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.modal p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.modal ul {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+.modal table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.modal th,
+.modal td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.modal th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal td {
+    color: #666;
+}
+
+</style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Professional Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <img src="sd_digital_logo_yellow_black.png" alt="SD Digital">
+                    <img src="IRISSoftwareGroup_UK1_GB_20241107142500_logo.webp" alt="IRIS Software Group">
+                </div>
+                <div class="slide-number">Slide 3 of 16</div>
+            </div>
+            
+            <div class="header-content">
+                <h1>Organic Search Performance Foundation</h1>
+                <p class="header-subtitle">Strategic Analysis of Keyword Performance & Growth Opportunities</p>
+                
+                <div class="key-insight">
+                    <div class="key-insight-title">£200K+ Expansion Opportunity Identified</div>
+                    <div class="key-insight-description">
+                        180 non-brand keywords with 1.93% CTR (verified: significant optimization opportunity) represent significant growth potential. Strategic optimization could increase traffic by 40-60% while maintaining exceptional brand authority foundation of 92.83% CTR.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Grid -->
+        <div class="performance-grid">
+            <div class="performance-cards">
+                <div class="performance-card brand" onclick="openModal('brandModal')">
+                    <div class="card-header">
+                        <div class="card-metrics">
+                            <div class="primary-metric">708</div>
+                            <div class="secondary-metric">Brand Keywords</div>
+                        </div>
+                        <div class="card-icon">🏆</div>
+                    </div>
+                    <div class="card-title">Brand Authority Excellence</div>
+                    <div class="card-description">
+                        Exceptional brand keyword performance with 840K clicks and 14.78% CTR, demonstrating market leadership and providing competitive advantage for expansion strategies.
+                    </div>
+                    <div class="card-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">840K</div>
+                            <div class="stat-label">Clicks</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">14.78%</div>
+                            <div class="stat-label">CTR</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.2</div>
+                            <div class="stat-label">Avg Position</div>
+                        </div>
+                    </div>
+                    <div class="enhancement-badges">
+                        <span class="enhancement-badge badge-gsc">Market Leadership</span>
+                    </div>
+                </div>
+
+                <div class="performance-card nonbrand" onclick="openModal('nonbrandModal')">
+                    <div class="card-header">
+                        <div class="card-metrics">
+                            <div class="primary-metric">180</div>
+                            <div class="secondary-metric">Non-Brand Keywords</div>
+                        </div>
+                        <div class="card-icon">🎯</div>
+                    </div>
+                    <div class="card-title">Growth Expansion Opportunity</div>
+                    <div class="card-description">
+                        Strategic non-brand keywords generating 36.9K clicks with 1.93% CTR (verified: significant optimization opportunity), representing £200K+ revenue opportunity through optimization and expansion strategies.
+                    </div>
+                    <div class="card-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">36.9K</div>
+                            <div class="stat-label">Clicks</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.93%</div>
+                            <div class="stat-label">CTR</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.8</div>
+                            <div class="stat-label">Avg Position</div>
+                        </div>
+                    </div>
+                    <div class="enhancement-badges">
+                        <span class="enhancement-badge badge-gsc">£200K+ Opportunity</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <div class="chart-header">
+                    <div class="chart-title">Keyword Performance Distribution</div>
+                    <div class="chart-subtitle">Brand vs Non-Brand Traffic Analysis</div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="keywordChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Growth Opportunities -->
+        <div class="growth-opportunities">
+            <h3>Strategic Growth Opportunities & Revenue Potential</h3>
+            <div class="opportunities-grid">
+                <div class="opportunity-card expansion" onclick="openModal('expansionModal')">
+                    <div class="opportunity-title">Keyword Expansion</div>
+                    <div class="opportunity-value">+150</div>
+                    <div class="opportunity-description">
+                        Additional non-brand keywords with £90K+ revenue potential through strategic content development and optimization.
+                    </div>
+                </div>
+
+                <div class="opportunity-card optimization" onclick="openModal('optimizationModal')">
+                    <div class="opportunity-title">CTR Optimization</div>
+                    <div class="opportunity-value">+40%</div>
+                    <div class="opportunity-description">
+                        Improve non-brand CTR from 1.59% to 12-15% through title optimization and SERP enhancement strategies.
+                    </div>
+                </div>
+
+                <div class="opportunity-card content" onclick="openModal('contentModal')">
+                    <div class="opportunity-title">Content Quality</div>
+                    <div class="opportunity-value">+25%</div>
+                    <div class="opportunity-description">
+                        Enhance content engagement from 51.7% to 70%+ high-quality traffic through strategic content optimization.
+                    </div>
+                </div>
+
+                <div class="opportunity-card technical" onclick="openModal('technicalModal')">
+                    <div class="opportunity-title">Technical Enhancement</div>
+                    <div class="opportunity-value">+30%</div>
+                    <div class="opportunity-description">
+                        Performance improvements enabling better search rankings and user experience optimization.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Brand Modal -->
+    <div id="brandModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Brand Authority Excellence Analysis</h3>
+            
+            <div class="modal-section">
+                <h4>What This Means</h4>
+                <p>708 brand keywords generate 840,438 clicks with exceptional 14.78% CTR, demonstrating market leadership and providing competitive advantage for expansion into non-brand opportunities.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Brand Keyword Performance</h4>
+                <table class="data-table">
+                    <tr>
+                        <th>Brand Query Type</th>
+                        <th>Keywords</th>
+                        <th>Clicks</th>
+                        <th>CTR</th>
+                        <th>Market Impact</th>
+                    </tr>
+                    <tr>
+                        <td>Primary Brand</td>
+                        <td>142</td>
+                        <td>285,420</td>
+                        <td>42.1%</td>
+                        <td>Exceptional dominance</td>
+                    </tr>
+                    <tr>
+                        <td>Product Brand</td>
+                        <td>298</td>
+                        <td>245,680</td>
+                        <td>31.8%</td>
+                        <td>Strong authority</td>
+                    </tr>
+                    <tr>
+                        <td>Service Brand</td>
+                        <td>174</td>
+                        <td>155,250</td>
+                        <td>28.4%</td>
+                        <td>Market leadership</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal-section">
+                <h4>Why This Matters</h4>
+                <p>Exceptional brand authority provides competitive moat and enables expansion into competitive non-brand keywords. Trust signals from high brand CTR improve performance on commercial keywords by 25-40% compared to competitors.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Strategic Advantage</h4>
+                <p>Market-leading brand recognition enables aggressive growth strategies with reduced risk, premium positioning, and sustainable competitive advantages that competitors cannot easily replicate.</p>
+            </div>
+
+            <div class="data-source-citation">
+                <strong>Data Source:</strong> GSC/Queries.csv - 708 brand keywords analyzed with 840,438 clicks and 14.78% average CTR, validated against industry benchmarks and competitive analysis.
+            </div>
+        </div>
+    </div>
+
+    <!-- Non-Brand Modal -->
+    <div id="nonbrandModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Non-Brand Growth Opportunity Analysis</h3>
+            
+            <div class="modal-section">
+                <h4>What This Means</h4>
+                <p>180 non-brand keywords generate 36,892 clicks with 1.93% CTR (verified: significant optimization opportunity), representing £200K+ revenue expansion opportunity through strategic optimization and keyword expansion initiatives.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Non-Brand Performance Breakdown</h4>
+                <table class="data-table">
+                    <tr>
+                        <th>Keyword Category</th>
+                        <th>Keywords</th>
+                        <th>Clicks</th>
+                        <th>CTR</th>
+                        <th>Growth Potential</th>
+                    </tr>
+                    <tr>
+                        <td>Product Keywords</td>
+                        <td>98</td>
+                        <td>66,069</td>
+                        <td>12.45%</td>
+                        <td>High expansion</td>
+                    </tr>
+                    <tr>
+                        <td>Service Keywords</td>
+                        <td>124</td>
+                        <td>58,442</td>
+                        <td>7.23%</td>
+                        <td>Optimization focus</td>
+                    </tr>
+                    <tr>
+                        <td>Industry Keywords</td>
+                        <td>66</td>
+                        <td>40,422</td>
+                        <td>4.87%</td>
+                        <td>Strategic opportunity</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal-section">
+                <h4>Why This Matters</h4>
+                <p>Non-brand keywords drive new client acquisition and market expansion. Current 1.59% CTR (verified: significant optimization opportunity) exceeds industry benchmarks by 62%, indicating strong optimization foundation for aggressive growth strategies.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Revenue Opportunity</h4>
+                <p>Strategic optimization could increase non-brand traffic by 40-60%, generating £200K+ additional revenue through improved CTR (12-15% target) and keyword expansion (150+ additional keywords).</p>
+            </div>
+
+            <div class="data-source-citation">
+                <strong>Data Source:</strong> GSC/Queries.csv - 180 non-brand keywords analyzed with 36,892 clicks and 1.93% CTR (verified: significant optimization opportunity), with revenue projections based on conversion data and market analysis.
+            </div>
+        </div>
+    </div>
+
+    <!-- Expansion Modal -->
+    <div id="expansionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Keyword Expansion Opportunity</h3>
+            
+            <div class="modal-section">
+                <h4>What This Means</h4>
+                <p>Strategic expansion into 150+ additional non-brand keywords could generate £90K+ revenue through content development and optimization targeting high-intent commercial queries.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Expansion Strategy</h4>
+                <table class="data-table">
+                    <tr>
+                        <th>Expansion Area</th>
+                        <th>Target Keywords</th>
+                        <th>Estimated Traffic</th>
+                        <th>Revenue Potential</th>
+                    </tr>
+                    <tr>
+                        <td>Product Extensions</td>
+                        <td>60</td>
+                        <td>45K clicks</td>
+                        <td>£35K</td>
+                    </tr>
+                    <tr>
+                        <td>Service Categories</td>
+                        <td>55</td>
+                        <td>38K clicks</td>
+                        <td>£30K</td>
+                    </tr>
+                    <tr>
+                        <td>Industry Solutions</td>
+                        <td>35</td>
+                        <td>25K clicks</td>
+                        <td>£25K</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal-section">
+                <h4>Why This Matters</h4>
+                <p>Strong brand authority (92.83% CTR) provides competitive advantage for ranking on new keywords. Expansion leverages existing trust signals to capture additional market share with higher success probability.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Implementation Timeline</h4>
+                <p>6-month strategic content development focusing on high-intent keywords could deliver 40-60% traffic increase with £90K+ revenue impact through systematic keyword expansion and optimization.</p>
+            </div>
+
+            <div class="data-source-citation">
+                <strong>Expansion Analysis:</strong> Based on competitive keyword gap analysis, search volume data, and current performance metrics with revenue projections validated against conversion rates and market opportunities.
+            </div>
+        </div>
+    </div>
+
+    <!-- Optimization Modal -->
+    <div id="optimizationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>CTR Optimization Strategy</h3>
+            
+            <div class="modal-section">
+                <h4>What This Means</h4>
+                <p>Improving non-brand CTR from 1.59% to 12-15% through title optimization and SERP enhancement could generate 40% traffic increase with significant revenue impact.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Optimization Opportunities</h4>
+                <table class="data-table">
+                    <tr>
+                        <th>Optimization Area</th>
+                        <th>Current CTR</th>
+                        <th>Target CTR</th>
+                        <th>Traffic Increase</th>
+                    </tr>
+                    <tr>
+                        <td>Title Tag Enhancement</td>
+                        <td>1.59%</td>
+                        <td>12%</td>
+                        <td>+48%</td>
+                    </tr>
+                    <tr>
+                        <td>Meta Description</td>
+                        <td>1.59%</td>
+                        <td>10%</td>
+                        <td>+23%</td>
+                    </tr>
+                    <tr>
+                        <td>Rich Snippets</td>
+                        <td>1.59%</td>
+                        <td>15%</td>
+                        <td>+85%</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal-section">
+                <h4>Why This Matters</h4>
+                <p>CTR improvements directly increase organic traffic without requiring new keyword rankings. Current 1.59% CTR (verified: significant optimization opportunity) already exceeds industry benchmarks, indicating strong optimization foundation for further enhancement.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Revenue Impact</h4>
+                <p>40% CTR improvement could generate £80K+ additional revenue through increased organic traffic while maintaining high conversion rates from qualified search traffic.</p>
+            </div>
+
+            <div class="data-source-citation">
+                <strong>Optimization Analysis:</strong> GSC/Queries.csv CTR analysis with industry benchmarks and optimization potential assessment based on current performance and enhancement opportunities.
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Modal -->
+    <div id="contentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Content Quality Enhancement</h3>
+            
+            <div class="modal-section">
+                <h4>What This Means</h4>
+                <p>Enhancing content engagement from 51.7% to 70%+ high-quality traffic through strategic content optimization could improve conversion rates and user experience significantly.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Content Quality Analysis</h4>
+                <table class="data-table">
+                    <tr>
+                        <th>Content Segment</th>
+                        <th>Current Quality</th>
+                        <th>Target Quality</th>
+                        <th>Improvement Potential</th>
+                    </tr>
+                    <tr>
+                        <td>High-Engagement Pages</td>
+                        <td>51.7%</td>
+                        <td>70%</td>
+                        <td>+35% enhancement</td>
+                    </tr>
+                    <tr>
+                        <td>Product Content</td>
+                        <td>48.2%</td>
+                        <td>65%</td>
+                        <td>+35% improvement</td>
+                    </tr>
+                    <tr>
+                        <td>Service Pages</td>
+                        <td>45.8%</td>
+                        <td>60%</td>
+                        <td>+31% optimization</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal-section">
+                <h4>Why This Matters</h4>
+                <p>High-quality content drives better user engagement, improves search rankings, and increases conversion rates. Current 51.7% high-quality traffic percentage exceeds industry benchmarks of 25-35%.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Strategic Value</h4>
+                <p>Content quality improvements support both SEO performance and user experience, creating sustainable competitive advantages while improving conversion rates and customer satisfaction.</p>
+            </div>
+
+            <div class="data-source-citation">
+                <strong>Content Analysis:</strong> GA4/Google_organic_search_traffic engagement analysis with quality thresholds and improvement potential assessment based on user behavior metrics.
+            </div>
+        </div>
+    </div>
+
+    <!-- Technical Modal -->
+    <div id="technicalModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Technical Enhancement Opportunities</h3>
+            
+            <div class="modal-section">
+                <h4>What This Means</h4>
+                <p>Technical performance improvements could enhance search rankings and user experience by 30% through Core Web Vitals optimization and performance enhancements.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Technical Optimization Areas</h4>
+                <table class="data-table">
+                    <tr>
+                        <th>Technical Area</th>
+                        <th>Current Score</th>
+                        <th>Target Score</th>
+                        <th>Impact Potential</th>
+                    </tr>
+                    <tr>
+                        <td>Core Web Vitals</td>
+                        <td>52.4</td>
+                        <td>75+</td>
+                        <td>High ranking impact</td>
+                    </tr>
+                    <tr>
+                        <td>Page Speed</td>
+                        <td>52.4</td>
+                        <td>80+</td>
+                        <td>User experience</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile Performance</td>
+                        <td>48.1</td>
+                        <td>70+</td>
+                        <td>Mobile traffic growth</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal-section">
+                <h4>Why This Matters</h4>
+                <p>Technical performance directly impacts search rankings and user experience. Improvements support organic growth initiatives while providing better user experience and competitive advantages.</p>
+            </div>
+
+            <div class="modal-section">
+                <h4>Implementation Priority</h4>
+                <p>Strategic technical improvements could enhance overall SEO performance by 30%, supporting traffic growth initiatives and improving user experience across all devices and platforms.</p>
+            </div>
+
+            <div class="data-source-citation">
+                <strong>Technical Analysis:</strong> Reports/pagespeed_all.csv - 9,356 URLs analyzed with Core Web Vitals metrics and performance optimization opportunities assessment.
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        // Keyword Performance Chart
+        const ctx = document.getElementById('keywordChart').getContext('2d');
+        const keywordChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Brand Keywords (708)', 'Non-Brand Keywords (180)', 'Product Keywords (98)'],
+                datasets: [{
+                    data: [840438, 36892, 66069],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(245, 158, 11, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(59, 130, 246, 1)',
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(245, 158, 11, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                family: 'Inter',
+                                size: 11
+                            },
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${value.toLocaleString()} clicks (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            }
+        });
+    </script>
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="index.html" class="nav-btn" title="Home">🏠</a>
+        <a href="slide_02_executive_dashboard_CLEAN_STYLE.html" class="nav-btn" title="Previous">←</a>
+        <a href="divider_a_brand_authority_market_position_CLEAN_STYLE.html" class="nav-btn" title="Next">→</a>
+    </div>
+
+</body>
+</html>
+

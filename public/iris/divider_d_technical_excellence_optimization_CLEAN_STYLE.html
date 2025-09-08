@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Excellence & Optimization - IRIS Software Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+            overflow: visible;
+        }
+
+        .divider-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Background Pattern */
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #0891b2 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, #0284c7 2px, transparent 2px);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+        }
+
+        /* Header Section */
+        .header-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        .logo-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .iris-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+            box-shadow: 0 4px 16px rgba(8, 145, 178, 0.3);
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #64748b;
+            font-weight: 500;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.4;
+        }
+
+        /* Metrics Preview Section */
+        .metrics-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+            z-index: 10;
+            position: relative;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: visible;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--card-color), var(--card-color-light));
+        }
+
+        .metric-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .metric-card.technical-health {
+            --card-color: #0891b2;
+            --card-color-light: #06b6d4;
+        }
+
+        .metric-card.optimization-opportunities {
+            --card-color: #0284c7;
+            --card-color-light: #0ea5e9;
+        }
+
+        .metric-card.performance-potential {
+            --card-color: #0369a1;
+            --card-color-light: #0284c7;
+        }
+
+        .metric-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--card-color);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .metric-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-description {
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* Scope Section */
+        .scope-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .scope-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+
+        .scope-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .scope-item {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .scope-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .scope-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .scope-item-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .scope-item-desc {
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #0891b2;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .divider-container {
+                padding: 1rem;
+            }
+
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .metrics-preview {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .scope-items {
+                grid-template-columns: 1fr;
+            }
+        }
+        .logo-section img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-section 
+        .logo-section .iris-logo {
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-pattern"></div>
+    
+    <div class="divider-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="logo-section">
+                <img src="sd_digital_logo_yellow_black.png" alt="SD Digital" class="logo">
+                <img src="IRISSoftwareGroup_UK1_GB_20241107142500_logo.webp" alt="IRIS Software Group" class="iris-logo">
+            </div>
+            
+            <div class="section-number">SECTION 05</div>
+            <h1 class="main-title">Technical Excellence & Optimization</h1>
+            <p class="subtitle">Technical health assessment and performance optimization opportunities</p>
+        </div>
+
+        <!-- Metrics Preview -->
+        <div class="metrics-preview">
+            <div class="metric-card technical-health">
+                <div class="metric-value">100%</div>
+                <div class="metric-label">Core Technical Health</div>
+                <p class="metric-description">Zero critical issues with strong foundation for optimization</p>
+            </div>
+
+            <div class="metric-card optimization-opportunities">
+                <div class="metric-value">12,200+</div>
+                <div class="metric-label">Optimization Opportunities</div>
+                <p class="metric-description">Technical improvements worth £150K+ revenue impact</p>
+            </div>
+
+            <div class="metric-card performance-potential">
+                <div class="metric-value">£180K+</div>
+                <div class="metric-label">Performance Revenue Potential</div>
+                <p class="metric-description">Technical optimization and architecture enhancement value</p>
+            </div>
+        </div>
+
+        <!-- Scope Section -->
+        <div class="scope-section">
+            <h2 class="scope-title">Technical Excellence Analysis Areas</h2>
+            <p style="color: #64748b; margin-bottom: 1rem;">Comprehensive technical health and optimization assessment</p>
+            
+            <div class="scope-items">
+                <div class="scope-item">
+                    <div class="scope-icon">⚡</div>
+                    <div class="scope-item-title">Core Technical Excellence</div>
+                    <p class="scope-item-desc">Technical health foundation and critical issue resolution</p>
+                </div>
+                
+                <div class="scope-item">
+                    <div class="scope-icon">🔗</div>
+                    <div class="scope-item-title">Internal Linking Architecture</div>
+                    <p class="scope-item-desc">Site architecture optimization and authority flow enhancement</p>
+                </div>
+                
+                <div class="scope-item">
+                    <div class="scope-icon">🚀</div>
+                    <div class="scope-item-title">Performance Optimization</div>
+                    <p class="scope-item-desc">Speed, UX, and technical performance improvement opportunities</p>
+                </div>
+                
+                <div class="scope-item">
+                    <div class="scope-icon">📊</div>
+                    <div class="scope-item-title">Revenue Impact Assessment</div>
+                    <p class="scope-item-desc">Quantified revenue opportunities from technical improvements</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="index.html" class="nav-btn" title="Home">🏠</a>
+        <a href="slide_10_editorial_strategy_topical_authority_CLEAN_STYLE.html" class="nav-btn" title="Previous">←</a>
+        <a href="slide_11_core_technical_excellence_CLEAN_STYLE.html" class="nav-btn" title="Next">→</a>
+    </div>
+
+</body>
+</html>
+
