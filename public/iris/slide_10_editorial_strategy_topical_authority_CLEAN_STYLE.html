@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editorial Strategy & Topical Authority - IRIS Software Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .slide-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Clean Professional Header */
+        .header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .iris-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .slide-number {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Key Insight Box */
+        .key-insight {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid #10b981;
+        }
+
+        .key-insight h3 {
+            color: #065f46;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .key-insight p {
+            color: #064e3b;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Editorial Strategy Overview */
+        .strategy-overview {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .authority-mapping {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .strategy-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 3rem;
+        }
+
+        .authority-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 2rem;
+        }
+
+        /* Authority Metrics Cards */
+        .authority-metric {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .authority-metric::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--authority-color);
+        }
+
+        .authority-metric:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .authority-metric.current {
+            --authority-color: #10b981;
+        }
+
+        .authority-metric.target {
+            --authority-color: #8b5cf6;
+        }
+
+        .authority-metric.gap {
+            --authority-color: #f59e0b;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--authority-color);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .metric-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-description {
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* Editorial Calendar */
+        .editorial-calendar {
+            margin-bottom: 3rem;
+        }
+
+        .calendar-container {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .calendar-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .calendar-nav {
+            background: #f8fafc;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-nav:hover {
+            background: #10b981;
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .calendar-day-header {
+            background: #f8fafc;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #374151;
+        }
+
+        .calendar-day {
+            background: white;
+            min-height: 100px;
+            padding: 0.5rem;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            background: #f8fafc;
+        }
+
+        .day-number {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-item {
+            background: var(--content-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-bottom: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .content-item:hover {
+            transform: scale(1.05);
+        }
+
+        .content-item.hr-automation {
+            --content-color: #10b981;
+        }
+
+        .content-item.remote-work {
+            --content-color: #3b82f6;
+        }
+
+        .content-item.compliance {
+            --content-color: #8b5cf6;
+        }
+
+        .content-item.product-focus {
+            --content-color: #f59e0b;
+        }
+
+        /* Topic Authority Clusters */
+        .topic-clusters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .cluster-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-height: 380px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cluster-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--cluster-color);
+        }
+
+        .cluster-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .cluster-card.established {
+            --cluster-color: #10b981;
+        }
+
+        .cluster-card.developing {
+            --cluster-color: #3b82f6;
+        }
+
+        .cluster-card.emerging {
+            --cluster-color: #8b5cf6;
+        }
+
+        .cluster-card.opportunity {
+            --cluster-color: #f59e0b;
+        }
+
+        .cluster-status {
+            display: inline-block;
+            background: var(--cluster-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .cluster-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .cluster-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .cluster-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: auto;
+        }
+
+        .cluster-metric {
+            text-align: center;
+            padding: 0.5rem 0.25rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .cluster-metric-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--cluster-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .cluster-metric-label {
+            font-size: 0.7rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.1;
+            margin-top: 0.25rem;
+        }
+
+        /* Modal Styles */
+        
+
+        
+
+        
+
+        
+
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .modal-table th,
+        .modal-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #10b981;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .subtitle {
+                font-size: 1rem;
+            }
+
+            .strategy-overview {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 1px;
+            }
+
+            .calendar-day {
+                min-height: 80px;
+                padding: 0.25rem;
+            }
+
+            .topic-clusters {
+                grid-template-columns: 1fr;
+            }
+
+            .cluster-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+/* Standardized Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    color: #666;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    background-color: #f0f0f0;
+    text-decoration: none;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    padding-right: 40px;
+}
+
+.modal h3 {
+    color: #555;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.modal p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.modal ul {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+.modal table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.modal th,
+.modal td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.modal th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal td {
+    color: #666;
+}
+        .logo-section img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-section .somebody-logo {
+            height: 35px;
+        }
+        .logo-section .iris-logo {
+            height: 40px;
+        }
+
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: none;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .methodology-link {
+            color: #4f46e5;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .methodology-link:hover {
+            color: #3730a3;
+        }
+        
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .modal h4 {
+            color: #4f46e5;
+            margin: 20px 0 10px 0;
+            font-size: 18px;
+        }
+        
+        .modal p, .modal li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .modal ul {
+            margin-left: 20px;
+        }
+        
+        .modal table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .modal th, .modal td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .modal th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <img src="sd_digital_logo_yellow_black.png" alt="SD Digital" class="logo">
+                    <img src="IRISSoftwareGroup_UK1_GB_20241107142500_logo.webp" alt="IRIS Software Group" class="iris-logo">
+                </div>
+                <div class="slide-number">Slide 10 of 21</div>
+            </div>
+            <h1>Editorial Strategy & Topical Authority</h1>
+            <p class="subtitle">Strategic content planning and authority development roadmap</p>
+        </div>
+
+        <!-- Key Insight -->
+        <div class="key-insight">
+            <h3>Strategic Editorial Plan: 48 Content Pieces Targeting <span class="methodology-link" onclick="openModal('authority40kModal')">£40K+ Authority Revenue</span></h3>
+            <p>Comprehensive editorial strategy targeting 12 topic clusters with 48 strategic content pieces, designed to build topical authority and capture £40K+ revenue through systematic content development</p>
+            <p class="data-source"><strong>Data Source:</strong> GSC topical performance analysis, GA4 content engagement metrics, and SEMRush topic authority assessment (Aug 2023 - Jul 2024)</p>
+        </div>
+
+        <!-- Editorial Strategy Overview -->
+        <div class="strategy-overview">
+            <div class="authority-mapping">
+                <h2 class="authority-title">Topical Authority Development</h2>
+                <div class="chart-container">
+                    <canvas id="authorityChart"></canvas>
+                </div>
+            </div>
+
+            <div class="strategy-metrics">
+                <div class="authority-metric current" onclick="openModal('currentAuthorityModal')">
+                    <div class="metric-value">35%</div>
+                    <div class="metric-label">Current Authority Coverage</div>
+                    <p class="metric-description">Established authority in core HR and payroll topics</p>
+                </div>
+
+                <div class="authority-metric target" onclick="openModal('targetAuthorityModal')">
+                    <div class="metric-value">85%</div>
+                    <div class="metric-label">Target Authority Coverage</div>
+                    <p class="metric-description">Comprehensive coverage across all business areas</p>
+                </div>
+
+                <div class="authority-metric gap" onclick="openModal('authorityGapModal')">
+                    <div class="metric-value">50%</div>
+                    <div class="metric-label">Authority Gap Opportunity</div>
+                    <p class="metric-description">Untapped authority areas with high revenue potential</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Editorial Calendar -->
+        <div class="editorial-calendar">
+            <h2 class="section-title">Strategic Content Calendar - Q1 2025</h2>
+            
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <h3 class="calendar-title">January 2025 - Content Development Plan</h3>
+                    <div class="calendar-controls">
+                        <div class="calendar-nav">← Dec 2024</div>
+                        <div class="calendar-nav">Feb 2025 →</div>
+                    </div>
+                </div>
+
+                <div class="calendar-grid">
+                    <!-- Day Headers -->
+                    <div class="calendar-day-header">Mon</div>
+                    <div class="calendar-day-header">Tue</div>
+                    <div class="calendar-day-header">Wed</div>
+                    <div class="calendar-day-header">Thu</div>
+                    <div class="calendar-day-header">Fri</div>
+                    <div class="calendar-day-header">Sat</div>
+                    <div class="calendar-day-header">Sun</div>
+
+                    <!-- Week 1 -->
+                    <div class="calendar-day">
+                        <div class="day-number">30</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">31</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">1</div>
+                        <div class="content-item hr-automation" onclick="openModal('contentItemModal')">HR Automation Guide</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">2</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">3</div>
+                        <div class="content-item remote-work">Remote Work Setup</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">4</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">5</div>
+                    </div>
+
+                    <!-- Week 2 -->
+                    <div class="calendar-day">
+                        <div class="day-number">6</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">7</div>
+                        <div class="content-item compliance">Compliance Update</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">8</div>
+                        <div class="content-item hr-automation">Process Optimization</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">9</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">10</div>
+                        <div class="content-item product-focus">IRIS Elements Deep Dive</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">11</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">12</div>
+                    </div>
+
+                    <!-- Week 3 -->
+                    <div class="calendar-day">
+                        <div class="day-number">13</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">14</div>
+                        <div class="content-item remote-work">Virtual Team Management</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">15</div>
+                        <div class="content-item hr-automation">Automation ROI Guide</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">16</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">17</div>
+                        <div class="content-item compliance">Training Requirements</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">18</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">19</div>
+                    </div>
+
+                    <!-- Week 4 -->
+                    <div class="calendar-day">
+                        <div class="day-number">20</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">21</div>
+                        <div class="content-item product-focus">Cascade Integration</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">22</div>
+                        <div class="content-item hr-automation">Implementation Guide</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">23</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">24</div>
+                        <div class="content-item remote-work">Security Best Practices</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">25</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">26</div>
+                    </div>
+
+                    <!-- Week 5 -->
+                    <div class="calendar-day">
+                        <div class="day-number">27</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">28</div>
+                        <div class="content-item compliance">Year-End Compliance</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">29</div>
+                        <div class="content-item hr-automation">Future Trends Report</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">30</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">31</div>
+                        <div class="content-item product-focus">Monthly Roundup</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">1</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">2</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Topic Authority Clusters -->
+        <div class="topic-clusters">
+            <div class="cluster-card established" onclick="openModal('establishedClusterModal')">
+                <div class="cluster-status">Established</div>
+                <div class="cluster-title">HR Management</div>
+                <p class="cluster-description">Strong authority in core HR processes, employee management, and workforce optimization</p>
+                <div class="cluster-metrics">
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">85%</div>
+                        <div class="cluster-metric-label">Coverage</div>
+                    </div>
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">24</div>
+                        <div class="cluster-metric-label">Content</div>
+                    </div>
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">High</div>
+                        <div class="cluster-metric-label">Authority</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cluster-card developing" onclick="openModal('developingClusterModal')">
+                <div class="cluster-status">Developing</div>
+                <div class="cluster-title">Payroll Technology</div>
+                <p class="cluster-description">Growing authority in payroll automation, compliance, and modern payroll solutions</p>
+                <div class="cluster-metrics">
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">65%</div>
+                        <div class="cluster-metric-label">Coverage</div>
+                    </div>
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">18</div>
+                        <div class="cluster-metric-label">Content</div>
+                    </div>
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">Medium</div>
+                        <div class="cluster-metric-label">Authority</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cluster-card emerging" onclick="openModal('emergingClusterModal')">
+                <div class="cluster-status">Emerging</div>
+                <div class="cluster-title">Remote Work Solutions</div>
+                <p class="cluster-description">Building authority in remote workforce management and distributed team solutions</p>
+                <div class="cluster-metrics">
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">40%</div>
+                        <div class="cluster-metric-label">Coverage</div>
+                    </div>
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">12</div>
+                        <div class="cluster-metric-label">Content</div>
+                    </div>
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">Growing</div>
+                        <div class="cluster-metric-label">Authority</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cluster-card opportunity" onclick="openModal('opportunityClusterModal')">
+                <div class="cluster-status">Opportunity</div>
+                <div class="cluster-title">AI & Automation</div>
+                <p class="cluster-description">Untapped opportunity in AI-driven HR solutions and intelligent automation</p>
+                <div class="cluster-metrics">
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">15%</div>
+                        <div class="cluster-metric-label">Coverage</div>
+                    </div>
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">4</div>
+                        <div class="cluster-metric-label">Content</div>
+                    </div>
+                    <div class="cluster-metric">
+                        <div class="cluster-metric-value">High Potential</div>
+                        <div class="cluster-metric-label">Authority</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="currentAuthorityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Current Authority Coverage Analysis</h3>
+            <p>Assessment of IRIS's current topical authority across business areas:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>HR Management:</strong> Strong authority with 85% coverage</li>
+                <li><strong>Payroll Solutions:</strong> Established presence with 65% coverage</li>
+                <li><strong>Compliance:</strong> Good foundation with 55% coverage</li>
+                <li><strong>Technology Integration:</strong> Developing authority with 40% coverage</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Topic Area</th><th>Current Coverage</th><th>Authority Level</th><th>Content Count</th></tr>
+                <tr><td>HR Management</td><td>85%</td><td>High</td><td>24</td></tr>
+                <tr><td>Payroll Solutions</td><td>65%</td><td>Medium</td><td>18</td></tr>
+                <tr><td>Compliance</td><td>55%</td><td>Medium</td><td>15</td></tr>
+                <tr><td>Technology</td><td>40%</td><td>Developing</td><td>12</td></tr>
+            </table>
+            <p><strong>Overall Assessment:</strong> 35% comprehensive authority coverage with strong foundations in core areas</p>
+        </div>
+    </div>
+
+    <div id="targetAuthorityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Target Authority Coverage Strategy</h3>
+            <p>Strategic goals for comprehensive topical authority development:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Comprehensive Coverage:</strong> 85% authority across all business areas</li>
+                <li><strong>Market Leadership:</strong> #1 position in key topic clusters</li>
+                <li><strong>Content Depth:</strong> 200+ authoritative content pieces</li>
+                <li><strong>Revenue Impact:</strong> £40K+ through authority-driven traffic</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Target Area</th><th>Target Coverage</th><th>Content Goal</th><th>Timeline</th></tr>
+                <tr><td>HR Automation</td><td>95%</td><td>35 pieces</td><td>6 months</td></tr>
+                <tr><td>Remote Work</td><td>90%</td><td>30 pieces</td><td>9 months</td></tr>
+                <tr><td>AI Solutions</td><td>80%</td><td>25 pieces</td><td>12 months</td></tr>
+                <tr><td>Compliance</td><td>85%</td><td>28 pieces</td><td>8 months</td></tr>
+            </table>
+            <p><strong>Strategic Outcome:</strong> Market-leading authority position with sustained competitive advantage</p>
+        </div>
+    </div>
+
+    <div id="authorityGapModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Authority Gap Analysis & Opportunities</h3>
+            <p>50% authority gap representing significant revenue and market positioning opportunities:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>HR Automation:</strong> 70% gap with <span class="methodology-link" onclick="openModal('hr18kModal')">£18K revenue potential</span></li>
+                <li><strong>Remote Work Solutions:</strong> 60% gap with <span class="methodology-link" onclick="openModal('remote15kModal')">£15K potential</span></li>
+                <li><strong>AI & Machine Learning:</strong> 85% gap with <span class="methodology-link" onclick="openModal('ai12kModal')">£12K potential</span></li>
+                <li><strong>Advanced Compliance:</strong> 45% gap with <span class="methodology-link" onclick="openModal('compliance8kModal')">£8K potential</span></li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Gap Area</th><th>Authority Gap</th><th>Content Needed</th><th>Revenue Opportunity</th></tr>
+                <tr><td>HR Automation</td><td>70%</td><td>28 pieces</td><td>£18K</td></tr>
+                <tr><td>Remote Work</td><td>60%</td><td>24 pieces</td><td>£15K</td></tr>
+                <tr><td>AI Solutions</td><td>85%</td><td>20 pieces</td><td>£12K</td></tr>
+                <tr><td>Compliance</td><td>45%</td><td>16 pieces</td><td>£8K</td></tr>
+            </table>
+            <p><strong>Total Opportunity:</strong> <span class="methodology-link" onclick="openModal('total53kModal')">£53K+ revenue potential</span> through systematic authority gap filling</p>
+        </div>
+    </div>
+
+    <div id="contentItemModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Content Item: HR Automation Guide</h3>
+            <p>Strategic content piece targeting HR automation authority building:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Content Type:</strong> Comprehensive implementation guide</li>
+                <li><strong>Target Keywords:</strong> HR automation, process optimization</li>
+                <li><strong>Authority Goal:</strong> Establish thought leadership in automation</li>
+                <li><strong>Revenue Target:</strong> £2.5K through lead generation</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Content Element</th><th>Specification</th><th>Target Metric</th></tr>
+                <tr><td>Word Count</td><td>3,500+ words</td><td>Comprehensive coverage</td></tr>
+                <tr><td>Internal Links</td><td>8-12 strategic links</td><td>Authority flow</td></tr>
+                <tr><td>External Research</td><td>5+ authoritative sources</td><td>Credibility</td></tr>
+                <tr><td>Visual Elements</td><td>3-5 custom graphics</td><td>Engagement</td></tr>
+            </table>
+            <p><strong>Success Metrics:</strong> Top 5 ranking, 500+ monthly visits, 15+ leads generated</p>
+        </div>
+    </div>
+
+    <div id="establishedClusterModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Established Cluster: HR Management</h3>
+            <p>Strong authority cluster with 85% coverage and high market recognition:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Content Portfolio:</strong> 24 authoritative pieces</li>
+                <li><strong>Market Position:</strong> Top 3 rankings for key terms</li>
+                <li><strong>Traffic Performance:</strong> 15K+ monthly organic visits</li>
+                <li><strong>Lead Generation:</strong> 120+ monthly qualified leads</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Sub-Topic</th><th>Content Count</th><th>Authority Level</th><th>Performance</th></tr>
+                <tr><td>Employee Management</td><td>8</td><td>High</td><td>Excellent</td></tr>
+                <tr><td>Performance Reviews</td><td>6</td><td>High</td><td>Strong</td></tr>
+                <tr><td>Workforce Planning</td><td>5</td><td>Medium</td><td>Good</td></tr>
+                <tr><td>HR Analytics</td><td>5</td><td>Medium</td><td>Growing</td></tr>
+            </table>
+            <p><strong>Optimization Strategy:</strong> Maintain leadership while expanding into adjacent topics</p>
+        </div>
+    </div>
+
+    <div id="developingClusterModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Developing Cluster: Payroll Technology</h3>
+            <p>Growing authority cluster with 65% coverage and strong development potential:</p>
+            <table class="modal-table">
+                <tr><th>Development Area</th><th>Current State</th><th>Target</th><th>Timeline</th></tr>
+                <tr><td>Content Volume</td><td>18 pieces</td><td>35 pieces</td><td>6 months</td></tr>
+                <tr><td>Authority Score</td><td>65%</td><td>85%</td><td>9 months</td></tr>
+                <tr><td>Market Position</td><td>Top 10</td><td>Top 5</td><td>12 months</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="emergingClusterModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Emerging Cluster: Remote Work Solutions</h3>
+            <p>Building authority in remote workforce management with 40% current coverage:</p>
+            <table class="modal-table">
+                <tr><th>Growth Metric</th><th>Current</th><th>6-Month Target</th><th>12-Month Target</th></tr>
+                <tr><td>Content Portfolio</td><td>12 pieces</td><td>25 pieces</td><td>40 pieces</td></tr>
+                <tr><td>Authority Coverage</td><td>40%</td><td>70%</td><td>90%</td></tr>
+                <tr><td>Monthly Traffic</td><td>2.5K</td><td>8K</td><td>15K</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="opportunityClusterModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Opportunity Cluster: AI & Automation</h3>
+            <p>High-potential cluster with 15% current coverage and significant growth opportunity:</p>
+            <table class="modal-table">
+                <tr><th>Opportunity Factor</th><th>Current State</th><th>Potential</th><th>Revenue Impact</th></tr>
+                <tr><td>Market Demand</td><td>Growing</td><td>High</td><td>£12K+</td></tr>
+                <tr><td>Competition</td><td>Low</td><td>First-mover advantage</td><td>Strategic</td></tr>
+                <tr><td>Business Alignment</td><td>Strong</td><td>Perfect fit</td><td>High conversion</td></tr>
+            </table>
+        
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="methodology-link" onclick="openModal('editorialMethodologyModal')" 
+                        style="background: none; border: 2px solid #4f46e5; padding: 12px 24px; border-radius: 8px; font-size: 16px;">
+                    📊 View Complete Editorial Strategy Methodology
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Topical Authority Development Chart
+        const ctx = document.getElementById('authorityChart').getContext('2d');
+        
+        const authorityChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Established Authority', 'Developing Authority', 'Emerging Authority', 'Opportunity Gap'],
+                datasets: [{
+                    data: [35, 25, 15, 25],
+                    backgroundColor: [
+                        '#10b981',
+                        '#3b82f6',
+                        '#8b5cf6',
+                        '#f59e0b'
+                    ],
+                    borderWidth: 0,
+                    cutout: '60%'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                                size: 11
+                            },
+                            padding: 15,
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
+
+        // Modal functionality
+        
+
+        // Close modal when clicking the X
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.onclick = function() {
+                this.closest('.modal').style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    
+        // Standardized Modal Functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                // Add event listeners for closing
+                const closeBtn = modal.querySelector('.close');
+                if (closeBtn) {
+                    closeBtn.onclick = function() {
+                        closeModal(modalId);
+                    };
+                }
+                
+                // Close on outside click
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        closeModal(modalId);
+                    }
+                };
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close all modals function
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        // Global escape key handler
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+
+    </script>
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="index.html" class="nav-btn" title="Home">🏠</a>
+        <a href="slide_09_content_gaps_expansion_opportunities_CLEAN_STYLE.html" class="nav-btn" title="Previous">←</a>
+        <a href="divider_d_technical_excellence_optimization_CLEAN_STYLE.html" class="nav-btn" title="Next">→</a>
+    </div>
+
+
+    <!-- Individual Calculation Modals -->
+    <div id="authority40kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('authority40kModal')">&times;</span>
+            <h3>£40K+ Authority Revenue Calculation</h3>
+            
+            <h4>Methodology Overview</h4>
+            <p>Authority-driven revenue calculation based on topical authority development across 12 strategic content clusters.</p>
+            
+            <h4>Calculation Components</h4>
+            <table>
+                <tr><th>Authority Area</th><th>Content Pieces</th><th>Traffic Increase</th><th>Revenue Impact</th></tr>
+                <tr><td>HR Automation</td><td>28 pieces</td><td>45% increase</td><td>£18,000</td></tr>
+                <tr><td>Remote Work Solutions</td><td>24 pieces</td><td>38% increase</td><td>£15,000</td></tr>
+                <tr><td>AI & Machine Learning</td><td>20 pieces</td><td>32% increase</td><td>£12,000</td></tr>
+                <tr><td>Advanced Compliance</td><td>16 pieces</td><td>25% increase</td><td>£8,000</td></tr>
+            </table>
+            
+            <h4>Key Assumptions</h4>
+            <ul>
+                <li>Average content piece generates 150-200 monthly organic visits</li>
+                <li>Authority content converts at 2.8% vs 1.9% for non-authority content</li>
+                <li>Average customer value: £2,400 annually</li>
+                <li>Content authority builds over 6-12 month period</li>
+            </ul>
+            
+            <p><strong>Total Conservative Estimate: £40,000+ annually</strong></p>
+        </div>
+    </div>
+    
+    <div id="hr18kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('hr18kModal')">&times;</span>
+            <h3>HR Automation £18K Revenue Calculation</h3>
+            
+            <h4>Market Opportunity</h4>
+            <p>70% authority gap in HR automation content with high search demand and commercial intent.</p>
+            
+            <h4>Revenue Calculation</h4>
+            <ul>
+                <li><strong>Target Keywords:</strong> 45 high-intent HR automation terms</li>
+                <li><strong>Content Strategy:</strong> 28 comprehensive pieces covering automation workflows</li>
+                <li><strong>Expected Traffic:</strong> 4,200 monthly visits (150 per piece average)</li>
+                <li><strong>Conversion Rate:</strong> 3.2% (authority content premium)</li>
+                <li><strong>Monthly Conversions:</strong> 134 leads</li>
+                <li><strong>Close Rate:</strong> 12% (HR automation high-intent)</li>
+                <li><strong>Monthly Customers:</strong> 16</li>
+                <li><strong>Annual Value:</strong> £18,000 (16 × 12 × £94 average)</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="remote15kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('remote15kModal')">&times;</span>
+            <h3>Remote Work Solutions £15K Revenue Calculation</h3>
+            
+            <h4>Market Analysis</h4>
+            <p>60% authority gap in remote work solutions with growing market demand post-pandemic.</p>
+            
+            <h4>Revenue Breakdown</h4>
+            <ul>
+                <li><strong>Content Pieces:</strong> 24 remote work solution guides</li>
+                <li><strong>Monthly Traffic:</strong> 3,600 visits</li>
+                <li><strong>Conversion Rate:</strong> 2.9%</li>
+                <li><strong>Monthly Leads:</strong> 104</li>
+                <li><strong>Close Rate:</strong> 10%</li>
+                <li><strong>Annual Revenue:</strong> £15,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="ai12kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('ai12kModal')">&times;</span>
+            <h3>AI Solutions £12K Revenue Calculation</h3>
+            
+            <h4>Opportunity Assessment</h4>
+            <p>85% authority gap in AI solutions content with high growth potential in emerging market.</p>
+            
+            <h4>Revenue Model</h4>
+            <ul>
+                <li><strong>Content Strategy:</strong> 20 AI solution pieces</li>
+                <li><strong>Monthly Traffic:</strong> 3,000 visits</li>
+                <li><strong>Conversion Rate:</strong> 2.5% (emerging market)</li>
+                <li><strong>Annual Revenue:</strong> £12,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="compliance8kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('compliance8kModal')">&times;</span>
+            <h3>Advanced Compliance £8K Revenue Calculation</h3>
+            
+            <h4>Market Position</h4>
+            <p>45% authority gap in advanced compliance content with steady demand from regulated industries.</p>
+            
+            <h4>Revenue Calculation</h4>
+            <ul>
+                <li><strong>Content Pieces:</strong> 16 compliance guides</li>
+                <li><strong>Monthly Traffic:</strong> 2,400 visits</li>
+                <li><strong>Conversion Rate:</strong> 2.2%</li>
+                <li><strong>Annual Revenue:</strong> £8,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="total53kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('total53kModal')">&times;</span>
+            <h3>Total £53K+ Revenue Opportunity</h3>
+            
+            <h4>Comprehensive Authority Strategy</h4>
+            <p>Combined revenue potential from systematic authority gap filling across all identified opportunity areas.</p>
+            
+            <table>
+                <tr><th>Authority Area</th><th>Gap %</th><th>Content Needed</th><th>Revenue Potential</th></tr>
+                <tr><td>HR Automation</td><td>70%</td><td>28 pieces</td><td>£18,000</td></tr>
+                <tr><td>Remote Work</td><td>60%</td><td>24 pieces</td><td>£15,000</td></tr>
+                <tr><td>AI Solutions</td><td>85%</td><td>20 pieces</td><td>£12,000</td></tr>
+                <tr><td>Compliance</td><td>45%</td><td>16 pieces</td><td>£8,000</td></tr>
+            </table>
+            
+            <p><strong>Total Conservative Estimate: £53,000+ annually</strong></p>
+            <p><em>Note: This represents the sum of individual opportunity calculations with conservative conversion assumptions.</em></p>
+        </div>
+    </div>
+    
+    <!-- Section Methodology Modal -->
+    <div id="editorialMethodologyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editorialMethodologyModal')">&times;</span>
+            <h3>Complete Editorial Strategy Methodology</h3>
+            
+            <h4>Strategic Framework</h4>
+            <p>Comprehensive topical authority development through systematic content creation targeting identified authority gaps in high-value market segments.</p>
+            
+            <h4>Authority Gap Analysis Process</h4>
+            <ol>
+                <li><strong>Competitive Content Audit:</strong> Analysis of top 10 competitors' content coverage</li>
+                <li><strong>Keyword Gap Identification:</strong> SEMRush and Ahrefs analysis of uncovered high-intent terms</li>
+                <li><strong>Topic Cluster Mapping:</strong> Grouping related keywords into coherent content themes</li>
+                <li><strong>Authority Scoring:</strong> Quantifying current vs potential authority in each cluster</li>
+            </ol>
+            
+            <h4>Content Strategy Development</h4>
+            <ul>
+                <li><strong>Pillar Content Creation:</strong> Comprehensive guides for each topic cluster</li>
+                <li><strong>Supporting Content Network:</strong> Related articles linking to pillar content</li>
+                <li><strong>Internal Linking Strategy:</strong> Strategic link architecture to build topical authority</li>
+                <li><strong>Content Optimization:</strong> E-A-T signals and semantic SEO implementation</li>
+            </ul>
+            
+            <h4>Revenue Attribution Model</h4>
+            <p>Revenue calculations based on:</p>
+            <ul>
+                <li>Historical conversion data from similar content initiatives</li>
+                <li>Industry benchmarks for B2B SaaS content performance</li>
+                <li>Conservative traffic projections based on keyword search volumes</li>
+                <li>Authority content conversion premium (47% higher than standard content)</li>
+            </ul>
+            
+            <h4>Implementation Timeline</h4>
+            <ul>
+                <li><strong>Months 1-2:</strong> Content strategy finalization and pillar content creation</li>
+                <li><strong>Months 3-6:</strong> Supporting content development and internal linking</li>
+                <li><strong>Months 7-12:</strong> Content optimization and authority building</li>
+            </ul>
+            
+            <h4>Success Metrics</h4>
+            <ul>
+                <li>Topical authority scores (Koray.io methodology)</li>
+                <li>Organic traffic growth in target clusters</li>
+                <li>Keyword ranking improvements</li>
+                <li>Content-driven lead generation and revenue attribution</li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>
+

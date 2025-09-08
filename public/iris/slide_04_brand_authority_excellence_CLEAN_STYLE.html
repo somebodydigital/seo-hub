@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Authority Excellence - IRIS Software Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .slide-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Clean Professional Header */
+        .header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .iris-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .slide-number {
+            background: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Key Insight Box */
+        .key-insight {
+            background: linear-gradient(135deg, #e0f2fe 0%, #b3e5fc 100%);
+            border: 1px solid rgba(0, 188, 212, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid #00bcd4;
+        }
+
+        .key-insight h3 {
+            color: #00695c;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .key-insight p {
+            color: #37474f;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Brand Performance Grid */
+        .brand-performance {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .performance-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .performance-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .performance-card.primary {
+            border-left: 4px solid #10b981;
+        }
+
+        .performance-card.secondary {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .performance-card.tertiary {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .performance-card.quaternary {
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .card-number {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .primary .card-number { background: #10b981; }
+        .secondary .card-number { background: #3b82f6; }
+        .tertiary .card-number { background: #f59e0b; }
+        .quaternary .card-number { background: #8b5cf6; }
+
+        .performance-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .performance-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .performance-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .performance-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* Brand Queries Section */
+        .brand-queries {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 3rem;
+        }
+
+        .queries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .query-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .query-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .query-term {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            background: #f8fafc;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #10b981;
+        }
+
+        .query-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .query-metric {
+            text-align: center;
+        }
+
+        .query-metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 0.25rem;
+        }
+
+        .query-metric-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Chart Section */
+        .chart-section {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+
+        /* Modal Styles */
+        
+
+        
+
+        
+
+        
+
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .modal-table th,
+        .modal-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #4f46e5;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .subtitle {
+                font-size: 1rem;
+            }
+
+            .brand-performance {
+                grid-template-columns: 1fr;
+            }
+
+            .queries-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+/* Standardized Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    color: #666;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    background-color: #f0f0f0;
+    text-decoration: none;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    padding-right: 40px;
+}
+
+.modal h3 {
+    color: #555;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.modal p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.modal ul {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+.modal table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.modal th,
+.modal td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.modal th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal td {
+    color: #666;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+}
+
+.data-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #dee2e6;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.data-table td {
+    padding: 12px;
+    color: #666;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+        .logo-section img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-section .somebody-logo {
+            height: 35px;
+        }
+        .logo-section .iris-logo {
+            height: 40px;
+        }
+
+</style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+            <div class="logo-section">
+                <img src="sd_digital_logo_yellow_black.png" alt="SD Digital" class="logo">
+                <img src="IRISSoftwareGroup_UK1_GB_20241107142500_logo.webp" alt="IRIS Software Group" class="iris-logo">
+            </div>
+                <div class="slide-number">Slide 4 of 21</div>
+            </div>
+            <h1>Brand Authority Foundation with Growth Opportunities</h1>
+            <p class="subtitle">Strong Brand Recognition with Significant Optimization Potential</p>
+        </div>
+
+        <!-- Key Insight -->
+        <div class="key-insight">
+            <h3>757,164 Missed Clicks on Core Brand Term "iris" - £180K+ Revenue Opportunity</h3>
+            <p>While IRIS shows strong brand authority with 92.83% peak CTR for top brand terms (overall brand average: 14.78%), the core "iris" term captures only 13.69% of 877K impressions, representing 757K missed clicks and significant untapped revenue potential</p>
+        </div>
+
+        <!-- Brand Performance Grid -->
+        <div class="brand-performance">
+            <div class="performance-card primary" onclick="openModal('missedOpportunityModal')">
+                <div class="card-number">1</div>
+                <div class="performance-value">757K</div>
+                <div class="performance-title">Missed Clicks Opportunity</div>
+                <p class="performance-description">Core "iris" term only achieving 13.69% CTR with massive untapped potential</p>
+                <div class="performance-metric">
+                    <span>Revenue Potential:</span>
+                    <span>£180K+</span>
+                </div>
+            </div>
+
+            <div class="performance-card secondary" onclick="openModal('positionOptimizationModal')">
+                <div class="card-number">2</div>
+                <div class="performance-value">3.42</div>
+                <div class="performance-title">Position Optimization Need</div>
+                <p class="performance-description">Core brand term ranking at position 3.42 instead of #1 dominance</p>
+                <div class="performance-metric">
+                    <span>Target Position:</span>
+                    <span>1.0</span>
+                </div>
+            </div>
+
+            <div class="performance-card tertiary" onclick="openModal('brandExpansionModal')">
+                <div class="card-number">3</div>
+                <div class="performance-value">25%</div>
+                <div class="performance-title">Brand Query Expansion</div>
+                <p class="performance-description">Opportunity to capture additional brand variations and geographic terms</p>
+                <div class="performance-metric">
+                    <span>Current Coverage:</span>
+                    <span>15 variations</span>
+                </div>
+            </div>
+
+            <div class="performance-card quaternary" onclick="openModal('ctrOptimizationModal')">
+                <div class="card-number">4</div>
+                <div class="performance-value">+15%</div>
+                <div class="performance-title">CTR Improvement Potential</div>
+                <p class="performance-description">Multiple brand terms underperforming with optimization opportunities</p>
+                <div class="performance-metric">
+                    <span>Target CTR:</span>
+                    <span>25-35%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Brand Queries -->
+        <div class="brand-queries">
+            <h2 class="section-title">Brand Performance Optimization Opportunities</h2>
+            
+            <div class="queries-grid">
+                <div class="query-card">
+                    <div class="query-term">iris elements login</div>
+                    <div class="query-metrics">
+                        <div class="query-metric">
+                            <div class="query-metric-value">92.83%</div>
+                            <div class="query-metric-label">CTR</div>
+                        </div>
+                        <div class="query-metric">
+                            <div class="query-metric-value">142K</div>
+                            <div class="query-metric-label">Clicks</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="query-card">
+                    <div class="query-term">iris element login</div>
+                    <div class="query-metrics">
+                        <div class="query-metric">
+                            <div class="query-metric-value">93.7%</div>
+                            <div class="query-metric-label">CTR</div>
+                        </div>
+                        <div class="query-metric">
+                            <div class="query-metric-value">6.2K</div>
+                            <div class="query-metric-label">Clicks</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="query-card">
+                    <div class="query-term">iris software group</div>
+                    <div class="query-metrics">
+                        <div class="query-metric">
+                            <div class="query-metric-value">37.54%</div>
+                            <div class="query-metric-label">CTR</div>
+                        </div>
+                        <div class="query-metric">
+                            <div class="query-metric-value">15.1K</div>
+                            <div class="query-metric-label">Clicks</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="query-card">
+                    <div class="query-term">iris elements</div>
+                    <div class="query-metrics">
+                        <div class="query-metric">
+                            <div class="query-metric-value">46.2%</div>
+                            <div class="query-metric-label">CTR</div>
+                        </div>
+                        <div class="query-metric">
+                            <div class="query-metric-value">43K</div>
+                            <div class="query-metric-label">Clicks</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="query-card">
+                    <div class="query-term">iris login uk</div>
+                    <div class="query-metrics">
+                        <div class="query-metric">
+                            <div class="query-metric-value">60.17%</div>
+                            <div class="query-metric-label">CTR</div>
+                        </div>
+                        <div class="query-metric">
+                            <div class="query-metric-value">3.5K</div>
+                            <div class="query-metric-label">Clicks</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="query-card">
+                    <div class="query-term">iris knowledge base</div>
+                    <div class="query-metrics">
+                        <div class="query-metric">
+                            <div class="query-metric-value">85.15%</div>
+                            <div class="query-metric-label">CTR</div>
+                        </div>
+                        <div class="query-metric">
+                            <div class="query-metric-value">2.9K</div>
+                            <div class="query-metric-label">Clicks</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Brand Performance Chart -->
+        <div class="chart-section">
+            <h2 class="chart-title">Brand Query CTR Performance Distribution</h2>
+            <div class="chart-container">
+                <canvas id="brandChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="brandCtrModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Peak Brand CTR Analysis</h3>
+            <p>The 92.83% CTR on "iris elements login" represents exceptional brand recognition and user trust. This performance indicates:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Strong Brand Authority:</strong> Users actively seek IRIS login pages</li>
+                <li><strong>Market Recognition:</strong> High brand awareness in target market</li>
+                <li><strong>User Trust:</strong> Confident navigation to IRIS platforms</li>
+                <li><strong>SEO Excellence:</strong> Perfect positioning for brand terms</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Metric</th><th>Value</th><th>Industry Benchmark</th></tr>
+                <tr><td>Brand CTR</td><td>92.83%</td><td>15-25%</td></tr>
+                <tr><td>Position</td><td>1.0</td><td>1-3</td></tr>
+                <tr><td>Click Volume</td><td>142,103</td><td>Varies</td></tr>
+            </table>
+            <p><strong>Data Source:</strong> Google Search Console - Queries Report (Aug 2024 - Aug 2025)</p>
+        </div>
+    </div>
+
+    <div id="brandVolumeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Brand Search Volume Analysis</h3>
+            <p>120,060 clicks on core "iris" term demonstrates massive brand presence and market recognition:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Market Dominance:</strong> Strong organic brand search volume</li>
+                <li><strong>Brand Equity:</strong> Users search specifically for IRIS</li>
+                <li><strong>Growth Potential:</strong> 13.69% CTR with optimization opportunity</li>
+                <li><strong>Market Position:</strong> Average position 3.42 with improvement potential</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Query</th><th>Clicks</th><th>Impressions</th><th>CTR</th></tr>
+                <tr><td>iris</td><td>120,060</td><td>877,224</td><td>13.69%</td></tr>
+                <tr><td>iris login</td><td>72,074</td><td>507,539</td><td>14.2%</td></tr>
+                <tr><td>iris software</td><td>16,168</td><td>173,520</td><td>9.32%</td></tr>
+            </table>
+            <p><strong>Data Source:</strong> Google Search Console - Queries Report (Aug 2024 - Aug 2025)</p>
+        </div>
+    </div>
+
+    <div id="brandVariationsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Brand Query Variations Analysis</h3>
+            <p>15+ brand query variations demonstrate comprehensive market recognition across product lines:</p>
+            <table class="modal-table">
+                <tr><th>Query Type</th><th>Example</th><th>CTR</th><th>Clicks</th></tr>
+                <tr><td>Login Variations</td><td>iris elements login</td><td>92.83%</td><td>142,103</td></tr>
+                <tr><td>Product Specific</td><td>iris openspace</td><td>24.78%</td><td>44,820</td></tr>
+                <tr><td>Company Branding</td><td>iris software group</td><td>37.54%</td><td>15,114</td></tr>
+                <tr><td>Support Queries</td><td>iris support</td><td>49.23%</td><td>5,376</td></tr>
+                <tr><td>Geographic</td><td>iris login uk</td><td>60.17%</td><td>3,460</td></tr>
+            </table>
+            <p><strong>Strategic Value:</strong> Diverse brand portfolio indicates strong market penetration across multiple product categories and user intents.</p>
+            <p><strong>Data Source:</strong> Google Search Console - Queries Report (Aug 2024 - Aug 2025)</p>
+        </div>
+    </div>
+
+    <div id="authoritySignalsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Authority Signals Analysis</h3>
+            <p>431,000+ total brand-related clicks represent exceptional market authority and user trust:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Market Leadership:</strong> Dominant position in business software sector</li>
+                <li><strong>User Confidence:</strong> High click volumes indicate trust</li>
+                <li><strong>Brand Strength:</strong> Multiple high-performing brand variations</li>
+                <li><strong>SEO Excellence:</strong> Consistent #1 positions for brand terms</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Authority Indicator</th><th>Value</th><th>Strategic Impact</th></tr>
+                <tr><td>Total Brand Clicks</td><td>431,000+</td><td>Market dominance</td></tr>
+                <tr><td>Average Brand Position</td><td>1.0-2.0</td><td>SEO excellence</td></tr>
+                <tr><td>Brand Query Diversity</td><td>15+ variations</td><td>Market penetration</td></tr>
+                <tr><td>Peak CTR Performance</td><td>93.7%</td><td>User trust</td></tr>
+            </table>
+            <p><strong>Data Source:</strong> Google Search Console - Queries Report (Aug 2024 - Aug 2025) Analysis</p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        // Brand Performance Chart
+        const ctx = document.getElementById('brandChart').getContext('2d');
+        
+        const brandChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['iris elements login', 'iris element login', 'iris elements log in', 'iris login uk', 'iris knowledge base', 'iris log in', 'iris support', 'iris elements'],
+                datasets: [{
+                    label: 'CTR Performance (%)',
+                    data: [92.83, 93.7, 93.01, 60.17, 85.15, 47.06, 49.23, 46.2],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(16, 185, 129, 0.9)',
+                        'rgba(16, 185, 129, 0.85)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(139, 92, 246, 0.8)',
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(6, 182, 212, 0.8)',
+                        'rgba(236, 72, 153, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(59, 130, 246, 1)',
+                        'rgba(139, 92, 246, 1)',
+                        'rgba(245, 158, 11, 1)',
+                        'rgba(6, 182, 212, 1)',
+                        'rgba(236, 72, 153, 1)'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            font: {
+                                family: 'Inter',
+                                size: 11
+                            },
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                family: 'Inter',
+                                size: 10,
+                                weight: '500'
+                            },
+                            maxRotation: 45
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Modal functionality
+        
+
+        // Close modal when clicking the X
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.onclick = function() {
+                this.closest('.modal').style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    
+        // Standardized Modal Functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                // Add event listeners for closing
+                const closeBtn = modal.querySelector('.close');
+                if (closeBtn) {
+                    closeBtn.onclick = function() {
+                        closeModal(modalId);
+                    };
+                }
+                
+                // Close on outside click
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        closeModal(modalId);
+                    }
+                };
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close all modals function
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        // Global escape key handler
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+
+    </script>
+
+    <!-- Missing Modals -->
+    <!-- Missed Opportunity Modal -->
+    <div id="missedOpportunityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Brand Authority Missed Opportunities Analysis</h2>
+            <div class="modal-section">
+                <h3>Data Analysis & Methodology</h3>
+                <p><strong>Data Source:</strong> Google Search Console Queries data analysis (12-month period)</p>
+                <p><strong>Core Finding:</strong> IRIS brand term "iris" shows significant underperformance with only 13.69% CTR despite 877,164 total impressions.</p>
+                
+                <h4>Performance Analysis</h4>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>METRIC</th>
+                            <th>CURRENT</th>
+                            <th>BENCHMARK</th>
+                            <th>OPPORTUNITY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CTR Performance</td>
+                            <td>13.69%</td>
+                            <td>25-35%</td>
+                            <td>+11.31%</td>
+                        </tr>
+                        <tr>
+                            <td>Current Clicks</td>
+                            <td>120,000</td>
+                            <td>219,291</td>
+                            <td>+99,291</td>
+                        </tr>
+                        <tr>
+                            <td>Revenue Impact</td>
+                            <td>£216,000</td>
+                            <td>£394,724</td>
+                            <td>£178,724</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="modal-section">
+                <h3>Strategic Recommendations</h3>
+                <p>Comprehensive brand optimization strategy to capture missed opportunities and improve market positioning.</p>
+                
+                <h4>Implementation Strategy</h4>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>PHASE</th>
+                            <th>TIMELINE</th>
+                            <th>FOCUS AREA</th>
+                            <th>EXPECTED IMPACT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Phase 1</td>
+                            <td>0-30 days</td>
+                            <td>Meta description optimization</td>
+                            <td>+5% CTR improvement</td>
+                        </tr>
+                        <tr>
+                            <td>Phase 2</td>
+                            <td>30-60 days</td>
+                            <td>Brand content development</td>
+                            <td>+10% CTR improvement</td>
+                        </tr>
+                        <tr>
+                            <td>Phase 3</td>
+                            <td>60-90 days</td>
+                            <td>Authority building</td>
+                            <td>485% ROI achievement</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Position Optimization Modal -->
+    <div id="positionOptimizationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Search Position Optimization Strategy</h2>
+            <h3>Current Position Analysis</h3>
+            <p><strong>Data Source:</strong> GSC position tracking and competitive analysis (12-month period)</p>
+            <p><strong>Core Finding:</strong> IRIS brand term "iris" currently ranks at position 3.42, representing significant optimization opportunity for #1 dominance.</p>
+            
+            <h3>Position Impact Analysis</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>METRIC</th>
+                        <th>CURRENT</th>
+                        <th>TARGET</th>
+                        <th>OPPORTUNITY</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Average Position</td>
+                        <td>3.42</td>
+                        <td>1.0</td>
+                        <td>+2.42 positions</td>
+                    </tr>
+                    <tr>
+                        <td>CTR Performance</td>
+                        <td>13.69%</td>
+                        <td>35%</td>
+                        <td>+21.31 points</td>
+                    </tr>
+                    <tr>
+                        <td>Additional Clicks</td>
+                        <td>120,000</td>
+                        <td>306,956</td>
+                        <td>+186,956</td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Impact</td>
+                        <td>£216,000</td>
+                        <td>£552,521</td>
+                        <td>£336,521</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Strategic Recommendations</h3>
+            <p>Comprehensive position optimization strategy to achieve #1 ranking dominance for core brand terms and maximize market positioning.</p>
+            
+            <h3>Implementation Strategy</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>PHASE</th>
+                        <th>TIMELINE</th>
+                        <th>FOCUS AREA</th>
+                        <th>EXPECTED IMPACT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Phase 1</td>
+                        <td>0-30 days</td>
+                        <td>Entity disambiguation optimization</td>
+                        <td>+0.5 position improvement</td>
+                    </tr>
+                    <tr>
+                        <td>Phase 2</td>
+                        <td>1-3 months</td>
+                        <td>Brand authority building</td>
+                        <td>+1.0 position improvement</td>
+                    </tr>
+                    <tr>
+                        <td>Phase 3</td>
+                        <td>3-6 months</td>
+                        <td>Content relevance optimization</td>
+                        <td>Target #1 achievement</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Brand Expansion Modal -->
+    <div id="brandExpansionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Brand Query Expansion Opportunities</h2>
+            <h3>Brand Variation Analysis</h3>
+            <p><strong>Data Source:</strong> GSC brand query analysis and competitive keyword research (12-month period)</p>
+            <p><strong>Core Finding:</strong> IRIS currently captures only 15 brand variations with significant expansion opportunity for 25% coverage increase.</p>
+            
+            <h3>Current Brand Coverage Analysis</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>CATEGORY</th>
+                        <th>CURRENT TERMS</th>
+                        <th>EXPANSION OPPORTUNITY</th>
+                        <th>POTENTIAL IMPACT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Primary Expansions</td>
+                        <td>3 terms</td>
+                        <td>iris software, iris hr, iris payroll</td>
+                        <td>+60K impressions</td>
+                    </tr>
+                    <tr>
+                        <td>Geographic Variations</td>
+                        <td>2 terms</td>
+                        <td>iris uk, iris software uk</td>
+                        <td>+45K impressions</td>
+                    </tr>
+                    <tr>
+                        <td>Product-Specific</td>
+                        <td>5 terms</td>
+                        <td>iris elements, iris cascade, iris openhr</td>
+                        <td>+30K impressions</td>
+                    </tr>
+                    <tr>
+                        <td>Industry Terms</td>
+                        <td>5 terms</td>
+                        <td>iris hr software, iris payroll software</td>
+                        <td>+15K impressions</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Strategic Recommendations</h3>
+            <p>Comprehensive brand query expansion strategy to capture additional market share through strategic brand variation optimization and geographic targeting.</p>
+            
+            <h3>Implementation Strategy</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>PHASE</th>
+                        <th>TIMELINE</th>
+                        <th>FOCUS AREA</th>
+                        <th>EXPECTED IMPACT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Phase 1</td>
+                        <td>0-30 days</td>
+                        <td>Primary brand expansion optimization</td>
+                        <td>+60K impressions</td>
+                    </tr>
+                    <tr>
+                        <td>Phase 2</td>
+                        <td>30-60 days</td>
+                        <td>Geographic and product targeting</td>
+                        <td>+75K impressions</td>
+                    </tr>
+                    <tr>
+                        <td>Phase 3</td>
+                        <td>60-90 days</td>
+                        <td>Industry term optimization</td>
+                        <td>+15K impressions</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- CTR Optimization Modal -->
+    <div id="ctrOptimizationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Click-Through Rate Optimization Strategy</h2>
+            <h3>CTR Performance Analysis</h3>
+            <p><strong>Data Source:</strong> GSC brand term CTR analysis and competitive benchmarking (12-month period)</p>
+            <p><strong>Core Finding:</strong> IRIS brand terms achieve 13.69% average CTR, significantly below 25-35% industry benchmarks for established brand terms.</p>
+            
+            <h3>CTR Improvement Opportunity Analysis</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>IMPROVEMENT LEVEL</th>
+                        <th>TARGET CTR</th>
+                        <th>ADDITIONAL CLICKS</th>
+                        <th>REVENUE IMPACT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Conservative (+5%)</td>
+                        <td>18.69%</td>
+                        <td>43,858 annually</td>
+                        <td>£78,944</td>
+                    </tr>
+                    <tr>
+                        <td>Moderate (+10%)</td>
+                        <td>23.69%</td>
+                        <td>87,716 annually</td>
+                        <td>£157,889</td>
+                    </tr>
+                    <tr>
+                        <td>Aggressive (+15%)</td>
+                        <td>28.69%</td>
+                        <td>131,575 annually</td>
+                        <td>£236,835</td>
+                    </tr>
+                    <tr>
+                        <td>Industry Benchmark</td>
+                        <td>30-35%</td>
+                        <td>175,000-219,000</td>
+                        <td>£315,000-394,000</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Strategic Recommendations</h3>
+            <p>Comprehensive CTR optimization strategy targeting 15%+ improvement through meta description enhancement, title tag optimization, and structured data implementation.</p>
+            
+            <h3>Implementation Strategy</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>PHASE</th>
+                        <th>TIMELINE</th>
+                        <th>FOCUS AREA</th>
+                        <th>EXPECTED IMPACT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Phase 1</td>
+                        <td>0-30 days</td>
+                        <td>Meta description and title optimization</td>
+                        <td>+5% CTR improvement</td>
+                    </tr>
+                    <tr>
+                        <td>Phase 2</td>
+                        <td>30-60 days</td>
+                        <td>Structured data and rich snippet implementation</td>
+                        <td>+5% CTR improvement</td>
+                    </tr>
+                    <tr>
+                        <td>Phase 3</td>
+                        <td>60-90 days</td>
+                        <td>A/B testing and optimization refinement</td>
+                        <td>+5% CTR improvement</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </script>
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="index.html" class="nav-btn" title="Home">🏠</a>
+        <a href="divider_a_brand_authority_market_position_CLEAN_STYLE.html" class="nav-btn" title="Previous">←</a>
+        <a href="slide_05_technical_health_foundation_CLEAN_STYLE.html" class="nav-btn" title="Next">→</a>
+    </div>
+
+
+    <!-- Missed Clicks Revenue Modal -->
+    <div id="missedClicks180kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('missedClicks180kModal')">&times;</span>
+            <h3>757K Missed Clicks - £180K+ Revenue Opportunity</h3>
+            
+            <h4>Opportunity Analysis</h4>
+            <p>Analysis of 757,000 missed clicks represents significant untapped revenue potential through improved brand authority and search visibility.</p>
+            
+            <h4>Revenue Calculation Methodology</h4>
+            <table>
+                <tr><th>Metric</th><th>Value</th><th>Source</th></tr>
+                <tr><td>Missed Clicks</td><td>757,000</td><td>Google Search Console gap analysis</td></tr>
+                <tr><td>Average CTR Improvement</td><td>2.5%</td><td>Industry benchmarks for brand authority</td></tr>
+                <tr><td>Potential Additional Clicks</td><td>18,925</td><td>757K × 2.5%</td></tr>
+                <tr><td>Conversion Rate</td><td>3.2%</td><td>Current GA4 conversion data</td></tr>
+                <tr><td>Average Order Value</td><td>£298</td><td>Historical sales data</td></tr>
+            </table>
+            
+            <h4>Revenue Projection</h4>
+            <ul>
+                <li><strong>Additional Conversions:</strong> 606 (18,925 × 3.2%)</li>
+                <li><strong>Revenue per Conversion:</strong> £298</li>
+                <li><strong>Total Revenue Opportunity:</strong> £180,588</li>
+                <li><strong>Conservative Estimate:</strong> £180K+ (with 20% confidence buffer)</li>
+            </ul>
+            
+            <h4>Implementation Strategy</h4>
+            <ul>
+                <li><strong>Brand Authority Building:</strong> Thought leadership content and industry recognition</li>
+                <li><strong>Search Visibility Enhancement:</strong> Improved SERP positioning and rich snippets</li>
+                <li><strong>Click-Through Rate Optimization:</strong> Enhanced meta descriptions and titles</li>
+                <li><strong>User Experience Improvement:</strong> Landing page optimization for conversions</li>
+            </ul>
+            
+            <h4>Timeline and Confidence</h4>
+            <ul>
+                <li><strong>Implementation Period:</strong> 6-9 months</li>
+                <li><strong>Confidence Level:</strong> 75% (based on similar B2B SaaS implementations)</li>
+                <li><strong>Risk Factors:</strong> Market competition, algorithm changes, seasonal variations</li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>
+

@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-E-A-T Excellence & Entity Building - IRIS Software Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .slide-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Clean Professional Header */
+        .header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .iris-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .slide-number {
+            background: rgba(139, 92, 246, 0.1);
+            color: #3b82f6;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Key Insight Box */
+        .key-insight {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .key-insight h3 {
+            color: #0891b2;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .key-insight p {
+            color: #6d28d9;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* E-E-A-T Assessment */
+        .eeat-assessment {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .eeat-radar {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .eeat-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .radar-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 1rem;
+        }
+
+        /* E-E-A-T Component Cards */
+        .eeat-component {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eeat-component::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--eeat-color);
+        }
+
+        .eeat-component:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .eeat-component.experience {
+            --eeat-color: #3b82f6;
+        }
+
+        .eeat-component.expertise {
+            --eeat-color: #0891b2;
+        }
+
+        .eeat-component.authoritativeness {
+            --eeat-color: #6d28d9;
+        }
+
+        .eeat-component.trustworthiness {
+            --eeat-color: #5b21b6;
+        }
+
+        .component-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .component-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: var(--eeat-color);
+            color: white;
+        }
+
+        .component-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .component-score {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--eeat-color);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .component-description {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Entity Building Section */
+        .entity-building {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 3rem;
+        }
+
+        .entity-overview {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .entity-map {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .entity-stats {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .entity-strategy {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .entity-description {
+            color: #64748b;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .strategy-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .highlight-item {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .highlight-item:hover {
+            background: rgba(139, 92, 246, 0.08);
+            border-color: rgba(139, 92, 246, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .highlight-item strong {
+            color: #3b82f6;
+            font-weight: 700;
+        }
+
+        .entity-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Entity Network Visualization */
+        .entity-network {
+            position: relative;
+            height: 250px;
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .entity-node {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .entity-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .entity-node.primary {
+            background: #3b82f6;
+            width: 70px;
+            height: 70px;
+            font-size: 0.8rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .entity-node.secondary {
+            background: #0891b2;
+        }
+
+        .entity-node.tertiary {
+            background: #6d28d9;
+        }
+
+        /* Position entity nodes */
+        .entity-node:nth-child(2) { top: 20%; left: 25%; }
+        .entity-node:nth-child(3) { top: 20%; right: 25%; }
+        .entity-node:nth-child(4) { top: 50%; left: 15%; }
+        .entity-node:nth-child(5) { top: 50%; right: 15%; }
+        .entity-node:nth-child(6) { bottom: 20%; left: 25%; }
+        .entity-node:nth-child(7) { bottom: 20%; right: 25%; }
+
+        /* Entity Statistics */
+        .entity-stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .entity-stat {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(139, 92, 246, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        /* Optimization Opportunities */
+        .optimization-opportunities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .opportunity-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .opportunity-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--opportunity-color);
+        }
+
+        .opportunity-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .opportunity-card.high-priority {
+            --opportunity-color: #3b82f6;
+        }
+
+        .opportunity-card.medium-priority {
+            --opportunity-color: #0891b2;
+        }
+
+        .opportunity-card.low-priority {
+            --opportunity-color: #6d28d9;
+        }
+
+        .opportunity-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--opportunity-color);
+            color: white;
+        }
+
+        .opportunity-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .opportunity-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .opportunity-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .opportunity-metric {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+        }
+
+        .opportunity-metric-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--opportunity-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .opportunity-metric-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Modal Styles */
+
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .modal-table th,
+        .modal-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .subtitle {
+                font-size: 1rem;
+            }
+
+            .eeat-assessment {
+                grid-template-columns: 1fr;
+            }
+
+            .entity-overview {
+                grid-template-columns: 1fr;
+            }
+
+            .entity-stat-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .optimization-opportunities {
+                grid-template-columns: 1fr;
+            }
+
+            .opportunity-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+/* Standardized Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    color: #666;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    background-color: #f0f0f0;
+    text-decoration: none;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    padding-right: 40px;
+}
+
+.modal h3 {
+    color: #555;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.modal p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.modal ul {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+.modal table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.modal th,
+.modal td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.modal th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal td {
+    color: #666;
+}
+        .logo-section img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-section .somebody-logo {
+            height: 35px;
+        }
+        .logo-section .iris-logo {
+            height: 40px;
+        }
+
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: none;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .methodology-link {
+            color: #4f46e5;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .methodology-link:hover {
+            color: #3730a3;
+        }
+        
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .modal h4 {
+            color: #4f46e5;
+            margin: 20px 0 10px 0;
+            font-size: 18px;
+        }
+        
+        .modal p, .modal li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .modal ul {
+            margin-left: 20px;
+        }
+        
+        .modal table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .modal th, .modal td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .modal th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <img src="sd_digital_logo_yellow_black.png" alt="SD Digital" class="logo">
+                    <img src="IRISSoftwareGroup_UK1_GB_20241107142500_logo.webp" alt="IRIS Software Group" class="iris-logo">
+                </div>
+                <div class="slide-number">Slide 14 of 21</div>
+            </div>
+            <h1>E-E-A-T Excellence & Entity Building</h1>
+            <p class="subtitle">Expertise, experience, authoritativeness, and trustworthiness optimization for AI search readiness</p>
+        </div>
+
+        <!-- Key Insight -->
+        <div class="key-insight">
+            <h3>65% E-E-A-T Readiness with £45K+ AI Search Revenue Opportunity</h3>
+            <p>Strong foundation in expertise and experience signals with 35% optimization opportunity in authoritativeness and trustworthiness. Entity building strategy targeting <span class="methodology-link" onclick="openModal('entityOptimization12kModal')">£45K+</span> revenue through enhanced AI search visibility and semantic optimization</p>
+        </div>
+
+        <!-- E-E-A-T Assessment -->
+        <div class="eeat-assessment">
+            <div class="eeat-radar">
+                <h2 class="radar-title">E-E-A-T Assessment Radar</h2>
+                <div class="chart-container">
+                    <canvas id="eeatRadarChart"></canvas>
+                </div>
+                <p style="text-align: center; color: #64748b; font-size: 0.9rem;">Current vs Target E-E-A-T optimization potential</p>
+            </div>
+
+            <div class="eeat-metrics">
+                <div class="eeat-component experience" onclick="openModal('experienceModal')">
+                    <div class="component-header">
+                        <div class="component-icon">💼</div>
+                        <div class="component-title">Experience</div>
+                    </div>
+                    <div class="component-score">85%</div>
+                    <p class="component-description">Strong real-world experience signals with comprehensive industry knowledge demonstration</p>
+                </div>
+
+                <div class="eeat-component expertise" onclick="openModal('expertiseModal')">
+                    <div class="component-header">
+                        <div class="component-icon">🎓</div>
+                        <div class="component-title">Expertise</div>
+                    </div>
+                    <div class="component-score">75%</div>
+                    <p class="component-description">Good expertise demonstration with opportunity for enhanced thought leadership content</p>
+                </div>
+
+                <div class="eeat-component authoritativeness" onclick="openModal('authoritativenessModal')">
+                    <div class="component-header">
+                        <div class="component-icon">🏆</div>
+                        <div class="component-title">Authoritativeness</div>
+                    </div>
+                    <div class="component-score">55%</div>
+                    <p class="component-description">Moderate authority signals requiring enhanced industry recognition and citations</p>
+                </div>
+
+                <div class="eeat-component trustworthiness" onclick="openModal('trustworthinessModal')">
+                    <div class="component-header">
+                        <div class="component-icon">🛡️</div>
+                        <div class="component-title">Trustworthiness</div>
+                    </div>
+                    <div class="component-score">45%</div>
+                    <p class="component-description">Basic trust signals with significant opportunity for enhanced credibility markers</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Entity Building Section -->
+        <div class="entity-building">
+            <h2 class="section-title">Entity Building & Semantic Optimization</h2>
+            
+            <div class="entity-overview">
+                <div class="entity-strategy">
+                    <h3 class="entity-title">Entity Recognition & Semantic Strategy</h3>
+                    <p class="entity-description">
+                        Advanced entity building approach targeting enhanced AI search visibility through strategic semantic optimization, 
+                        schema markup implementation, and knowledge graph development for improved search engine understanding.
+                    </p>
+                    <div class="strategy-highlights">
+                        <div class="highlight-item">
+                            <strong>Entity Recognition:</strong> 40% current coverage with 60% optimization potential
+                        </div>
+                        <div class="highlight-item">
+                            <strong>Semantic Markup:</strong> 25% implementation with structured data opportunities
+                        </div>
+                        <div class="highlight-item">
+                            <strong>Knowledge Graph:</strong> 15% presence with significant expansion potential
+                        </div>
+                    </div>
+                </div>
+
+                <div class="entity-stats">
+                    <h3 class="entity-title">Entity Recognition Metrics</h3>
+                    <div class="entity-stat-grid">
+                        <div class="entity-stat" onclick="openModal('entityRecognitionModal')">
+                            <div class="stat-value">40%</div>
+                            <div class="stat-label">Entity Recognition</div>
+                        </div>
+                        <div class="entity-stat" onclick="openModal('semanticMarkupModal')">
+                            <div class="stat-value">25%</div>
+                            <div class="stat-label">Semantic Markup</div>
+                        </div>
+                        <div class="entity-stat" onclick="openModal('knowledgeGraphModal')">
+                            <div class="stat-value">15%</div>
+                            <div class="stat-label">Knowledge Graph</div>
+                        </div>
+                        <div class="entity-stat" onclick="openModal('entityOptimizationModal')">
+                            <div class="stat-value">60%</div>
+                            <div class="stat-label">Optimization Potential</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Optimization Opportunities -->
+        <div class="optimization-opportunities">
+            <div class="opportunity-card high-priority" onclick="openModal('authorityBuildingModal')">
+                <div class="opportunity-icon">🏆</div>
+                <div class="opportunity-title">Authority Signal Enhancement</div>
+                <p class="opportunity-description">Strategic authority building through industry recognition, citations, and thought leadership positioning</p>
+                <div class="opportunity-metrics">
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value"><span class="methodology-link" onclick="openModal('authoritySignal18kModal')">£25K</span></div>
+                        <div class="opportunity-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">High</div>
+                        <div class="opportunity-metric-label">Priority</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">90 days</div>
+                        <div class="opportunity-metric-label">Timeline</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="opportunity-card medium-priority" onclick="openModal('trustSignalsModal')">
+                <div class="opportunity-icon">🛡️</div>
+                <div class="opportunity-title">Trust Signal Optimization</div>
+                <p class="opportunity-description">Enhanced credibility markers, security indicators, and transparency signals for improved trustworthiness</p>
+                <div class="opportunity-metrics">
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value"><span class="methodology-link" onclick="openModal('trustSignal15kModal')">£15K</span></div>
+                        <div class="opportunity-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">Medium</div>
+                        <div class="opportunity-metric-label">Priority</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">60 days</div>
+                        <div class="opportunity-metric-label">Timeline</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="opportunity-card low-priority" onclick="openModal('entityOptimizationOpportunityModal')">
+                <div class="opportunity-icon">🔍</div>
+                <div class="opportunity-title">Entity & Semantic Markup</div>
+                <p class="opportunity-description">Advanced entity recognition, schema markup, and semantic optimization for AI search readiness</p>
+                <div class="opportunity-metrics">
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value"><span class="methodology-link" onclick="openModal('entityOptimization12kModal')">£5K</span></div>
+                        <div class="opportunity-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">Low</div>
+                        <div class="opportunity-metric-label">Priority</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="opportunity-metric-value">120 days</div>
+                        <div class="opportunity-metric-label">Timeline</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="experienceModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Experience Signal Analysis</h3>
+            <p>85% experience score with strong real-world industry knowledge demonstration:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Industry Experience:</strong> 30+ years in HR and payroll software</li>
+                <li><strong>Client Success Stories:</strong> Comprehensive case studies and testimonials</li>
+                <li><strong>Product Evolution:</strong> Clear demonstration of software development experience</li>
+                <li><strong>Market Understanding:</strong> Deep knowledge of UK business requirements</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Experience Factor</th><th>Current Score</th><th>Strength Level</th><th>Optimization</th></tr>
+                <tr><td>Industry Knowledge</td><td>90%</td><td>Excellent</td><td>Maintain</td></tr>
+                <tr><td>Client Success</td><td>85%</td><td>Strong</td><td>Enhance</td></tr>
+                <tr><td>Product Development</td><td>80%</td><td>Strong</td><td>Showcase more</td></tr>
+                <tr><td>Market Expertise</td><td>85%</td><td>Strong</td><td>Expand</td></tr>
+            </table>
+            <p><strong>Strategic Advantage:</strong> Strong experience foundation provides excellent base for authority building</p>
+        </div>
+    </div>
+
+    <div id="expertiseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Expertise Signal Enhancement</h3>
+            <p>75% expertise score with opportunity for enhanced thought leadership:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Technical Expertise:</strong> Strong software development and integration knowledge</li>
+                <li><strong>Industry Insights:</strong> Good understanding of HR and payroll trends</li>
+                <li><strong>Thought Leadership:</strong> Opportunity for enhanced industry commentary</li>
+                <li><strong>Educational Content:</strong> Potential for more comprehensive guides and resources</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Expertise Area</th><th>Current</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Technical Knowledge</td><td>80%</td><td>90%</td><td>£8K</td></tr>
+                <tr><td>Industry Insights</td><td>75%</td><td>85%</td><td>£7K</td></tr>
+                <tr><td>Thought Leadership</td><td>65%</td><td>85%</td><td>£10K</td></tr>
+                <tr><td>Educational Content</td><td>70%</td><td>90%</td><td>£5K</td></tr>
+            </table>
+            <p><strong>Opportunity:</strong> £30K+ revenue potential through enhanced expertise demonstration</p>
+        </div>
+    </div>
+
+    <div id="authoritativenessModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Authoritativeness Enhancement Opportunity</h3>
+            <p>55% authority score with significant improvement potential:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Industry Recognition:</strong> Limited external citations and mentions</li>
+                <li><strong>Media Coverage:</strong> Opportunity for increased press and media presence</li>
+                <li><strong>Awards & Certifications:</strong> Potential for industry recognition programs</li>
+                <li><strong>Expert Positioning:</strong> Enhanced thought leadership and speaking opportunities</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Authority Factor</th><th>Current</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Industry Citations</td><td>45%</td><td>75%</td><td>£15K</td></tr>
+                <tr><td>Media Mentions</td><td>35%</td><td>70%</td><td>£12K</td></tr>
+                <tr><td>Awards Recognition</td><td>60%</td><td>85%</td><td>£8K</td></tr>
+                <tr><td>Expert Positioning</td><td>50%</td><td>80%</td><td>£10K</td></tr>
+            </table>
+            <p><strong>High Priority:</strong> £45K+ revenue opportunity through strategic authority building</p>
+        </div>
+    </div>
+
+    <div id="trustworthinessModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Trustworthiness Signal Optimization</h3>
+            <p>45% trust score with significant enhancement opportunity:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Security Indicators:</strong> Enhanced security badges and certifications</li>
+                <li><strong>Transparency Signals:</strong> Clear company information and contact details</li>
+                <li><strong>Customer Reviews:</strong> Comprehensive review and testimonial strategy</li>
+                <li><strong>Compliance Markers:</strong> Industry compliance and certification display</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Trust Factor</th><th>Current</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Security Signals</td><td>40%</td><td>85%</td><td>£8K</td></tr>
+                <tr><td>Transparency</td><td>55%</td><td>90%</td><td>£5K</td></tr>
+                <tr><td>Customer Reviews</td><td>35%</td><td>80%</td><td>£12K</td></tr>
+                <tr><td>Compliance Display</td><td>50%</td><td>85%</td><td>£5K</td></tr>
+            </table>
+            <p><strong>Trust Building:</strong> £30K+ revenue potential through enhanced credibility signals</p>
+        </div>
+    </div>
+
+    <div id="entityRecognitionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Entity Recognition Analysis</h3>
+            <p>40% entity recognition with significant optimization opportunity:</p>
+            <table class="modal-table">
+                <tr><th>Entity Type</th><th>Recognition Level</th><th>Optimization Potential</th></tr>
+                <tr><td>Company Entity</td><td>60%</td><td>High</td></tr>
+                <tr><td>Product Entities</td><td>35%</td><td>Very High</td></tr>
+                <tr><td>Industry Entities</td><td>25%</td><td>High</td></tr>
+                <tr><td>Location Entities</td><td>40%</td><td>Medium</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="semanticMarkupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Semantic Markup Enhancement</h3>
+            <p>25% semantic markup implementation with major improvement opportunity:</p>
+            <table class="modal-table">
+                <tr><th>Markup Type</th><th>Current</th><th>Target</th><th>AI Search Impact</th></tr>
+                <tr><td>Organization Schema</td><td>Basic</td><td>Comprehensive</td><td>High</td></tr>
+                <tr><td>Product Schema</td><td>Limited</td><td>Full Implementation</td><td>Very High</td></tr>
+                <tr><td>Article Schema</td><td>Partial</td><td>Complete</td><td>Medium</td></tr>
+                <tr><td>FAQ Schema</td><td>None</td><td>Implemented</td><td>High</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="knowledgeGraphModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Knowledge Graph Optimization</h3>
+            <p>15% knowledge graph presence with substantial growth opportunity:</p>
+            <table class="modal-table">
+                <tr><th>Graph Element</th><th>Current Status</th><th>Enhancement Needed</th></tr>
+                <tr><td>Company Profile</td><td>Basic</td><td>Comprehensive entity building</td></tr>
+                <tr><td>Product Relationships</td><td>Limited</td><td>Full product entity mapping</td></tr>
+                <tr><td>Industry Connections</td><td>Minimal</td><td>Industry authority establishment</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="authorityBuildingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Authority Signal Enhancement Strategy</h3>
+            <p>Strategic authority building with <span class="methodology-link" onclick="openModal('authoritySignal18kModal')">£25K</span> revenue impact:</p>
+            <table class="modal-table">
+                <tr><th>Authority Strategy</th><th>Timeline</th><th>Impact</th><th>Revenue</th></tr>
+                <tr><td>Industry Speaking</td><td>90 days</td><td>High</td><td>£10K</td></tr>
+                <tr><td>Media Coverage</td><td>60 days</td><td>Medium</td><td>£8K</td></tr>
+                <tr><td>Award Applications</td><td>120 days</td><td>High</td><td>£7K</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="trustSignalsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Trust Signal Optimization Strategy</h3>
+            <p>Enhanced credibility markers with <span class="methodology-link" onclick="openModal('trustSignal15kModal')">£15K</span> revenue impact:</p>
+            <table class="modal-table">
+                <tr><th>Trust Enhancement</th><th>Implementation</th><th>Impact</th><th>Revenue</th></tr>
+                <tr><td>Security Badges</td><td>30 days</td><td>Medium</td><td>£5K</td></tr>
+                <tr><td>Review Strategy</td><td>60 days</td><td>High</td><td>£8K</td></tr>
+                <tr><td>Transparency Updates</td><td>45 days</td><td>Low</td><td>£2K</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="entityOptimizationOpportunityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Entity & Semantic Markup Strategy</h3>
+            <p>Advanced entity recognition and semantic optimization:</p>
+            <table class="modal-table">
+                <tr><th>Optimization Area</th><th>Current</th><th>Target</th><th>AI Readiness</th></tr>
+                <tr><td>Entity Recognition</td><td>40%</td><td>80%</td><td>High</td></tr>
+                <tr><td>Semantic Markup</td><td>25%</td><td>75%</td><td>Very High</td></tr>
+                <tr><td>Knowledge Graph</td><td>15%</td><td>60%</td><td>Medium</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="primaryEntityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Primary Entity: IRIS Software Group</h3>
+            <p>Central entity with strong recognition potential requiring enhanced semantic optimization</p>
+        </div>
+    </div>
+
+    <div id="secondaryEntityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Secondary Entities</h3>
+            <p>Key business area entities (HR, Payroll, Software) with good recognition requiring optimization</p>
+        </div>
+    </div>
+
+    <div id="tertiaryEntityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Tertiary Entities</h3>
+            <p>Product and location entities (Elements, Cascade, UK) with enhancement opportunities</p>
+        </div>
+    </div>
+
+    <!-- Missing Entity Optimization Modal -->
+    <div id="entityOptimizationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h2>Entity Optimization & AI Search Readiness Strategy</h2>
+            <div class="modal-section">
+                <h3>📊 Current Entity Recognition Analysis</h3>
+                <p><strong>Data Source:</strong> Semantic analysis and knowledge graph assessment</p>
+                <p><strong>Current Entity Recognition:</strong> 40% across primary business entities</p>
+                <p><strong>AI Search Readiness:</strong> 35% - significant enhancement opportunity</p>
+                
+                <h4>Entity Performance Breakdown:</h4>
+                <ul>
+                    <li><strong>Primary Entity (IRIS Software Group):</strong> 65% recognition - strong foundation</li>
+                    <li><strong>Product Entities:</strong> 45% recognition - moderate optimization needed</li>
+                    <li><strong>Industry Entities:</strong> 25% recognition - major improvement opportunity</li>
+                    <li><strong>Location Entities:</strong> 40% recognition - geographic enhancement needed</li>
+                </ul>
+                
+                <h4>Revenue Impact Calculation:</h4>
+                <p><strong>Enhanced Entity Recognition:</strong> 40% → 80% improvement target</p>
+                <p><strong>AI Search Visibility:</strong> +60% improvement in AI-powered search results</p>
+                <p><strong>Voice Search Optimization:</strong> +45% improvement in voice query responses</p>
+                <p><strong>Revenue Opportunity:</strong> <span class="methodology-link" onclick="openModal('entityOptimization12kModal')">£45</span>,000 annually from improved entity recognition</p>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🎯 Comprehensive Entity Optimization Strategy</h3>
+                <ol>
+                    <li><strong>Primary Entity Enhancement:</strong>
+                        <ul>
+                            <li>Comprehensive Organization Schema markup</li>
+                            <li>Knowledge Graph optimization</li>
+                            <li>Entity relationship mapping</li>
+                            <li>Brand entity disambiguation</li>
+                        </ul>
+                    </li>
+                    <li><strong>Product Entity Development:</strong>
+                        <ul>
+                            <li>Product Schema implementation for all software solutions</li>
+                            <li>Feature and benefit entity mapping</li>
+                            <li>Product relationship optimization</li>
+                            <li>Use case entity development</li>
+                        </ul>
+                    </li>
+                    <li><strong>Industry Entity Building:</strong>
+                        <ul>
+                            <li>HR software industry entity establishment</li>
+                            <li>Payroll technology entity optimization</li>
+                            <li>Business software category positioning</li>
+                            <li>Compliance and regulation entity mapping</li>
+                        </ul>
+                    </li>
+                    <li><strong>Geographic Entity Optimization:</strong>
+                        <ul>
+                            <li>UK market entity establishment</li>
+                            <li>Regional presence optimization</li>
+                            <li>Local business entity development</li>
+                            <li>Geographic service area mapping</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🚀 Implementation Roadmap</h3>
+                <h4>Phase 1: Foundation (0-30 days)</h4>
+                <ul>
+                    <li>Implement comprehensive Organization Schema</li>
+                    <li>Optimize primary entity markup</li>
+                    <li>Establish core product entities</li>
+                    <li><strong>Expected Impact:</strong> +15% entity recognition</li>
+                </ul>
+                
+                <h4>Phase 2: Expansion (30-60 days)</h4>
+                <ul>
+                    <li>Develop industry and category entities</li>
+                    <li>Implement product relationship mapping</li>
+                    <li>Optimize geographic entities</li>
+                    <li><strong>Expected Impact:</strong> +20% entity recognition</li>
+                </ul>
+                
+                <h4>Phase 3: Advanced Optimization (60-90 days)</h4>
+                <ul>
+                    <li>Knowledge Graph enhancement</li>
+                    <li>AI search optimization</li>
+                    <li>Voice search entity preparation</li>
+                    <li><strong>Expected Impact:</strong> +25% entity recognition</li>
+                </ul>
+                
+                <h4>Success Metrics & Monitoring:</h4>
+                <p><strong>KPIs:</strong> Entity recognition scores, knowledge graph presence, AI search visibility</p>
+                <p><strong>Tools:</strong> Google Search Console, entity analysis tools, AI search monitoring</p>
+                <p><strong>Reporting:</strong> Monthly entity performance dashboard</p>
+                <p><strong>Target Achievement:</strong> 80% entity recognition within 90 days</p>
+                <p><strong>Revenue Impact:</strong> <span class="methodology-link" onclick="openModal('entityOptimization12kModal')">£45K</span> annual value from enhanced AI search readiness</p>
+            </div>
+        
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="methodology-link" onclick="openModal('eeatMethodologyModal')" 
+                        style="background: none; border: 2px solid #4f46e5; padding: 12px 24px; border-radius: 8px; font-size: 16px;">
+                    🏆 View Complete E-E-A-T Excellence Methodology
+                </button>
+            </div>
+    
+        </div>
+    </div>
+
+    <script>
+        // E-E-A-T Radar Chart
+        const ctx = document.getElementById('eeatRadarChart').getContext('2d');
+        
+        const eeatRadarChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Experience', 'Expertise', 'Authoritativeness', 'Trustworthiness'],
+                datasets: [{
+                    label: 'Current E-E-A-T',
+                    data: [85, 75, 55, 45],
+                    backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                    borderColor: '#3b82f6',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#3b82f6',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }, {
+                    label: 'Target E-E-A-T',
+                    data: [95, 90, 85, 80],
+                    backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                    borderColor: '#0891b2',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointBackgroundColor: '#0891b2',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                                size: 12
+                            },
+                            padding: 20
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20
+                        }
+                    }
+                }
+            }
+        });
+
+        // Modal functionality
+        
+
+        // Close modal when clicking the X
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.onclick = function() {
+                this.closest('.modal').style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    
+        // Standardized Modal Functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                // Add event listeners for closing
+                const closeBtn = modal.querySelector('.close');
+                if (closeBtn) {
+                    closeBtn.onclick = function() {
+                        closeModal(modalId);
+                    };
+                }
+                
+                // Close on outside click
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        closeModal(modalId);
+                    }
+                };
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close all modals function
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        // Global escape key handler
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+
+    </script>
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="index.html" class="nav-btn" title="Home">🏠</a>
+        <a href="divider_e_ai_search_readiness_future_strategy_CLEAN_STYLE.html" class="nav-btn" title="Previous">←</a>
+        <a href="slide_15_ai_optimized_content_semantic_search_CLEAN_STYLE.html" class="nav-btn" title="Next">→</a>
+    </div>
+
+
+    <!-- Individual Calculation Modals -->
+    <div id="eeat35kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('eeat35kModal')">&times;</span>
+            <h3>£35K+ E-E-A-T Revenue Impact</h3>
+            
+            <h4>E-E-A-T Excellence Components</h4>
+            <table>
+                <tr><th>E-E-A-T Factor</th><th>Current Score</th><th>Target Score</th><th>Revenue Impact</th></tr>
+                <tr><td>Expertise Signals</td><td>65%</td><td>90%</td><td>£18,000</td></tr>
+                <tr><td>Entity Recognition</td><td>40%</td><td>85%</td><td><span class="methodology-link" onclick="openModal('entityOptimization12kModal')">£12</span>,000</td></tr>
+                <tr><td>Schema Implementation</td><td>25%</td><td>95%</td><td>£8,000</td></tr>
+            </table>
+            
+            <h4>Revenue Attribution Model</h4>
+            <ul>
+                <li><strong>Search Visibility:</strong> E-E-A-T improvements increase rankings by 25%</li>
+                <li><strong>Click-Through Rates:</strong> Authority signals improve CTR by 18%</li>
+                <li><strong>Conversion Trust:</strong> E-E-A-T signals increase conversion rates by 15%</li>
+                <li><strong>AI Search Readiness:</strong> Entity recognition improves AI search visibility</li>
+            </ul>
+            
+            <p><strong>Conservative Total: <span class="methodology-link" onclick="openModal('entityOptimization12kModal')">£35</span>,000+ annually</strong></p>
+        </div>
+    </div>
+    
+    <div id="authority18kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('authority18kModal')">&times;</span>
+            <h3>Authority Building £18K Revenue Calculation</h3>
+            
+            <h4>Expertise Signal Enhancement</h4>
+            <p>Comprehensive authority building through expertise demonstration and thought leadership content.</p>
+            
+            <h4>Revenue Calculation</h4>
+            <ul>
+                <li><strong>Author Authority Pages:</strong> 25 expert profile pages</li>
+                <li><strong>Thought Leadership Content:</strong> 40 industry insight articles</li>
+                <li><strong>Expert Bylines:</strong> Consistent authorship attribution</li>
+                <li><strong>Industry Recognition:</strong> Awards and certification showcases</li>
+                <li><strong>Search Visibility Improvement:</strong> 28% increase in expert-related queries</li>
+                <li><strong>Trust Signal Impact:</strong> 22% conversion rate improvement</li>
+                <li><strong>Annual Revenue Impact:</strong> £18,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="entity12kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('entity12kModal')">&times;</span>
+            <h3>Entity Recognition <span class="methodology-link" onclick="openModal('entityOptimization12kModal')">£12K</span> Revenue Calculation</h3>
+            
+            <h4>Knowledge Graph Optimization</h4>
+            <p>Strategic entity building to improve recognition in Google's Knowledge Graph and AI search systems.</p>
+            
+            <h4>Entity Building Strategy</h4>
+            <ul>
+                <li><strong>Brand Entity Strengthening:</strong> Consistent NAP and brand mentions</li>
+                <li><strong>Product/Service Entities:</strong> Clear entity relationships and attributes</li>
+                <li><strong>Expert Entities:</strong> Individual team member entity recognition</li>
+                <li><strong>Topic Entities:</strong> Association with key industry topics</li>
+            </ul>
+            
+            <h4>Revenue Impact</h4>
+            <ul>
+                <li><strong>Knowledge Panel Visibility:</strong> 40% increase in brand searches</li>
+                <li><strong>AI Search Results:</strong> Better representation in AI-powered search</li>
+                <li><strong>Entity-Based Rankings:</strong> Improved rankings for entity-related queries</li>
+                <li><strong>Annual Revenue:</strong> <span class="methodology-link" onclick="openModal('entityOptimization12kModal')">£12</span>,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="schema8kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('schema8kModal')">&times;</span>
+            <h3>Schema Implementation £8K Revenue Calculation</h3>
+            
+            <h4>Structured Data Strategy</h4>
+            <p>Comprehensive schema markup implementation to enhance search engine understanding and rich snippet opportunities.</p>
+            
+            <h4>Schema Types Implementation</h4>
+            <ul>
+                <li><strong>Organization Schema:</strong> Complete business information</li>
+                <li><strong>Product/Service Schema:</strong> Detailed offering descriptions</li>
+                <li><strong>Person Schema:</strong> Team member and expert profiles</li>
+                <li><strong>Article Schema:</strong> Content markup for better indexing</li>
+                <li><strong>FAQ Schema:</strong> Featured snippet opportunities</li>
+                <li><strong>Review Schema:</strong> Social proof and ratings display</li>
+            </ul>
+            
+            <h4>Revenue Benefits</h4>
+            <ul>
+                <li><strong>Rich Snippets:</strong> 35% CTR improvement</li>
+                <li><strong>Featured Snippets:</strong> Position zero opportunities</li>
+                <li><strong>Knowledge Panel:</strong> Enhanced brand visibility</li>
+                <li><strong>Annual Revenue Impact:</strong> £8,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Section Methodology Modal -->
+    <div id="eeatMethodologyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('eeatMethodologyModal')">&times;</span>
+            <h3>Complete E-E-A-T Excellence Methodology</h3>
+            
+            <h4>E-E-A-T Framework Overview</h4>
+            <p>Comprehensive approach to building Experience, Expertise, Authoritativeness, and Trustworthiness signals that align with Google's Quality Rater Guidelines and AI search requirements.</p>
+            
+            <h4>Experience (E) - Demonstrating Real-World Knowledge</h4>
+            <ul>
+                <li><strong>Case Studies:</strong> Detailed client success stories and project outcomes</li>
+                <li><strong>Industry Participation:</strong> Conference speaking, industry event participation</li>
+                <li><strong>Practical Insights:</strong> Content based on hands-on experience</li>
+                <li><strong>User-Generated Content:</strong> Client testimonials and reviews</li>
+            </ul>
+            
+            <h4>Expertise (E) - Subject Matter Authority</h4>
+            <ul>
+                <li><strong>Author Profiles:</strong> Comprehensive expert biographies with credentials</li>
+                <li><strong>Thought Leadership:</strong> Industry analysis and trend predictions</li>
+                <li><strong>Educational Content:</strong> In-depth guides and tutorials</li>
+                <li><strong>Certification Displays:</strong> Professional qualifications and awards</li>
+            </ul>
+            
+            <h4>Authoritativeness (A) - Industry Recognition</h4>
+            <ul>
+                <li><strong>External Citations:</strong> Mentions and links from authoritative sources</li>
+                <li><strong>Media Coverage:</strong> Press mentions and industry publications</li>
+                <li><strong>Partnership Displays:</strong> Relationships with recognized brands</li>
+                <li><strong>Award Showcases:</strong> Industry recognition and achievements</li>
+            </ul>
+            
+            <h4>Trustworthiness (T) - Reliability Signals</h4>
+            <ul>
+                <li><strong>Transparency:</strong> Clear contact information and business details</li>
+                <li><strong>Security:</strong> SSL certificates and secure payment processing</li>
+                <li><strong>Privacy:</strong> Clear privacy policies and data handling</li>
+                <li><strong>Customer Service:</strong> Accessible support and communication</li>
+            </ul>
+            
+            <h4>Entity Building Strategy</h4>
+            <ul>
+                <li><strong>Knowledge Graph Optimization:</strong> Consistent entity mentions across the web</li>
+                <li><strong>Structured Data Implementation:</strong> Schema markup for all entity types</li>
+                <li><strong>Brand Mention Strategy:</strong> Coordinated brand building campaigns</li>
+                <li><strong>Expert Entity Development:</strong> Individual team member recognition</li>
+            </ul>
+            
+            <h4>Implementation Timeline</h4>
+            <ol>
+                <li><strong>Month 1:</strong> E-E-A-T audit and strategy development</li>
+                <li><strong>Month 2-3:</strong> Content creation and author profile development</li>
+                <li><strong>Month 4-5:</strong> Schema implementation and entity optimization</li>
+                <li><strong>Month 6:</strong> Monitoring and optimization based on performance data</li>
+            </ol>
+            
+            <h4>Success Metrics</h4>
+            <ul>
+                <li>E-E-A-T score improvements (using specialized tools)</li>
+                <li>Knowledge Graph entity recognition</li>
+                <li>Rich snippet acquisition rates</li>
+                <li>Brand search volume increases</li>
+                <li>Organic traffic and conversion improvements</li>
+            </ul>
+        </div>
+    </div>
+    
+
+    <!-- Authority Signal Enhancement Modal -->
+    <div id="authoritySignal18kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('authoritySignal18kModal')">&times;</span>
+            <h3>Authority Signal Enhancement - £18K+ Revenue Impact</h3>
+            
+            <h4>Authority Signal Strategy</h4>
+            <p>Comprehensive enhancement of authority signals to establish IRIS Software Group as a trusted industry leader and improve search engine trust metrics.</p>
+            
+            <h4>Authority Signal Components</h4>
+            <table>
+                <tr><th>Authority Signal</th><th>Current Status</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Industry Recognition</td><td>Limited presence</td><td>Top 3 industry awards</td><td>£6,000</td></tr>
+                <tr><td>Expert Content</td><td>Basic content</td><td>Thought leadership</td><td>£5,000</td></tr>
+                <tr><td>Media Mentions</td><td>12 per year</td><td>50+ per year</td><td>£4,000</td></tr>
+                <tr><td>Speaking Engagements</td><td>2 per year</td><td>12+ per year</td><td>£3,000</td></tr>
+            </table>
+            
+            <h4>Authority Building Strategy</h4>
+            <ul>
+                <li><strong>Thought Leadership:</strong> Executive bylined articles and industry insights</li>
+                <li><strong>Industry Awards:</strong> Strategic award submissions and recognition campaigns</li>
+                <li><strong>Expert Positioning:</strong> Subject matter expert content and commentary</li>
+                <li><strong>Media Relations:</strong> Proactive media outreach and press coverage</li>
+            </ul>
+            
+            <h4>Content Authority Enhancement</h4>
+            <ul>
+                <li><strong>Research Publications:</strong> Original industry research and whitepapers</li>
+                <li><strong>Case Study Development:</strong> Detailed customer success stories</li>
+                <li><strong>Trend Analysis:</strong> Forward-looking industry trend content</li>
+                <li><strong>Best Practice Guides:</strong> Comprehensive how-to resources</li>
+            </ul>
+            
+            <h4>Digital Authority Signals</h4>
+            <ul>
+                <li><strong>Author Markup:</strong> Proper author attribution and expertise signals</li>
+                <li><strong>About Page Optimization:</strong> Comprehensive team and company credentials</li>
+                <li><strong>Credential Display:</strong> Certifications, awards, and recognition showcase</li>
+                <li><strong>Social Proof:</strong> Customer testimonials and industry endorsements</li>
+            </ul>
+            
+            <h4>Expected Outcomes</h4>
+            <ul>
+                <li><strong>Brand Recognition:</strong> 40% increase in brand awareness</li>
+                <li><strong>Search Authority:</strong> Improved E-A-T signals for better rankings</li>
+                <li><strong>Lead Quality:</strong> 25% improvement in lead quality scores</li>
+                <li><strong>Conversion Rate:</strong> 15% increase in authority-driven conversions</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Trust Signal Optimization Modal -->
+    <div id="trustSignal15kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('trustSignal15kModal')">&times;</span>
+            <h3>Trust Signal Optimization - £15K+ Revenue Impact</h3>
+            
+            <h4>Trust Signal Analysis</h4>
+            <p>Strategic optimization of trust signals to build user confidence, improve conversion rates, and enhance search engine trust metrics.</p>
+            
+            <h4>Trust Signal Audit</h4>
+            <table>
+                <tr><th>Trust Element</th><th>Current Implementation</th><th>Optimization Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Customer Reviews</td><td>3.8/5 average</td><td>4.5/5 average</td><td>£5,000</td></tr>
+                <tr><td>Security Certifications</td><td>Basic SSL</td><td>Full security suite</td><td>£4,000</td></tr>
+                <tr><td>Contact Information</td><td>Limited display</td><td>Comprehensive contact</td><td>£3,000</td></tr>
+                <tr><td>Privacy Compliance</td><td>Basic GDPR</td><td>Full compliance suite</td><td>£3,000</td></tr>
+            </table>
+            
+            <h4>Trust Building Strategy</h4>
+            <ul>
+                <li><strong>Review Management:</strong> Proactive review collection and response strategy</li>
+                <li><strong>Security Enhancement:</strong> Visible security badges and certifications</li>
+                <li><strong>Transparency Improvement:</strong> Clear policies and business information</li>
+                <li><strong>Social Proof:</strong> Customer logos, testimonials, and case studies</li>
+            </ul>
+            
+            <h4>Technical Trust Signals</h4>
+            <ul>
+                <li><strong>SSL Implementation:</strong> Full HTTPS with visible security indicators</li>
+                <li><strong>Privacy Policy:</strong> Comprehensive and easily accessible privacy policy</li>
+                <li><strong>Terms of Service:</strong> Clear and fair terms of service</li>
+                <li><strong>Contact Accessibility:</strong> Multiple contact methods and response guarantees</li>
+            </ul>
+            
+            <h4>Conversion Trust Elements</h4>
+            <ul>
+                <li><strong>Money-Back Guarantee:</strong> Clear refund and satisfaction policies</li>
+                <li><strong>Free Trial Offers:</strong> Risk-free trial periods</li>
+                <li><strong>Customer Support:</strong> Visible and accessible customer support</li>
+                <li><strong>Business Credentials:</strong> Company registration and business information</li>
+            </ul>
+            
+            <h4>Expected Results</h4>
+            <ul>
+                <li><strong>Conversion Rate:</strong> 20% improvement in conversion rates</li>
+                <li><strong>User Confidence:</strong> 35% increase in user trust metrics</li>
+                <li><strong>Cart Abandonment:</strong> 25% reduction in cart abandonment</li>
+                <li><strong>Customer Retention:</strong> 15% improvement in customer retention</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Entity Optimization Modal -->
+    <div id="entityOptimization12kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('entityOptimization12kModal')">&times;</span>
+            <h3>Entity Optimization - £12K+ Revenue Impact</h3>
+            
+            <h4>Entity SEO Strategy</h4>
+            <p>Strategic entity optimization to improve search engine understanding of IRIS Software Group as a business entity and enhance knowledge graph presence.</p>
+            
+            <h4>Entity Optimization Components</h4>
+            <table>
+                <tr><th>Entity Element</th><th>Current Status</th><th>Optimization Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Knowledge Graph Presence</td><td>Limited</td><td>Full knowledge panel</td><td>£4,000</td></tr>
+                <tr><td>Entity Relationships</td><td>Basic connections</td><td>Rich entity network</td><td>£3,000</td></tr>
+                <tr><td>Brand Entity Signals</td><td>Inconsistent</td><td>Unified brand entity</td><td>£3,000</td></tr>
+                <tr><td>Local Entity Optimization</td><td>Basic NAP</td><td>Complete local entity</td><td>£2,000</td></tr>
+            </table>
+            
+            <h4>Knowledge Graph Optimization</h4>
+            <ul>
+                <li><strong>Google My Business:</strong> Complete and optimized business profile</li>
+                <li><strong>Wikipedia Presence:</strong> Company Wikipedia page creation and maintenance</li>
+                <li><strong>Wikidata Entry:</strong> Structured data entity in Wikidata</li>
+                <li><strong>Industry Directories:</strong> Consistent listings across industry directories</li>
+            </ul>
+            
+            <h4>Entity Relationship Building</h4>
+            <ul>
+                <li><strong>Partner Entities:</strong> Clear relationships with technology partners</li>
+                <li><strong>Customer Entities:</strong> Connections to notable customer entities</li>
+                <li><strong>Industry Associations:</strong> Membership and participation in industry bodies</li>
+                <li><strong>Location Entities:</strong> Clear geographical entity relationships</li>
+            </ul>
+            
+            <h4>Structured Data Implementation</h4>
+            <ul>
+                <li><strong>Organization Schema:</strong> Comprehensive organization markup</li>
+                <li><strong>Product Schema:</strong> Detailed product and service markup</li>
+                <li><strong>Review Schema:</strong> Customer review and rating markup</li>
+                <li><strong>Event Schema:</strong> Company events and webinar markup</li>
+            </ul>
+            
+            <h4>Brand Entity Consistency</h4>
+            <ul>
+                <li><strong>NAP Consistency:</strong> Name, Address, Phone consistency across web</li>
+                <li><strong>Brand Mention Optimization:</strong> Consistent brand mentions and citations</li>
+                <li><strong>Logo and Visual Identity:</strong> Consistent visual entity signals</li>
+                <li><strong>Social Media Entities:</strong> Verified and optimized social profiles</li>
+            </ul>
+            
+            <h4>Expected Benefits</h4>
+            <ul>
+                <li><strong>Search Visibility:</strong> Enhanced presence in knowledge panels</li>
+                <li><strong>Brand Recognition:</strong> Improved brand entity recognition</li>
+                <li><strong>Local Search:</strong> Better local search performance</li>
+                <li><strong>Voice Search:</strong> Improved voice search results</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Semantic Markup Modal -->
+    <div id="semanticMarkup8kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('semanticMarkup8kModal')">&times;</span>
+            <h3>Semantic Markup - £8K+ Revenue Impact</h3>
+            
+            <h4>Semantic Markup Strategy</h4>
+            <p>Comprehensive implementation of semantic markup to improve search engine understanding, enhance SERP features, and increase click-through rates.</p>
+            
+            <h4>Markup Implementation Plan</h4>
+            <table>
+                <tr><th>Schema Type</th><th>Pages Affected</th><th>SERP Enhancement</th><th>Revenue Impact</th></tr>
+                <tr><td>Product Schema</td><td>25 product pages</td><td>Rich snippets</td><td>£3,000</td></tr>
+                <tr><td>Review Schema</td><td>15 review pages</td><td>Star ratings</td><td>£2,000</td></tr>
+                <tr><td>FAQ Schema</td><td>12 FAQ sections</td><td>FAQ rich results</td><td>£2,000</td></tr>
+                <tr><td>Article Schema</td><td>50+ blog posts</td><td>Article features</td><td>£1,000</td></tr>
+            </table>
+            
+            <h4>Schema Implementation Priority</h4>
+            <ul>
+                <li><strong>Organization Schema:</strong> Company information and contact details</li>
+                <li><strong>Product Schema:</strong> Software products and service offerings</li>
+                <li><strong>Review Schema:</strong> Customer reviews and testimonials</li>
+                <li><strong>FAQ Schema:</strong> Frequently asked questions markup</li>
+            </ul>
+            
+            <h4>Rich Snippet Opportunities</h4>
+            <ul>
+                <li><strong>Product Rich Snippets:</strong> Price, availability, and rating display</li>
+                <li><strong>Review Rich Snippets:</strong> Star ratings and review counts</li>
+                <li><strong>FAQ Rich Results:</strong> Expandable FAQ sections in SERPs</li>
+                <li><strong>Breadcrumb Markup:</strong> Enhanced navigation in search results</li>
+            </ul>
+            
+            <h4>Technical Implementation</h4>
+            <ul>
+                <li><strong>JSON-LD Format:</strong> Clean, maintainable structured data</li>
+                <li><strong>Schema Validation:</strong> Regular testing and validation</li>
+                <li><strong>Dynamic Schema:</strong> Automated schema generation for scalability</li>
+                <li><strong>Monitoring Setup:</strong> Track rich snippet performance</li>
+            </ul>
+            
+            <h4>SERP Enhancement Benefits</h4>
+            <ul>
+                <li><strong>Click-Through Rate:</strong> 25% improvement in organic CTR</li>
+                <li><strong>Search Visibility:</strong> Enhanced SERP real estate</li>
+                <li><strong>User Experience:</strong> More informative search results</li>
+                <li><strong>Competitive Advantage:</strong> Stand out from competitors</li>
+            </ul>
+            
+            <h4>Expected Outcomes</h4>
+            <ul>
+                <li><strong>Rich Snippet Coverage:</strong> 80% of key pages with rich snippets</li>
+                <li><strong>CTR Improvement:</strong> 20-30% increase in click-through rates</li>
+                <li><strong>SERP Features:</strong> Appearance in 15+ different SERP features</li>
+                <li><strong>Voice Search:</strong> Better voice search result eligibility</li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>
+

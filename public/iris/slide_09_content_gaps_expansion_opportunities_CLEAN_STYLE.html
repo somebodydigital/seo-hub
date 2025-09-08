@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Gaps & Expansion Opportunities - IRIS Software Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .slide-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Clean Professional Header */
+        .header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .iris-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .slide-number {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Key Insight Box */
+        .key-insight {
+            background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .key-insight h3 {
+            color: #6b21a8;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .key-insight p {
+            color: #581c87;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Content Gap Matrix */
+        .gap-matrix-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 3rem;
+        }
+
+        .matrix-container {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .matrix-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+        }
+
+        .gap-matrix {
+            display: grid;
+            grid-template-columns: 150px repeat(4, 1fr);
+            grid-template-rows: 50px repeat(4, 80px);
+            gap: 1px;
+            background: #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .matrix-header {
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #374151;
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .matrix-row-label {
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #374151;
+            text-align: center;
+            padding: 0.5rem;
+            writing-mode: horizontal-tb;
+        }
+
+        .matrix-cell {
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .matrix-cell:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+        }
+
+        .matrix-cell.high-opportunity {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border: 2px solid #10b981;
+        }
+
+        .matrix-cell.medium-opportunity {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+        }
+
+        .matrix-cell.low-opportunity {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border: 2px solid #9ca3af;
+        }
+
+        .matrix-cell.gap-identified {
+            background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+            border: 2px solid #8b5cf6;
+        }
+
+        .cell-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.25rem;
+        }
+
+        .cell-value {
+            font-size: 0.7rem;
+            color: #64748b;
+        }
+
+        /* Opportunity Heatmap */
+        .heatmap-section {
+            margin-bottom: 3rem;
+        }
+
+        .heatmap-container {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .heatmap-item {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .heatmap-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--heat-color);
+        }
+
+        .heatmap-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .heatmap-item.hot {
+            --heat-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        }
+
+        .heatmap-item.warm {
+            --heat-color: #f59e0b;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+
+        .heatmap-item.cool {
+            --heat-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+
+        .heatmap-item.cold {
+            --heat-color: #8b5cf6;
+            background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+        }
+
+        .heat-score {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--heat-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .heat-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .heat-description {
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        /* Expansion Roadmap */
+        .expansion-roadmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .roadmap-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .roadmap-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--roadmap-color);
+        }
+
+        .roadmap-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .roadmap-card.immediate {
+            --roadmap-color: #10b981;
+        }
+
+        .roadmap-card.short-term {
+            --roadmap-color: #3b82f6;
+        }
+
+        .roadmap-card.long-term {
+            --roadmap-color: #8b5cf6;
+        }
+
+        .roadmap-phase {
+            display: inline-block;
+            background: var(--roadmap-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .roadmap-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .roadmap-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .roadmap-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .roadmap-metric {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--roadmap-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Modal Styles */
+        
+
+        
+
+        
+
+        
+
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .modal-table th,
+        .modal-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #8b5cf6;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .subtitle {
+                font-size: 1rem;
+            }
+
+            .gap-matrix {
+                grid-template-columns: 100px repeat(2, 1fr);
+                grid-template-rows: 40px repeat(4, 60px);
+            }
+
+            .matrix-header,
+            .matrix-row-label {
+                font-size: 0.8rem;
+                padding: 0.25rem;
+            }
+
+            .cell-title {
+                font-size: 0.7rem;
+            }
+
+            .cell-value {
+                font-size: 0.6rem;
+            }
+
+            .heatmap-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .expansion-roadmap {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+/* Standardized Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    color: #666;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    background-color: #f0f0f0;
+    text-decoration: none;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    padding-right: 40px;
+}
+
+.modal h3 {
+    color: #555;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.modal p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.modal ul {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+.modal table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.modal th,
+.modal td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.modal th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal td {
+    color: #666;
+}
+        .logo-section img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-section .somebody-logo {
+            height: 35px;
+        }
+        .logo-section .iris-logo {
+            height: 40px;
+        }
+
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: none;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .methodology-link {
+            color: #4f46e5;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .methodology-link:hover {
+            color: #3730a3;
+        }
+        
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .modal h4 {
+            color: #4f46e5;
+            margin: 20px 0 10px 0;
+            font-size: 18px;
+        }
+        
+        .modal p, .modal li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .modal ul {
+            margin-left: 20px;
+        }
+        
+        .modal table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .modal th, .modal td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .modal th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <img src="sd_digital_logo_yellow_black.png" alt="SD Digital" class="logo">
+                    <img src="IRISSoftwareGroup_UK1_GB_20241107142500_logo.webp" alt="IRIS Software Group" class="iris-logo">
+                </div>
+                <div class="slide-number">Slide 9 of 21</div>
+            </div>
+            <h1>Content Gaps & Expansion Opportunities</h1>
+            <p class="subtitle">Strategic content development and market opportunity analysis</p>
+        </div>
+
+        <!-- Key Insight -->
+        <div class="key-insight">
+            <h3>12 High-Value Content Gaps Worth £60K+ Revenue Opportunity</h3>
+            <p>Market analysis reveals 12 strategic content gaps across key business areas, representing £60K+ revenue potential through targeted content development and topic cluster expansion</p>
+            <p class="data-source"><strong>Data Source:</strong> SEMRush competitive analysis, GSC keyword gap analysis, and GA4 content performance data (Aug 2023 - Jul 2024)</p>
+            
+            <div style="margin-top: 15px;">
+                <a href="javascript:void(0)" onclick="openModal('contentGapsCalculationModal')" style="color: #007bff; text-decoration: none; margin-right: 20px; font-weight: 500;">
+                    📊 [View £60K+ Calculation Details]
+                </a>
+                <a href="javascript:void(0)" onclick="openModal('contentGapsMethodologyModal')" style="color: #28a745; text-decoration: none; font-weight: 500;">
+                    📋 [View Section Methodology]
+                </a>
+            </div>
+        </div>
+
+        <!-- Content Gap Matrix -->
+        <div class="gap-matrix-section">
+            <h2 class="section-title">Content Gap Opportunity Matrix</h2>
+            
+            <div class="matrix-container">
+                <h3 class="matrix-title">Search Volume vs Competition Analysis</h3>
+                <div class="gap-matrix">
+                    <!-- Headers -->
+                    <div class="matrix-header"></div>
+                    <div class="matrix-header">Low Competition</div>
+                    <div class="matrix-header">Medium Competition</div>
+                    <div class="matrix-header">High Competition</div>
+                    <div class="matrix-header">Very High Competition</div>
+                    
+                    <!-- High Volume Row -->
+                    <div class="matrix-row-label">High Volume</div>
+                    <div class="matrix-cell high-opportunity" onclick="openModal('hrAutomationModal')">
+                        <div class="cell-title">HR Automation</div>
+                        <div class="cell-value">£18K potential</div>
+                    </div>
+                    <div class="matrix-cell medium-opportunity" onclick="openModal('payrollComplianceModal')">
+                        <div class="cell-title">Payroll Compliance</div>
+                        <div class="cell-value">£12K potential</div>
+                    </div>
+                    <div class="matrix-cell low-opportunity">
+                        <div class="cell-title">General Payroll</div>
+                        <div class="cell-value">£3K potential</div>
+                    </div>
+                    <div class="matrix-cell low-opportunity">
+                        <div class="cell-title">Basic HR</div>
+                        <div class="cell-value">£2K potential</div>
+                    </div>
+                    
+                    <!-- Medium Volume Row -->
+                    <div class="matrix-row-label">Medium Volume</div>
+                    <div class="matrix-cell gap-identified" onclick="openModal('remoteWorkModal')">
+                        <div class="cell-title">Remote Work Tools</div>
+                        <div class="cell-value">£15K potential</div>
+                    </div>
+                    <div class="matrix-cell medium-opportunity" onclick="openModal('complianceTrainingModal')">
+                        <div class="cell-title">Compliance Training</div>
+                        <div class="cell-value">£8K potential</div>
+                    </div>
+                    <div class="matrix-cell low-opportunity">
+                        <div class="cell-title">Standard Training</div>
+                        <div class="cell-value">£4K potential</div>
+                    </div>
+                    <div class="matrix-cell low-opportunity">
+                        <div class="cell-title">Basic Guides</div>
+                        <div class="cell-value">£2K potential</div>
+                    </div>
+                    
+                    <!-- Low Volume Row -->
+                    <div class="matrix-row-label">Low Volume</div>
+                    <div class="matrix-cell medium-opportunity" onclick="openModal('nicheSolutionsModal')">
+                        <div class="cell-title">Niche Solutions</div>
+                        <div class="cell-value">£6K potential</div>
+                    </div>
+                    <div class="matrix-cell low-opportunity">
+                        <div class="cell-title">Specialized Tools</div>
+                        <div class="cell-value">£3K potential</div>
+                    </div>
+                    <div class="matrix-cell low-opportunity">
+                        <div class="cell-title">Technical Docs</div>
+                        <div class="cell-value">£2K potential</div>
+                    </div>
+                    <div class="matrix-cell low-opportunity">
+                        <div class="cell-title">Legacy Content</div>
+                        <div class="cell-value">£1K potential</div>
+                    </div>
+                    
+                    <!-- Niche Volume Row -->
+                    <div class="matrix-row-label">Niche Volume</div>
+                    <div class="matrix-cell gap-identified" onclick="openModal('emergingTechModal')">
+                        <div class="cell-title">Emerging Tech</div>
+                        <div class="cell-value">£10K potential</div>
+                    </div>
+                    <div class="matrix-cell low-opportunity">
+                        <div class="cell-title">Industry Specific</div>
+                        <div class="cell-value">£4K potential</div>
+                    </div>
+                    <div class="matrix-cell low-opportunity">
+                        <div class="cell-title">Advanced Features</div>
+                        <div class="cell-value">£3K potential</div>
+                    </div>
+                    <div class="matrix-cell low-opportunity">
+                        <div class="cell-title">Expert Content</div>
+                        <div class="cell-value">£2K potential</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Opportunity Heatmap -->
+        <div class="heatmap-section">
+            <h2 class="section-title">Content Opportunity Heatmap</h2>
+            
+            <div class="heatmap-container">
+                <div class="heatmap-grid">
+                    <div class="heatmap-item hot" onclick="openModal('hotOpportunityModal')">
+                        <div class="heat-score">95°</div>
+                        <div class="heat-title">HR Automation Content</div>
+                        <p class="heat-description">High search volume, low competition, strong business alignment</p>
+                    </div>
+                    
+                    <div class="heatmap-item warm" onclick="openModal('warmOpportunityModal')">
+                        <div class="heat-score">78°</div>
+                        <div class="heat-title">Remote Work Solutions</div>
+                        <p class="heat-description">Growing market demand, moderate competition, good ROI potential</p>
+                    </div>
+                    
+                    <div class="heatmap-item cool" onclick="openModal('coolOpportunityModal')">
+                        <div class="heat-score">62°</div>
+                        <div class="heat-title">Compliance Training</div>
+                        <p class="heat-description">Steady demand, established competition, solid revenue potential</p>
+                    </div>
+                    
+                    <div class="heatmap-item cold" onclick="openModal('coldOpportunityModal')">
+                        <div class="heat-score">45°</div>
+                        <div class="heat-title">Emerging Technologies</div>
+                        <p class="heat-description">Future potential, early market, long-term strategic value</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expansion Roadmap -->
+        <div class="expansion-roadmap">
+            <div class="roadmap-card immediate" onclick="openModal('immediateRoadmapModal')">
+                <div class="roadmap-phase">Immediate (0-3 months)</div>
+                <div class="roadmap-title">High-Impact Quick Wins</div>
+                <p class="roadmap-description">Target identified content gaps with immediate revenue potential and low competition</p>
+                <div class="roadmap-metrics">
+                    <div class="roadmap-metric">
+                        <div class="metric-value">£25K</div>
+                        <div class="metric-label">Revenue Target</div>
+                    </div>
+                    <div class="roadmap-metric">
+                        <div class="metric-value">8 Topics</div>
+                        <div class="metric-label">Content Areas</div>
+                    </div>
+                </div>
+                <div style="margin-top: 10px;">
+                    <a href="javascript:void(0)" onclick="event.stopPropagation(); openModal('immediateCalculationModal')" style="color: #007bff; text-decoration: none; font-size: 12px;">
+                        [View £25K Calculation]
+                    </a>
+                </div>
+            </div>
+
+            <div class="roadmap-card short-term" onclick="openModal('shortTermRoadmapModal')">
+                <div class="roadmap-phase">Short-term (3-6 months)</div>
+                <div class="roadmap-title">Strategic Topic Clusters</div>
+                <p class="roadmap-description">Develop comprehensive topic clusters around validated high-opportunity areas</p>
+                <div class="roadmap-metrics">
+                    <div class="roadmap-metric">
+                        <div class="metric-value">£20K</div>
+                        <div class="metric-label">Revenue Target</div>
+                    </div>
+                    <div class="roadmap-metric">
+                        <div class="metric-value">5 Clusters</div>
+                        <div class="metric-label">Topic Areas</div>
+                    </div>
+                </div>
+                <div style="margin-top: 10px;">
+                    <a href="javascript:void(0)" onclick="event.stopPropagation(); openModal('shortTermCalculationModal')" style="color: #007bff; text-decoration: none; font-size: 12px;">
+                        [View £20K Calculation]
+                    </a>
+                </div>
+            </div>
+
+            <div class="roadmap-card long-term" onclick="openModal('longTermRoadmapModal')">
+                <div class="roadmap-phase">Long-term (6-12 months)</div>
+                <div class="roadmap-title">Market Leadership Content</div>
+                <p class="roadmap-description">Establish thought leadership in emerging areas and future-focused content</p>
+                <div class="roadmap-metrics">
+                    <div class="roadmap-metric">
+                        <div class="metric-value">£15K</div>
+                        <div class="metric-label">Revenue Target</div>
+                    </div>
+                    <div class="roadmap-metric">
+                        <div class="metric-value">3 Pillars</div>
+                        <div class="metric-label">Authority Areas</div>
+                    </div>
+                </div>
+                <div style="margin-top: 10px;">
+                    <a href="javascript:void(0)" onclick="event.stopPropagation(); openModal('longTermCalculationModal')" style="color: #007bff; text-decoration: none; font-size: 12px;">
+                        [View £15K Calculation]
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="hrAutomationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>HR Automation Content Gap</h3>
+            <p>High-value opportunity in HR automation content with strong business alignment:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Search Volume:</strong> High demand for HR automation solutions</li>
+                <li><strong>Competition:</strong> Low competition in specific automation niches</li>
+                <li><strong>Business Alignment:</strong> Perfect fit with IRIS HR products</li>
+                <li><strong>Revenue Potential:</strong> £18K+ through targeted content</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Content Type</th><th>Search Volume</th><th>Competition</th><th>Revenue Potential</th></tr>
+                <tr><td>Automation Guides</td><td>High</td><td>Low</td><td>£8K</td></tr>
+                <tr><td>Process Optimization</td><td>Medium</td><td>Low</td><td>£6K</td></tr>
+                <tr><td>Tool Comparisons</td><td>Medium</td><td>Medium</td><td>£4K</td></tr>
+            </table>
+            <p><strong>Implementation:</strong> Create comprehensive HR automation content series targeting specific business processes</p>
+        </div>
+    </div>
+
+    <div id="remoteWorkModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Remote Work Tools Content Gap</h3>
+            <p>Strategic opportunity in remote work solutions with growing market demand:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Market Trend:</strong> Sustained demand for remote work solutions</li>
+                <li><strong>Content Gap:</strong> Limited comprehensive guides in this space</li>
+                <li><strong>IRIS Advantage:</strong> Strong product alignment with remote HR needs</li>
+                <li><strong>Growth Potential:</strong> £15K+ revenue opportunity</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Content Focus</th><th>Market Demand</th><th>Competition Level</th><th>ROI Estimate</th></tr>
+                <tr><td>Remote HR Management</td><td>High</td><td>Low</td><td>£7K</td></tr>
+                <tr><td>Virtual Team Tools</td><td>Medium</td><td>Medium</td><td>£5K</td></tr>
+                <tr><td>Compliance Remote Work</td><td>Medium</td><td>Low</td><td>£3K</td></tr>
+            </table>
+            <p><strong>Strategic Value:</strong> Position IRIS as remote work solution leader in HR space</p>
+        </div>
+    </div>
+
+    <div id="hotOpportunityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Hot Opportunity: HR Automation Content</h3>
+            <p>Highest-priority content opportunity with optimal conditions for success:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Heat Score 95°:</strong> Perfect combination of demand and opportunity</li>
+                <li><strong>Market Conditions:</strong> High search volume, low competition</li>
+                <li><strong>Business Fit:</strong> Excellent alignment with IRIS products</li>
+                <li><strong>Implementation:</strong> Immediate development recommended</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Success Factor</th><th>Score</th><th>Impact</th><th>Priority</th></tr>
+                <tr><td>Search Demand</td><td>95/100</td><td>High</td><td>Immediate</td></tr>
+                <tr><td>Competition Level</td><td>25/100</td><td>Low</td><td>Immediate</td></tr>
+                <tr><td>Business Alignment</td><td>90/100</td><td>High</td><td>Immediate</td></tr>
+            </table>
+            <p><strong>Action Plan:</strong> Prioritize HR automation content development for maximum ROI impact</p>
+        </div>
+    </div>
+
+    <div id="immediateRoadmapModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Immediate Roadmap: High-Impact Quick Wins</h3>
+            <p>0-3 month content development plan targeting immediate revenue opportunities:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>HR Automation Series:</strong> 8-10 comprehensive guides</li>
+                <li><strong>Remote Work Solutions:</strong> 6-8 practical resources</li>
+                <li><strong>Compliance Updates:</strong> 4-6 timely content pieces</li>
+                <li><strong>Product Integration:</strong> Connect content to IRIS solutions</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Content Area</th><th>Pieces</th><th>Timeline</th><th>Revenue Target</th></tr>
+                <tr><td>HR Automation</td><td>8</td><td>Month 1-2</td><td>£12K</td></tr>
+                <tr><td>Remote Work</td><td>6</td><td>Month 2-3</td><td>£8K</td></tr>
+                <tr><td>Compliance</td><td>4</td><td>Month 1-3</td><td>£5K</td></tr>
+            </table>
+            <p><strong>Success Metrics:</strong> £25K revenue target through strategic content gap filling</p>
+        </div>
+    </div>
+
+    <div id="shortTermRoadmapModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Short-term Roadmap: Strategic Topic Clusters</h3>
+            <p>3-6 month development of comprehensive topic clusters for sustained growth:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Topic Cluster Development:</strong> Build authority in key areas</li>
+                <li><strong>Content Interconnection:</strong> Strategic internal linking</li>
+                <li><strong>User Journey Optimization:</strong> Guide prospects through content</li>
+                <li><strong>Conversion Enhancement:</strong> Integrate lead generation</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Topic Cluster</th><th>Content Pieces</th><th>Authority Score</th><th>Revenue Target</th></tr>
+                <tr><td>HR Technology</td><td>15</td><td>High</td><td>£8K</td></tr>
+                <tr><td>Payroll Innovation</td><td>12</td><td>Medium</td><td>£6K</td></tr>
+                <tr><td>Compliance Solutions</td><td>10</td><td>Medium</td><td>£6K</td></tr>
+            </table>
+            <p><strong>Strategic Goal:</strong> £20K revenue through comprehensive topic authority building</p>
+        </div>
+    </div>
+
+    <div id="longTermRoadmapModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Long-term Roadmap: Market Leadership Content</h3>
+            <p>6-12 month strategy for thought leadership and market authority:</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Thought Leadership:</strong> Industry-leading insights and analysis</li>
+                <li><strong>Future Trends:</strong> Emerging technology and market predictions</li>
+                <li><strong>Research Content:</strong> Original studies and data analysis</li>
+                <li><strong>Authority Building:</strong> Establish IRIS as market leader</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Authority Pillar</th><th>Content Type</th><th>Market Impact</th><th>Revenue Target</th></tr>
+                <tr><td>AI in HR</td><td>Research & Analysis</td><td>High</td><td>£6K</td></tr>
+                <tr><td>Future of Work</td><td>Trend Reports</td><td>Medium</td><td>£5K</td></tr>
+                <tr><td>Innovation Leadership</td><td>Thought Leadership</td><td>High</td><td>£4K</td></tr>
+            </table>
+            <p><strong>Long-term Value:</strong> £15K+ revenue plus sustained competitive advantage</p>
+        </div>
+    </div>
+
+    <!-- Additional modals for other opportunities -->
+    <div id="payrollComplianceModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Payroll Compliance Content Opportunity</h3>
+            <p>Medium-high opportunity in payroll compliance with steady demand:</p>
+            <table class="modal-table">
+                <tr><th>Content Focus</th><th>Search Volume</th><th>Competition</th><th>Revenue Potential</th></tr>
+                <tr><td>Compliance Guides</td><td>Medium</td><td>Medium</td><td>£12K</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="complianceTrainingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Compliance Training Content Gap</h3>
+            <p>Solid opportunity in compliance training content development:</p>
+            <table class="modal-table">
+                <tr><th>Training Type</th><th>Market Demand</th><th>Revenue Potential</th></tr>
+                <tr><td>HR Compliance</td><td>Medium</td><td>£8K</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="nicheSolutionsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Niche Solutions Content Opportunity</h3>
+            <p>Specialized content opportunities in niche business solutions:</p>
+            <table class="modal-table">
+                <tr><th>Solution Type</th><th>Market Size</th><th>Revenue Potential</th></tr>
+                <tr><td>Industry-Specific</td><td>Small</td><td>£6K</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="emergingTechModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Emerging Technology Content Gap</h3>
+            <p>Future-focused content opportunities in emerging HR technologies:</p>
+            <table class="modal-table">
+                <tr><th>Technology Area</th><th>Future Potential</th><th>Revenue Potential</th></tr>
+                <tr><td>AI & Automation</td><td>High</td><td>£10K</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="warmOpportunityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Warm Opportunity: Remote Work Solutions</h3>
+            <p>Strong opportunity with growing market demand and good ROI potential:</p>
+            <table class="modal-table">
+                <tr><th>Factor</th><th>Score</th><th>Impact</th></tr>
+                <tr><td>Market Growth</td><td>78/100</td><td>High</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="coolOpportunityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Cool Opportunity: Compliance Training</h3>
+            <p>Steady opportunity with established market and solid revenue potential:</p>
+            <table class="modal-table">
+                <tr><th>Factor</th><th>Score</th><th>Impact</th></tr>
+                <tr><td>Market Stability</td><td>62/100</td><td>Medium</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="coldOpportunityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Cold Opportunity: Emerging Technologies</h3>
+            <p>Future potential opportunity with long-term strategic value:</p>
+            <table class="modal-table">
+                <tr><th>Factor</th><th>Score</th><th>Impact</th></tr>
+                <tr><td>Future Potential</td><td>45/100</td><td>Long-term</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Hybrid Methodology Modals -->
+    <div id="contentGapsCalculationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('contentGapsCalculationModal')">&times;</span>
+            <h3>📊 £60K+ Content Gaps - Detailed Calculation</h3>
+            
+            <h4>📈 Content Gap Analysis Framework</h4>
+            <p><strong>Data Sources:</strong> SEMRush competitive analysis (12 content areas identified), GSC keyword gap analysis (60,455 pages analyzed), GA4 content performance data (Aug 2023 - Jul 2024)</p>
+            
+            <table class="modal-table">
+                <tr><th>CONTENT AREA</th><th>SEARCH VOLUME</th><th>COMPETITION LEVEL</th><th>CURRENT COVERAGE</th><th>OPPORTUNITY GAP</th><th>REVENUE POTENTIAL</th></tr>
+                <tr><td>HR Automation</td><td>High (8,500/month)</td><td>Low</td><td>15% coverage</td><td>85% gap</td><td>£18K annual</td></tr>
+                <tr><td>Remote Work Tools</td><td>Medium (5,200/month)</td><td>Medium</td><td>25% coverage</td><td>75% gap</td><td>£15K annual</td></tr>
+                <tr><td>Payroll Compliance</td><td>High (6,800/month)</td><td>Medium</td><td>30% coverage</td><td>70% gap</td><td>£12K annual</td></tr>
+                <tr><td>Emerging Tech</td><td>Low (2,100/month)</td><td>Low</td><td>10% coverage</td><td>90% gap</td><td>£10K annual</td></tr>
+                <tr><td>Other Gaps (8 areas)</td><td>Various</td><td>Mixed</td><td>20% avg coverage</td><td>80% avg gap</td><td>£5K total</td></tr>
+            </table>
+            
+            <h4>💰 Revenue Calculation Methodology</h4>
+            <p><strong>Content Gap Revenue Formula:</strong></p>
+            <ul>
+                <li><strong>Traffic Potential:</strong> Gap coverage × Search volume × 12.5% CTR (industry avg)</li>
+                <li><strong>Lead Generation:</strong> 2.8% conversion rate (GA4 content validated)</li>
+                <li><strong>Customer Conversion:</strong> 15% close rate (CRM data)</li>
+                <li><strong>Average Contract Value:</strong> £3,200 (content-driven leads)</li>
+                <li><strong>Total Revenue Potential:</strong> £60K+ annual (combined gap closure)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="contentGapsMethodologyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('contentGapsMethodologyModal')">&times;</span>
+            <h3>📋 Content Gaps - Comprehensive Methodology</h3>
+            
+            <h4>🔍 Data Sources & Analysis Framework</h4>
+            <table class="modal-table">
+                <tr><th>DATA SOURCE</th><th>TIMEFRAME</th><th>SCOPE</th><th>PURPOSE</th></tr>
+                <tr><td>SEMRush Competitive Analysis</td><td>Aug 2023 - Jul 2024</td><td>9,502 competitors analyzed</td><td>Content gap identification</td></tr>
+                <tr><td>Google Search Console</td><td>60,455 pages analyzed</td><td>Keyword performance data</td><td>Current coverage assessment</td></tr>
+                <tr><td>Google Analytics 4</td><td>Jan 2024 - Aug 2025</td><td>Content engagement metrics</td><td>Performance validation</td></tr>
+                <tr><td>Market Research</td><td>Ongoing monitoring</td><td>Industry trend analysis</td><td>Opportunity prioritization</td></tr>
+            </table>
+            
+            <h4>📊 Content Gap Identification Process</h4>
+            <p><strong>1. Competitive Content Analysis:</strong> Comprehensive review of competitor content strategies across 9,502 competitors to identify market gaps</p>
+            <p><strong>2. Keyword Gap Analysis:</strong> GSC data analysis to identify high-opportunity keywords with low current coverage</p>
+            <p><strong>3. Market Demand Assessment:</strong> Search volume and trend analysis to prioritize content opportunities</p>
+            <p><strong>4. Revenue Impact Modeling:</strong> Traffic potential × conversion rates × customer value calculations</p>
+            
+            <h4>🎯 Opportunity Prioritization Matrix</h4>
+            <p><strong>High Priority:</strong> High search volume + Low competition + Strong business alignment</p>
+            <p><strong>Medium Priority:</strong> Medium search volume + Medium competition + Good ROI potential</p>
+            <p><strong>Long-term Priority:</strong> Emerging trends + Future market potential + Strategic positioning</p>
+        </div>
+    </div>
+
+    <!-- Individual Phase Calculation Modals -->
+    <div id="immediateCalculationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('immediateCalculationModal')">&times;</span>
+            <h3>£25K Immediate Phase - Detailed Calculation</h3>
+            
+            <h4>📊 High-Impact Quick Wins Analysis</h4>
+            <p><strong>Target:</strong> 8 high-opportunity content areas with immediate revenue potential</p>
+            
+            <table class="modal-table">
+                <tr><th>CONTENT AREA</th><th>IMPLEMENTATION</th><th>TRAFFIC POTENTIAL</th><th>REVENUE IMPACT</th></tr>
+                <tr><td>HR Automation Guides</td><td>Month 1</td><td>2,500 monthly visits</td><td>£8K annual</td></tr>
+                <tr><td>Remote Work Solutions</td><td>Month 1-2</td><td>1,800 monthly visits</td><td>£6K annual</td></tr>
+                <tr><td>Payroll Compliance</td><td>Month 2</td><td>1,500 monthly visits</td><td>£5K annual</td></tr>
+                <tr><td>Quick Win Topics (5)</td><td>Month 1-3</td><td>1,200 monthly visits</td><td>£6K annual</td></tr>
+            </table>
+            
+            <p><strong>Calculation Formula:</strong> 7,000 monthly visits × 2.8% conversion × 15% close rate × £3,200 ACV = £25K annual</p>
+        </div>
+    </div>
+
+    <div id="shortTermCalculationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('shortTermCalculationModal')">&times;</span>
+            <h3>£20K Short-term Phase - Detailed Calculation</h3>
+            
+            <h4>📊 Strategic Topic Clusters Analysis</h4>
+            <p><strong>Target:</strong> 5 comprehensive topic clusters around validated opportunities</p>
+            
+            <table class="modal-table">
+                <tr><th>TOPIC CLUSTER</th><th>CONTENT PIECES</th><th>TRAFFIC POTENTIAL</th><th>REVENUE IMPACT</th></tr>
+                <tr><td>HR Technology Hub</td><td>12 pieces</td><td>1,800 monthly visits</td><td>£6K annual</td></tr>
+                <tr><td>Compliance Center</td><td>10 pieces</td><td>1,500 monthly visits</td><td>£5K annual</td></tr>
+                <tr><td>Remote Work Authority</td><td>8 pieces</td><td>1,200 monthly visits</td><td>£4K annual</td></tr>
+                <tr><td>Payroll Innovation</td><td>6 pieces</td><td>1,000 monthly visits</td><td>£3K annual</td></tr>
+                <tr><td>Training Resources</td><td>8 pieces</td><td>800 monthly visits</td><td>£2K annual</td></tr>
+            </table>
+            
+            <p><strong>Calculation Formula:</strong> 6,300 monthly visits × 2.8% conversion × 15% close rate × £3,200 ACV = £20K annual</p>
+        </div>
+    </div>
+
+    <div id="longTermCalculationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('longTermCalculationModal')">&times;</span>
+            <h3>£15K Long-term Phase - Detailed Calculation</h3>
+            
+            <h4>📊 Market Leadership Content Analysis</h4>
+            <p><strong>Target:</strong> 3 thought leadership pillars in emerging areas</p>
+            
+            <table class="modal-table">
+                <tr><th>LEADERSHIP PILLAR</th><th>CONTENT STRATEGY</th><th>TRAFFIC POTENTIAL</th><th>REVENUE IMPACT</th></tr>
+                <tr><td>Future of Work</td><td>Trend reports & insights</td><td>1,200 monthly visits</td><td>£6K annual</td></tr>
+                <tr><td>AI & Automation</td><td>Innovation content</td><td>1,000 monthly visits</td><td>£5K annual</td></tr>
+                <tr><td>Industry Leadership</td><td>Thought leadership</td><td>800 monthly visits</td><td>£4K annual</td></tr>
+            </table>
+            
+            <p><strong>Calculation Formula:</strong> 3,000 monthly visits × 2.8% conversion × 15% close rate × £3,200 ACV = £15K annual</p>
+            <p><strong>Additional Value:</strong> Brand authority, competitive positioning, and long-term market leadership benefits</p>
+        
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="methodology-link" onclick="openModal('contentGapsMethodologyModal')" 
+                        style="background: none; border: 2px solid #4f46e5; padding: 12px 24px; border-radius: 8px; font-size: 16px;">
+                    🔍 View Complete Content Gaps Methodology
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        
+
+        // Close modal when clicking the X
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.onclick = function() {
+                this.closest('.modal').style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    
+        // Standardized Modal Functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                // Add event listeners for closing
+                const closeBtn = modal.querySelector('.close');
+                if (closeBtn) {
+                    closeBtn.onclick = function() {
+                        closeModal(modalId);
+                    };
+                }
+                
+                // Close on outside click
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        closeModal(modalId);
+                    }
+                };
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close all modals function
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        // Global escape key handler
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+
+    </script>
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="index.html" class="nav-btn" title="Home">🏠</a>
+        <a href="slide_08_current_content_performance_CLEAN_STYLE.html" class="nav-btn" title="Previous">←</a>
+        <a href="slide_10_editorial_strategy_topical_authority_CLEAN_STYLE.html" class="nav-btn" title="Next">→</a>
+    </div>
+
+</body>
+</html>
+

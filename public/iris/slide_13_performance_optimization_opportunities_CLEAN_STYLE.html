@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Optimization Opportunities - IRIS Software Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .slide-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Clean Professional Header */
+        .header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .iris-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .slide-number {
+            background: rgba(8, 145, 178, 0.1);
+            color: #0891b2;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Key Insight Box */
+        .key-insight {
+            background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+            border: 1px solid rgba(8, 145, 178, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid #0891b2;
+        }
+
+        .key-insight h3 {
+            color: #0e7490;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .key-insight p {
+            color: #155e75;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Performance Dashboard */
+        .performance-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .performance-metrics {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .performance-chart {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: rgba(8, 145, 178, 0.05);
+            border: 1px solid rgba(8, 145, 178, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.15);
+        }
+
+        .metric-card.needs-improvement {
+            border-color: rgba(245, 158, 11, 0.3);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .metric-card.good {
+            border-color: rgba(8, 145, 178, 0.3);
+            background: rgba(8, 145, 178, 0.05);
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .metric-value.needs-improvement {
+            color: #f59e0b;
+        }
+
+        .metric-value.good {
+            color: #0891b2;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-description {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+
+        /* Optimization Timeline */
+        .optimization-timeline {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-container {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-subtitle {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #0891b2, #0284c7);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--timeline-color);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .timeline-item:nth-child(1) .timeline-content {
+            --timeline-color: #f59e0b;
+        }
+
+        .timeline-item:nth-child(2) .timeline-content {
+            --timeline-color: #0891b2;
+        }
+
+        .timeline-item:nth-child(3) .timeline-content {
+            --timeline-color: #0284c7;
+        }
+
+        .timeline-item:nth-child(4) .timeline-content {
+            --timeline-color: #0369a1;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -8px;
+            top: 20px;
+            width: 16px;
+            height: 16px;
+            background: var(--timeline-color);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            margin-left: -8px; /* Adjust to prevent overlap */
+        }
+
+        .timeline-phase {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--timeline-color);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title-item {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .timeline-metric {
+            text-align: center;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 6px;
+        }
+
+        .timeline-metric-value {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--timeline-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-metric-label {
+            font-size: 0.7rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Impact Matrix */
+        .impact-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .impact-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .impact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--impact-color);
+        }
+
+        .impact-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .impact-card.high-impact {
+            --impact-color: #f59e0b;
+        }
+
+        .impact-card.medium-impact {
+            --impact-color: #0891b2;
+        }
+
+        .impact-card.low-impact {
+            --impact-color: #0284c7;
+        }
+
+        .impact-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--impact-color);
+            color: white;
+        }
+
+        .impact-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .impact-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .impact-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .impact-metric {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+        }
+
+        .impact-metric-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--impact-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .impact-metric-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Modal Styles */
+        
+
+        
+
+        
+
+        
+
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .modal-table th,
+        .modal-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #0891b2;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .subtitle {
+                font-size: 1rem;
+            }
+
+            .performance-dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+            }
+
+            .timeline-content {
+                width: 90% !important;
+                margin: 0 auto;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-marker {
+                left: 20px;
+            }
+
+            .impact-matrix {
+                grid-template-columns: 1fr;
+            }
+
+            .impact-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+/* Standardized Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close {
+    color: #666;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    background-color: #f0f0f0;
+    text-decoration: none;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    padding-right: 40px;
+}
+
+.modal h3 {
+    color: #555;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.modal p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.modal ul {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+.modal table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.modal th,
+.modal td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.modal th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal td {
+    color: #666;
+}
+        .logo-section img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-section .somebody-logo {
+            height: 35px;
+        }
+        .logo-section .iris-logo {
+            height: 40px;
+        }
+
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: none;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .methodology-link {
+            color: #4f46e5;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .methodology-link:hover {
+            color: #3730a3;
+        }
+        
+        .modal h3 {
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .modal h4 {
+            color: #4f46e5;
+            margin: 20px 0 10px 0;
+            font-size: 18px;
+        }
+        
+        .modal p, .modal li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .modal ul {
+            margin-left: 20px;
+        }
+        
+        .modal table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .modal th, .modal td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .modal th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="logo-section">
+                    <img src="sd_digital_logo_yellow_black.png" alt="SD Digital" class="logo">
+                    <img src="IRISSoftwareGroup_UK1_GB_20241107142500_logo.webp" alt="IRIS Software Group" class="iris-logo">
+                </div>
+                <div class="slide-number">Slide 13 of 21</div>
+            </div>
+            <h1>Performance Optimization Opportunities</h1>
+            <p class="subtitle">Speed, UX, and technical performance enhancement with £95K+ revenue potential</p>
+        </div>
+
+        <!-- Key Insight -->
+        <div class="key-insight">
+            <h3>4-Phase Performance Optimization Strategy Worth £95K+ Revenue Impact</h3>
+            <p>Comprehensive performance enhancement roadmap targeting Core Web Vitals, page speed, and user experience optimization. Strategic 120-day implementation plan with measurable revenue impact across mobile and desktop performance metrics</p>
+            <p class="data-source"><strong>Data Source:</strong> Core Web Vitals assessment (Reports/pagespeed_all.csv), GA4 page performance metrics, and technical performance audit (Aug 2024)</p>
+        </div>
+
+        <!-- Performance Dashboard -->
+        <div class="performance-dashboard">
+            <div class="performance-metrics">
+                <h2 class="dashboard-title">Current Performance Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card needs-improvement" onclick="openModal('lcpModal')">
+                        <div class="metric-value needs-improvement">3.2s</div>
+                        <div class="metric-label">Largest Contentful Paint</div>
+                        <p class="metric-description">Needs improvement</p>
+                    </div>
+                    <div class="metric-card needs-improvement" onclick="openModal('clsModal')">
+                        <div class="metric-value needs-improvement">0.18</div>
+                        <div class="metric-label">Cumulative Layout Shift</div>
+                        <p class="metric-description">Needs improvement</p>
+                    </div>
+                    <div class="metric-card good" onclick="openModal('fidModal')">
+                        <div class="metric-value good">85ms</div>
+                        <div class="metric-label">First Input Delay</div>
+                        <p class="metric-description">Good performance</p>
+                    </div>
+                    <div class="metric-card needs-improvement" onclick="openModal('speedModal')">
+                        <div class="metric-value needs-improvement">4.8s</div>
+                        <div class="metric-label">Page Load Speed</div>
+                        <p class="metric-description">Optimization needed</p>
+                    </div>
+                </div>
+                <p style="text-align: center; color: #64748b; font-size: 0.9rem; margin-top: 1rem;">Performance optimization targeting 90+ scores across all metrics</p>
+            </div>
+
+            <div class="performance-chart">
+                <h2 class="dashboard-title">Performance Impact Analysis</h2>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+                <p style="text-align: center; color: #64748b; font-size: 0.9rem;">Revenue impact correlation with performance improvements</p>
+            </div>
+        </div>
+
+        <!-- Optimization Timeline -->
+        <div class="optimization-timeline">
+            <h2 class="section-title">4-Phase Performance Optimization Roadmap</h2>
+            
+            <div class="timeline-container">
+                <div class="timeline-header">
+                    <h3 class="timeline-title">120-Day Strategic Implementation Plan</h3>
+                    <p class="timeline-subtitle">Systematic performance enhancement with measurable revenue impact</p>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content" onclick="openModal('phase1Modal')">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-phase">Phase 1 - Days 1-30</div>
+                            <div class="timeline-title-item">Image Optimization & Compression</div>
+                            <p class="timeline-description">Optimize 5,200+ images, implement WebP format, and reduce file sizes by 60-80%</p>
+                            <div class="timeline-metrics">
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value"><span class="methodology-link" onclick="openModal('userExperience20kModal')">£35K</span></div>
+                                    <div class="timeline-metric-label">Revenue</div>
+                                </div>
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value">-2.1s</div>
+                                    <div class="timeline-metric-label">LCP Improvement</div>
+                                </div>
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value">30 days</div>
+                                    <div class="timeline-metric-label">Timeline</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content" onclick="openModal('phase2Modal')">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-phase">Phase 2 - Days 31-60</div>
+                            <div class="timeline-title-item">JavaScript & CSS Optimization</div>
+                            <p class="timeline-description">Remove unused JavaScript, minify CSS, and implement code splitting for faster loading</p>
+                            <div class="timeline-metrics">
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value">£25K</div>
+                                    <div class="timeline-metric-label">Revenue</div>
+                                </div>
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value">-65ms</div>
+                                    <div class="timeline-metric-label">FID Improvement</div>
+                                </div>
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value">30 days</div>
+                                    <div class="timeline-metric-label">Timeline</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content" onclick="openModal('phase3Modal')">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-phase">Phase 3 - Days 61-90</div>
+                            <div class="timeline-title-item">Layout Stability Enhancement</div>
+                            <p class="timeline-description">Fix image dimensions, optimize font loading, and eliminate layout shifts</p>
+                            <div class="timeline-metrics">
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value">£20K</div>
+                                    <div class="timeline-metric-label">Revenue</div>
+                                </div>
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value">-0.15</div>
+                                    <div class="timeline-metric-label">CLS Improvement</div>
+                                </div>
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value">30 days</div>
+                                    <div class="timeline-metric-label">Timeline</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content" onclick="openModal('phase4Modal')">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-phase">Phase 4 - Days 91-120</div>
+                            <div class="timeline-title-item">Advanced Caching & CDN</div>
+                            <p class="timeline-description">Implement advanced caching strategies and CDN optimization for global performance</p>
+                            <div class="timeline-metrics">
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value">£15K</div>
+                                    <div class="timeline-metric-label">Revenue</div>
+                                </div>
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value">-1.2s</div>
+                                    <div class="timeline-metric-label">Load Time</div>
+                                </div>
+                                <div class="timeline-metric">
+                                    <div class="timeline-metric-value">30 days</div>
+                                    <div class="timeline-metric-label">Timeline</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Impact Matrix -->
+        <div class="impact-matrix">
+            <div class="impact-card high-impact" onclick="openModal('mobileOptimizationModal')">
+                <div class="impact-icon">📱</div>
+                <div class="impact-title">Mobile Performance Priority</div>
+                <p class="impact-description">Mobile-first optimization targeting 65% of traffic with significant performance gaps</p>
+                <div class="impact-metrics">
+                    <div class="impact-metric">
+                        <div class="impact-metric-value"><span class="methodology-link" onclick="openModal('mobilePerformance45kModal')">£45K</span></div>
+                        <div class="impact-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="impact-metric">
+                        <div class="impact-metric-value">65%</div>
+                        <div class="impact-metric-label">Traffic Share</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="impact-card medium-impact" onclick="openModal('desktopOptimizationModal')">
+                <div class="impact-icon">💻</div>
+                <div class="impact-title">Desktop Performance Enhancement</div>
+                <p class="impact-description">Desktop optimization for business users and high-value conversion paths</p>
+                <div class="impact-metrics">
+                    <div class="impact-metric">
+                        <div class="impact-metric-value"><span class="methodology-link" onclick="openModal('desktopPerformance30kModal')">£30K</span></div>
+                        <div class="impact-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="impact-metric">
+                        <div class="impact-metric-value">35%</div>
+                        <div class="impact-metric-label">Traffic Share</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="impact-card low-impact" onclick="openModal('uxOptimizationModal')">
+                <div class="impact-icon">🎯</div>
+                <div class="impact-title">User Experience Optimization</div>
+                <p class="impact-description">UX enhancements targeting conversion rate optimization and user satisfaction</p>
+                <div class="impact-metrics">
+                    <div class="impact-metric">
+                        <div class="impact-metric-value"><span class="methodology-link" onclick="openModal('userExperience20kModal')">£20K</span></div>
+                        <div class="impact-metric-label">Revenue Impact</div>
+                    </div>
+                    <div class="impact-metric">
+                        <div class="impact-metric-value">+15%</div>
+                        <div class="impact-metric-label">Conversion Lift</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="lcpModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Largest Contentful Paint Optimization</h3>
+            <p>Current LCP: 3.2s (Needs Improvement) → Target: 1.5s (Good)</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Image Optimization:</strong> Reduce largest image load times</li>
+                <li><strong>Server Response:</strong> Improve TTFB for faster content delivery</li>
+                <li><strong>Resource Prioritization:</strong> Preload critical above-fold content</li>
+                <li><strong>Revenue Impact:</strong> £35K+ through improved user experience</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Optimization</th><th>Current</th><th>Target</th><th>Impact</th></tr>
+                <tr><td>Image Compression</td><td>Large files</td><td>WebP format</td><td>-1.8s</td></tr>
+                <tr><td>Server Response</td><td>850ms</td><td>400ms</td><td>-0.4s</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="clsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Cumulative Layout Shift Optimization</h3>
+            <p>Current CLS: 0.18 (Needs Improvement) → Target: 0.05 (Good)</p>
+            <ul style="margin: 1rem 0; padding-left: 2rem;">
+                <li><strong>Image Dimensions:</strong> Add width/height attributes to prevent shifts</li>
+                <li><strong>Font Loading:</strong> Optimize web font loading to prevent FOIT</li>
+                <li><strong>Dynamic Content:</strong> Reserve space for ads and dynamic elements</li>
+                <li><strong>Revenue Impact:</strong> £20K+ through improved user experience</li>
+            </ul>
+            <table class="modal-table">
+                <tr><th>Issue</th><th>Pages Affected</th><th>CLS Reduction</th><th>Priority</th></tr>
+                <tr><td>Missing Image Dimensions</td><td>1,837</td><td>-0.12</td><td>High</td></tr>
+                <tr><td>Font Loading</td><td>850</td><td>-0.03</td><td>Medium</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="fidModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>First Input Delay Performance</h3>
+            <p>Current FID: 85ms (Good) → Target: 50ms (Excellent)</p>
+            <table class="modal-table">
+                <tr><th>Metric</th><th>Current</th><th>Target</th><th>Status</th></tr>
+                <tr><td>First Input Delay</td><td>85ms</td><td>50ms</td><td>Good → Excellent</td></tr>
+                <tr><td>JavaScript Execution</td><td>Optimized</td><td>Further optimization</td><td>Enhancement opportunity</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="speedModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Page Load Speed Optimization</h3>
+            <p>Current Load Speed: 4.8s → Target: 2.5s</p>
+            <table class="modal-table">
+                <tr><th>Optimization Area</th><th>Current</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Image Loading</td><td>4.2s</td><td>1.8s</td><td>£35K</td></tr>
+                <tr><td>JavaScript</td><td>2.1s</td><td>0.8s</td><td><span class="methodology-link" onclick="openModal('mobileLCP25kModal')">£25K</span></td></tr>
+                <tr><td>CSS Loading</td><td>1.5s</td><td>0.6s</td><td><span class="methodology-link" onclick="openModal('mobileCLS15kModal')">£15K</span></td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="phase1Modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Phase 1: Image Optimization & Compression</h3>
+            <p>30-day image optimization initiative with <span class="methodology-link" onclick="openModal('performance35kModal')">£35K revenue impact</span>:</p>
+            <table class="modal-table">
+                <tr><th>Task</th><th>Scope</th><th>Timeline</th><th>Impact</th></tr>
+                <tr><td>WebP Conversion</td><td>5,200 images</td><td>Days 1-15</td><td>-60% file size</td></tr>
+                <tr><td>Compression</td><td>All images</td><td>Days 16-25</td><td>-80% load time</td></tr>
+                <tr><td>Lazy Loading</td><td>Below-fold images</td><td>Days 26-30</td><td>-2.1s LCP</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="phase2Modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Phase 2: JavaScript & CSS Optimization</h3>
+            <p>30-day code optimization with <span class="methodology-link" onclick="openModal('code25kModal')">£25K revenue impact</span>:</p>
+            <table class="modal-table">
+                <tr><th>Task</th><th>Scope</th><th>Timeline</th><th>Impact</th></tr>
+                <tr><td>Remove Unused JS</td><td>2,400 files</td><td>Days 31-45</td><td>-40% bundle size</td></tr>
+                <tr><td>CSS Minification</td><td>800 stylesheets</td><td>Days 46-55</td><td>-30% CSS size</td></tr>
+                <tr><td>Code Splitting</td><td>Main bundles</td><td>Days 56-60</td><td>-65ms FID</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="phase3Modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Phase 3: Layout Stability Enhancement</h3>
+            <p>30-day layout optimization with <span class="methodology-link" onclick="openModal('layout20kModal')">£20K revenue impact</span>:</p>
+            <table class="modal-table">
+                <tr><th>Task</th><th>Scope</th><th>Timeline</th><th>Impact</th></tr>
+                <tr><td>Image Dimensions</td><td>1,837 images</td><td>Days 61-75</td><td>-0.12 CLS</td></tr>
+                <tr><td>Font Optimization</td><td>Web fonts</td><td>Days 76-85</td><td>-0.03 CLS</td></tr>
+                <tr><td>Dynamic Content</td><td>Ads & widgets</td><td>Days 86-90</td><td>Stable layout</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="phase4Modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Phase 4: Advanced Caching & CDN</h3>
+            <p>30-day infrastructure optimization with <span class="methodology-link" onclick="openModal('infrastructure15kModal')">£15K revenue impact</span>:</p>
+            <table class="modal-table">
+                <tr><th>Task</th><th>Scope</th><th>Timeline</th><th>Impact</th></tr>
+                <tr><td>Browser Caching</td><td>Static assets</td><td>Days 91-105</td><td>-0.8s load time</td></tr>
+                <tr><td>CDN Optimization</td><td>Global delivery</td><td>Days 106-115</td><td>-0.4s TTFB</td></tr>
+                <tr><td>Service Worker</td><td>Offline caching</td><td>Days 116-120</td><td>Instant repeat visits</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="mobileOptimizationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Mobile Performance Priority</h3>
+            <p>Mobile-first optimization targeting 65% of traffic with <span class="methodology-link" onclick="openModal('mobile45kModal')">£45K revenue impact</span>:</p>
+            <table class="modal-table">
+                <tr><th>Mobile Metric</th><th>Current</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Mobile LCP</td><td>4.1s</td><td>2.0s</td><td><span class="methodology-link" onclick="openModal('mobileLCP25kModal')">£25K</span></td></tr>
+                <tr><td>Mobile CLS</td><td>0.22</td><td>0.05</td><td><span class="methodology-link" onclick="openModal('mobileCLS15kModal')">£15K</span></td></tr>
+                <tr><td>Mobile FID</td><td>120ms</td><td>60ms</td><td><span class="methodology-link" onclick="openModal('mobileFID5kModal')">£5K</span></td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="desktopOptimizationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>Desktop Performance Enhancement</h3>
+            <p>Desktop optimization for business users with <span class="methodology-link" onclick="openModal('desktop30kModal')">£30K revenue impact</span>:</p>
+            <table class="modal-table">
+                <tr><th>Desktop Metric</th><th>Current</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Desktop LCP</td><td>2.8s</td><td>1.2s</td><td><span class="methodology-link" onclick="openModal('desktopLCP20kModal')">£20K</span></td></tr>
+                <tr><td>Desktop Load Time</td><td>3.5s</td><td>1.8s</td><td><span class="methodology-link" onclick="openModal('desktopLoad10kModal')">£10K</span></td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="uxOptimizationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal(this.closest('.modal').id)">&times;</span>
+            <h3>User Experience Optimization</h3>
+            <p>UX enhancements targeting +15% conversion rate improvement:</p>
+            <table class="modal-table">
+                <tr><th>UX Enhancement</th><th>Current</th><th>Target</th><th>Conversion Impact</th></tr>
+                <tr><td>Page Responsiveness</td><td>Good</td><td>Excellent</td><td>+8%</td></tr>
+                <tr><td>Visual Stability</td><td>Needs Work</td><td>Excellent</td><td>+7%</td></tr>
+            </table>
+        
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="methodology-link" onclick="openModal('performanceMethodologyModal')" 
+                        style="background: none; border: 2px solid #4f46e5; padding: 12px 24px; border-radius: 8px; font-size: 16px;">
+                    ⚡ View Complete Performance Optimization Methodology
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Performance Impact Chart
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        
+        const performanceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Image Optimization', 'JS/CSS Cleanup', 'Layout Stability', 'Caching & CDN'],
+                datasets: [{
+                    label: 'Revenue Impact (£K)',
+                    data: [35, 25, 20, 15],
+                    backgroundColor: [
+                        '#f59e0b',
+                        '#0891b2',
+                        '#0284c7',
+                        '#0369a1'
+                    ],
+                    borderWidth: 0,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Revenue Impact (£K)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Optimization Phase'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Modal functionality
+        
+
+        // Close modal when clicking the X
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.onclick = function() {
+                this.closest('.modal').style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    
+        // Standardized Modal Functionality
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                // Add event listeners for closing
+                const closeBtn = modal.querySelector('.close');
+                if (closeBtn) {
+                    closeBtn.onclick = function() {
+                        closeModal(modalId);
+                    };
+                }
+                
+                // Close on outside click
+                modal.onclick = function(event) {
+                    if (event.target === modal) {
+                        closeModal(modalId);
+                    }
+                };
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close all modals function
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        // Global escape key handler
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeAllModals();
+            }
+        });
+
+    </script>
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="index.html" class="nav-btn" title="Home">🏠</a>
+        <a href="slide_12_internal_linking_site_architecture_CLEAN_STYLE.html" class="nav-btn" title="Previous">←</a>
+        <a href="divider_e_ai_search_readiness_future_strategy_CLEAN_STYLE.html" class="nav-btn" title="Next">→</a>
+    </div>
+
+
+    <!-- Individual Performance Calculation Modals -->
+    <div id="performance35kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('performance35kModal')">&times;</span>
+            <h3>£35K Performance Revenue Impact</h3>
+            
+            <h4>Core Web Vitals Optimization Impact</h4>
+            <table>
+                <tr><th>Metric</th><th>Current</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>LCP (Largest Contentful Paint)</td><td>3.2s</td><td>1.8s</td><td>£15,000</td></tr>
+                <tr><td>CLS (Cumulative Layout Shift)</td><td>0.18</td><td>0.05</td><td>£12,000</td></tr>
+                <tr><td>FID (First Input Delay)</td><td>180ms</td><td>80ms</td><td>£8,000</td></tr>
+            </table>
+            
+            <h4>Performance-Revenue Correlation</h4>
+            <ul>
+                <li><strong>Page Speed Impact:</strong> 1-second improvement = 7% conversion increase</li>
+                <li><strong>Mobile Performance:</strong> Better CWV = 23% mobile conversion improvement</li>
+                <li><strong>User Experience:</strong> Reduced bounce rate = higher engagement</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="mobile45kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('mobile45kModal')">&times;</span>
+            <h3>£45K Mobile Optimization Revenue Impact</h3>
+            
+            <h4>Mobile Traffic Analysis</h4>
+            <p>65% of total traffic comes from mobile devices, making mobile optimization critical for revenue growth.</p>
+            
+            <table>
+                <tr><th>Mobile Metric</th><th>Current</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Mobile LCP</td><td>4.1s</td><td>2.0s</td><td>£25,000</td></tr>
+                <tr><td>Mobile CLS</td><td>0.22</td><td>0.05</td><td>£15,000</td></tr>
+                <tr><td>Mobile FID</td><td>120ms</td><td>60ms</td><td>£5,000</td></tr>
+            </table>
+            
+            <h4>Mobile-Specific Revenue Drivers</h4>
+            <ul>
+                <li>Mobile conversion rate currently 40% lower than desktop</li>
+                <li>Performance improvements can close this gap significantly</li>
+                <li>Mobile users have higher intent but lower patience</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="desktop30kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('desktop30kModal')">&times;</span>
+            <h3>£30K Desktop Optimization Revenue Impact</h3>
+            
+            <h4>Business User Focus</h4>
+            <p>Desktop users represent 35% of traffic but 60% of high-value conversions, making desktop optimization crucial for B2B revenue.</p>
+            
+            <table>
+                <tr><th>Desktop Metric</th><th>Current</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Desktop LCP</td><td>2.8s</td><td>1.2s</td><td>£20,000</td></tr>
+                <tr><td>Desktop Load Time</td><td>3.5s</td><td>1.8s</td><td>£10,000</td></tr>
+            </table>
+            
+            <h4>B2B Performance Impact</h4>
+            <ul>
+                <li>Business users expect enterprise-level performance</li>
+                <li>Faster desktop experience = higher perceived credibility</li>
+                <li>Desktop conversions have 3x higher average value</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Individual Mobile Metric Modals -->
+    <div id="mobileLCP25kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('mobileLCP25kModal')">&times;</span>
+            <h3>Mobile LCP £25K Revenue Calculation</h3>
+            
+            <h4>Largest Contentful Paint Optimization</h4>
+            <p>Improving mobile LCP from 4.1s to 2.0s represents a 51% performance improvement.</p>
+            
+            <h4>Revenue Impact Calculation</h4>
+            <ul>
+                <li><strong>Current Mobile Traffic:</strong> 8,500 monthly visits</li>
+                <li><strong>Current Conversion Rate:</strong> 1.8% (mobile)</li>
+                <li><strong>Performance Improvement:</strong> 51% LCP reduction</li>
+                <li><strong>Expected Conversion Lift:</strong> 35% (based on Google studies)</li>
+                <li><strong>New Conversion Rate:</strong> 2.43%</li>
+                <li><strong>Additional Monthly Conversions:</strong> 53</li>
+                <li><strong>Annual Revenue Impact:</strong> £25,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="mobileCLS15kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('mobileCLS15kModal')">&times;</span>
+            <h3>Mobile CLS £15K Revenue Calculation</h3>
+            
+            <h4>Cumulative Layout Shift Impact</h4>
+            <p>Reducing mobile CLS from 0.22 to 0.05 eliminates layout instability that causes user frustration and abandonment.</p>
+            
+            <h4>Revenue Calculation</h4>
+            <ul>
+                <li><strong>Current Bounce Rate:</strong> 68% (mobile)</li>
+                <li><strong>CLS Improvement:</strong> 77% reduction</li>
+                <li><strong>Expected Bounce Rate Reduction:</strong> 15%</li>
+                <li><strong>Improved Engagement:</strong> More page views per session</li>
+                <li><strong>Conversion Rate Improvement:</strong> 18%</li>
+                <li><strong>Annual Revenue Impact:</strong> £15,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="mobileFID5kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('mobileFID5kModal')">&times;</span>
+            <h3>Mobile FID £5K Revenue Calculation</h3>
+            
+            <h4>First Input Delay Optimization</h4>
+            <p>Reducing mobile FID from 120ms to 60ms improves interactivity and user experience.</p>
+            
+            <h4>Revenue Impact</h4>
+            <ul>
+                <li><strong>Interactivity Improvement:</strong> 50% faster response</li>
+                <li><strong>User Satisfaction:</strong> Reduced frustration with slow interactions</li>
+                <li><strong>Form Completion Rate:</strong> 12% improvement</li>
+                <li><strong>Annual Revenue Impact:</strong> £5,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Desktop Metric Modals -->
+    <div id="desktopLCP20kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('desktopLCP20kModal')">&times;</span>
+            <h3>Desktop LCP £20K Revenue Calculation</h3>
+            
+            <h4>Desktop Performance Optimization</h4>
+            <p>Improving desktop LCP from 2.8s to 1.2s creates enterprise-level performance expectations.</p>
+            
+            <h4>B2B Revenue Impact</h4>
+            <ul>
+                <li><strong>Desktop Traffic:</strong> 4,500 monthly visits</li>
+                <li><strong>Current Conversion Rate:</strong> 3.2% (desktop)</li>
+                <li><strong>Performance Improvement:</strong> 57% LCP reduction</li>
+                <li><strong>B2B Conversion Lift:</strong> 28%</li>
+                <li><strong>Higher Average Order Value:</strong> Desktop users convert at £180 vs £65 mobile</li>
+                <li><strong>Annual Revenue Impact:</strong> £20,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="desktopLoad10kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('desktopLoad10kModal')">&times;</span>
+            <h3>Desktop Load Time £10K Revenue Calculation</h3>
+            
+            <h4>Overall Load Time Optimization</h4>
+            <p>Reducing desktop load time from 3.5s to 1.8s improves overall user experience and perceived performance.</p>
+            
+            <h4>Revenue Calculation</h4>
+            <ul>
+                <li><strong>Load Time Improvement:</strong> 49% faster</li>
+                <li><strong>User Patience:</strong> Desktop users more tolerant but expect speed</li>
+                <li><strong>Conversion Rate Improvement:</strong> 15%</li>
+                <li><strong>Annual Revenue Impact:</strong> £10,000</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Section Methodology Modal -->
+    <div id="performanceMethodologyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('performanceMethodologyModal')">&times;</span>
+            <h3>Complete Performance Optimization Methodology</h3>
+            
+            <h4>Performance Audit Framework</h4>
+            <p>Comprehensive performance analysis using Google PageSpeed Insights, GTmetrix, and real user monitoring data to identify optimization opportunities.</p>
+            
+            <h4>Core Web Vitals Strategy</h4>
+            <ul>
+                <li><strong>Largest Contentful Paint (LCP):</strong> Image optimization, server response time, render-blocking resources</li>
+                <li><strong>Cumulative Layout Shift (CLS):</strong> Layout stability, font loading, dynamic content insertion</li>
+                <li><strong>First Input Delay (FID):</strong> JavaScript optimization, main thread blocking, code splitting</li>
+            </ul>
+            
+            <h4>Mobile-First Optimization</h4>
+            <ul>
+                <li>Progressive Web App (PWA) implementation</li>
+                <li>Adaptive image serving based on device capabilities</li>
+                <li>Touch-optimized interface elements</li>
+                <li>Network-aware loading strategies</li>
+            </ul>
+            
+            <h4>Desktop Performance Excellence</h4>
+            <ul>
+                <li>Enterprise-level performance standards</li>
+                <li>Advanced caching strategies</li>
+                <li>Resource prioritization for business users</li>
+                <li>High-resolution asset optimization</li>
+            </ul>
+            
+            <h4>Technical Implementation</h4>
+            <ol>
+                <li><strong>Image Optimization:</strong> WebP format, lazy loading, responsive images</li>
+                <li><strong>Code Optimization:</strong> Minification, compression, tree shaking</li>
+                <li><strong>Caching Strategy:</strong> Browser caching, CDN implementation, service workers</li>
+                <li><strong>Server Optimization:</strong> Response time improvement, database optimization</li>
+            </ol>
+            
+            <h4>Performance Monitoring</h4>
+            <ul>
+                <li>Real User Monitoring (RUM) implementation</li>
+                <li>Core Web Vitals tracking in Google Analytics</li>
+                <li>Performance budget establishment</li>
+                <li>Continuous monitoring and alerting</li>
+            </ul>
+            
+            <h4>Revenue Attribution Model</h4>
+            <p>Performance improvements drive revenue through:</p>
+            <ul>
+                <li><strong>Improved Search Rankings:</strong> Core Web Vitals as ranking factor</li>
+                <li><strong>Higher Conversion Rates:</strong> Faster sites convert better</li>
+                <li><strong>Reduced Bounce Rates:</strong> Better user experience = higher engagement</li>
+                <li><strong>Enhanced User Satisfaction:</strong> Performance = perceived quality</li>
+            </ul>
+            
+            <h4>Implementation Timeline</h4>
+            <ul>
+                <li><strong>Week 1-2:</strong> Performance audit and optimization planning</li>
+                <li><strong>Week 3-4:</strong> Critical performance fixes (LCP, CLS)</li>
+                <li><strong>Week 5-6:</strong> Mobile-specific optimizations</li>
+                <li><strong>Week 7-8:</strong> Desktop optimization and monitoring setup</li>
+            </ul>
+        </div>
+    </div>
+    
+
+    <!-- Mobile Performance Priority Modal -->
+    <div id="mobilePerformance45kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('mobilePerformance45kModal')">&times;</span>
+            <h3>Mobile Performance Priority - £45K+ Revenue Impact</h3>
+            
+            <h4>Mobile Performance Analysis</h4>
+            <p>Critical mobile performance optimization addressing the 65% of traffic that comes from mobile devices, with significant impact on conversions and search rankings.</p>
+            
+            <h4>Mobile Performance Issues</h4>
+            <table>
+                <tr><th>Performance Metric</th><th>Current State</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Mobile Page Speed</td><td>4.2 seconds</td><td>&lt;2.5 seconds</td><td>£18,000</td></tr>
+                <tr><td>Mobile Core Web Vitals</td><td>35% pass rate</td><td>85% pass rate</td><td>£15,000</td></tr>
+                <tr><td>Mobile Usability</td><td>78% usability score</td><td>95% usability score</td><td>£8,000</td></tr>
+                <tr><td>Mobile Conversion Rate</td><td>2.1%</td><td>3.2%</td><td>£4,000</td></tr>
+            </table>
+            
+            <h4>Mobile-First Impact</h4>
+            <ul>
+                <li><strong>Google Mobile-First Indexing:</strong> Mobile performance directly affects rankings</li>
+                <li><strong>User Behavior:</strong> 53% of users abandon slow mobile sites</li>
+                <li><strong>Conversion Impact:</strong> 1-second delay = 20% mobile conversion loss</li>
+                <li><strong>Competitive Advantage:</strong> Most competitors have poor mobile performance</li>
+            </ul>
+            
+            <h4>Optimization Strategy</h4>
+            <ul>
+                <li><strong>Responsive Design:</strong> Ensure perfect mobile layout and functionality</li>
+                <li><strong>Image Optimization:</strong> WebP format and responsive images</li>
+                <li><strong>Touch Optimization:</strong> Proper touch targets and gesture support</li>
+                <li><strong>Mobile-Specific Features:</strong> Click-to-call, location services, mobile forms</li>
+            </ul>
+            
+            <h4>Technical Implementation</h4>
+            <ul>
+                <li><strong>Progressive Web App:</strong> App-like mobile experience</li>
+                <li><strong>Accelerated Mobile Pages:</strong> AMP implementation for key pages</li>
+                <li><strong>Mobile Caching:</strong> Aggressive caching for mobile performance</li>
+                <li><strong>Network Optimization:</strong> Reduce data usage and load times</li>
+            </ul>
+            
+            <h4>Expected Outcomes</h4>
+            <ul>
+                <li><strong>Mobile Speed:</strong> 60% improvement in mobile load times</li>
+                <li><strong>Mobile Rankings:</strong> 20% improvement in mobile search positions</li>
+                <li><strong>Mobile Conversions:</strong> 35% increase in mobile conversion rate</li>
+                <li><strong>User Engagement:</strong> 40% reduction in mobile bounce rate</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Desktop Performance Enhancement Modal -->
+    <div id="desktopPerformance30kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('desktopPerformance30kModal')">&times;</span>
+            <h3>Desktop Performance Enhancement - £30K+ Revenue Impact</h3>
+            
+            <h4>Desktop Performance Analysis</h4>
+            <p>Comprehensive desktop performance optimization targeting the 35% of high-value desktop traffic, focusing on conversion optimization and user experience.</p>
+            
+            <h4>Desktop Performance Metrics</h4>
+            <table>
+                <tr><th>Performance Area</th><th>Current Performance</th><th>Target</th><th>Revenue Impact</th></tr>
+                <tr><td>Desktop Load Speed</td><td>2.8 seconds</td><td>&lt;1.5 seconds</td><td>£12,000</td></tr>
+                <tr><td>Time to Interactive</td><td>3.5 seconds</td><td>&lt;2.0 seconds</td><td>£8,000</td></tr>
+                <tr><td>Desktop Conversion Rate</td><td>4.2%</td><td>5.5%</td><td>£7,000</td></tr>
+                <tr><td>Page Abandonment Rate</td><td>28%</td><td>&lt;15%</td><td>£3,000</td></tr>
+            </table>
+            
+            <h4>Desktop User Behavior</h4>
+            <ul>
+                <li><strong>Higher Intent:</strong> Desktop users typically have higher purchase intent</li>
+                <li><strong>Longer Sessions:</strong> Desktop users spend more time researching</li>
+                <li><strong>Complex Interactions:</strong> Desktop allows for more detailed product exploration</li>
+                <li><strong>B2B Focus:</strong> Most B2B decisions happen on desktop</li>
+            </ul>
+            
+            <h4>Optimization Strategy</h4>
+            <ul>
+                <li><strong>Resource Optimization:</strong> Minimize CSS, JavaScript, and image sizes</li>
+                <li><strong>Caching Strategy:</strong> Implement aggressive browser and server caching</li>
+                <li><strong>CDN Optimization:</strong> Global content delivery network implementation</li>
+                <li><strong>Database Optimization:</strong> Query optimization and database indexing</li>
+            </ul>
+            
+            <h4>Technical Enhancements</h4>
+            <ul>
+                <li><strong>Code Splitting:</strong> Load only necessary JavaScript for each page</li>
+                <li><strong>Lazy Loading:</strong> Defer non-critical resource loading</li>
+                <li><strong>Preloading:</strong> Anticipate and preload likely next pages</li>
+                <li><strong>Service Workers:</strong> Background processing and caching</li>
+            </ul>
+            
+            <h4>Business Impact</h4>
+            <ul>
+                <li><strong>Conversion Optimization:</strong> 25% improvement in desktop conversions</li>
+                <li><strong>User Satisfaction:</strong> Better user experience leads to higher retention</li>
+                <li><strong>SEO Benefits:</strong> Faster sites rank better in search results</li>
+                <li><strong>Competitive Advantage:</strong> Outperform slower competitor sites</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- User Experience Optimization Modal -->
+    <div id="userExperience20kModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('userExperience20kModal')">&times;</span>
+            <h3>User Experience Optimization - £20K+ Revenue Impact</h3>
+            
+            <h4>UX Optimization Overview</h4>
+            <p>Comprehensive user experience optimization focusing on usability, accessibility, and conversion path optimization to maximize user satisfaction and business outcomes.</p>
+            
+            <h4>UX Impact Areas</h4>
+            <table>
+                <tr><th>UX Component</th><th>Current Score</th><th>Target Score</th><th>Revenue Impact</th></tr>
+                <tr><td>Navigation Usability</td><td>72%</td><td>90%</td><td>£6,000</td></tr>
+                <tr><td>Form Completion Rate</td><td>65%</td><td>85%</td><td>£5,000</td></tr>
+                <tr><td>Accessibility Score</td><td>78%</td><td>95%</td><td>£4,000</td></tr>
+                <tr><td>Content Readability</td><td>68%</td><td>88%</td><td>£3,000</td></tr>
+                <tr><td>Visual Hierarchy</td><td>75%</td><td>92%</td><td>£2,000</td></tr>
+            </table>
+            
+            <h4>UX Optimization Strategy</h4>
+            <ul>
+                <li><strong>User Journey Mapping:</strong> Optimize critical conversion paths</li>
+                <li><strong>Information Architecture:</strong> Improve content organization and findability</li>
+                <li><strong>Interface Design:</strong> Enhance visual design and interaction patterns</li>
+                <li><strong>Accessibility Enhancement:</strong> Ensure inclusive design for all users</li>
+            </ul>
+            
+            <h4>Conversion Path Optimization</h4>
+            <ul>
+                <li><strong>Landing Page UX:</strong> Optimize first impression and value proposition</li>
+                <li><strong>Navigation Simplification:</strong> Reduce cognitive load and decision fatigue</li>
+                <li><strong>Form Optimization:</strong> Streamline forms and reduce abandonment</li>
+                <li><strong>Call-to-Action Enhancement:</strong> Improve CTA visibility and effectiveness</li>
+            </ul>
+            
+            <h4>Technical UX Improvements</h4>
+            <ul>
+                <li><strong>Micro-Interactions:</strong> Add engaging feedback and animations</li>
+                <li><strong>Error Handling:</strong> Improve error messages and recovery flows</li>
+                <li><strong>Loading States:</strong> Better feedback during loading processes</li>
+                <li><strong>Progressive Enhancement:</strong> Ensure functionality across all devices</li>
+            </ul>
+            
+            <h4>Accessibility Enhancements</h4>
+            <ul>
+                <li><strong>WCAG Compliance:</strong> Meet Web Content Accessibility Guidelines</li>
+                <li><strong>Keyboard Navigation:</strong> Full keyboard accessibility</li>
+                <li><strong>Screen Reader Support:</strong> Proper semantic markup and ARIA labels</li>
+                <li><strong>Color Contrast:</strong> Ensure sufficient contrast ratios</li>
+            </ul>
+            
+            <h4>Expected Results</h4>
+            <ul>
+                <li><strong>User Satisfaction:</strong> 30% improvement in user satisfaction scores</li>
+                <li><strong>Task Completion:</strong> 25% increase in successful task completion</li>
+                <li><strong>Conversion Rate:</strong> 18% improvement in overall conversion rate</li>
+                <li><strong>User Retention:</strong> 20% increase in return visitor rate</li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>
+
